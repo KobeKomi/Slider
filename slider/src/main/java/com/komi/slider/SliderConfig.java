@@ -162,7 +162,7 @@ public class SliderConfig {
     }
 
     /**
-     * Get the touch sensitivity set in the {@link android.support.v4.widget.ViewDragHelper} when
+     * Get the touch sensitivity set in the {@link ViewDragHelper} when
      * creating it.
      *
      * @return      the touch sensitivity

@@ -25,6 +25,8 @@ public class Utils {
      * <p>
      * This call has no effect on non-translucent activities or on activities
      * with the {@link android.R.attr#windowIsFloating} attribute.
+     *
+     * @param activity
      */
     public static void convertActivityFromTranslucent(Activity activity) {
         try {
@@ -46,6 +48,7 @@ public class Utils {
      * <p>
      * This call has no effect on non-translucent activities or on activities
      * with the {@link android.R.attr#windowIsFloating} attribute.
+     * @param activity
      */
     public static void convertActivityToTranslucent(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -58,6 +61,7 @@ public class Utils {
 
     /**
      * Calling the convertToTranslucent method on platforms before Android 5.0
+     * @param activity
      */
     public static void convertActivityToTranslucentBeforeL(Activity activity) {
         try {
@@ -81,6 +85,7 @@ public class Utils {
 
     /**
      * Calling the convertToTranslucent method on platforms after Android 5.0
+     * @param activity
      */
     private static void convertActivityToTranslucentAfterL(Activity activity) {
         try {

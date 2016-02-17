@@ -40,8 +40,8 @@ public class SliderUtils {
     }
 
     /**
-     * @param ui
-     * @param config
+     * @param ui 实现SliderUi的对象
+     * @param config slider的配置
      * @param matchParent 是否包裹内容
      * @param replace     是否替换底层的view
      */
@@ -57,6 +57,7 @@ public class SliderUtils {
 
         // Set the panel slide listener for when it becomes closed or opened
         slider.setOnPanelSlideListener(new SliderListener() {
+
             private final ArgbEvaluator mEvaluator = new ArgbEvaluator();
 
             @Override
@@ -205,10 +206,8 @@ public class SliderUtils {
     }
 
 
-    /**
-     * 直接作为activity的parent加入
-     * 用 replaceToActivity替代
-     */
+
+    //直接作为activity的parent加入用 replaceToActivity替代
     @Deprecated
     private static void addToActivity(Slider slider, SliderUi ui) {
         ViewGroup root = (ViewGroup) ui.getRootView();
@@ -229,9 +228,8 @@ public class SliderUtils {
 
     /**
      * 替换掉activity的parent,减少嵌套
-     *
-     * @param ui
-     * @param matchParent
+     * @param ui 实现sliderUi的对象
+     * @param matchParent 是否设置为父控件大小
      */
     private static void replaceToActivity(Slider slider, SliderUi ui, boolean matchParent) {
         //用slider替换掉activity container parent减少一层嵌套
@@ -268,9 +266,7 @@ public class SliderUtils {
 
     }
 
-    /**
-     * 监听activity关闭与打开的状态
-     */
+    // 监听activity关闭与打开的状态
     private static void listenerActivity(SliderUi ui, SliderConfig config, int aminId, float... values) {
 
         final boolean in = values[0] < values[values.length - 1];

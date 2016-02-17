@@ -603,13 +603,11 @@ public enum SliderPosition {
     private boolean edgeOnly;
 
     /**
-     * 当position为
-     *
-     * @return
+     * @return 当position为如下情况时当前滑动的方向判断
      * @see #ALL
      * @see #HORIZONTAL
      * @see #VERTICAL
-     * 时，当前滑动的方向判断
+     *
      */
     public SliderPosition getSlidingPosition() {
         return slidingPosition;
@@ -667,9 +665,8 @@ public enum SliderPosition {
     }
 
     /**
-     * 获取当前position对应的Flags
      *
-     * @return
+     * @return 获取当前position对应的Flags
      */
     public int getEdgeFlags() {
         return 0;
@@ -683,29 +680,19 @@ public enum SliderPosition {
         return 0;
     }
 
-    /**
-     * 判断是否当前方向可滑动
-     *
-     * @param x
-     * @param y
-     * @param edgeRange
-     * @param edgeSize
-     * @return
-     */
+
+    //是否当前方向可滑动
     public boolean canDragFromEdge(float x, float y, float edgeRange, float edgeSize) {
         return false;
     }
 
-    /**
-     * 设置背景阴影区域
-     */
+    //设置背景阴影区域
     public void setScrimRect(View child, Rect rect) {
     }
 
     /**
-     * 当ui为activity时，获取当前方向的动画
      *
-     * @return
+     * @return 当ui为activity时，获取当前方向的动画
      */
     public int[] getActivitySlidingAmins() {
         return new int[]{android.R.anim.fade_in, android.R.anim.fade_out};

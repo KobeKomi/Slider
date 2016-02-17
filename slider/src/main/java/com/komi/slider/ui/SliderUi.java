@@ -9,31 +9,27 @@ import android.view.View;
 public interface SliderUi {
 
     /**
-     * 获取Ui的activity
-     * @return
+     * @return 获取实现SliderUi的activity
      */
     Activity getUiActivity();
 
     /**
-     * Ui是否为activity
-     * @return
+     * @return 实现SliderUi对象是否为activity
      */
     boolean isActivityUi();
 
     /**
-     * 是否正在关闭Ui
-     * @return
+     * @return 是否正在关闭SliderUi对象
      */
     boolean isFinishingUi();
 
     /**
-     * 关闭Ui的操作
+     * 关闭SliderUi对象的操作
      */
     void finishUi();
 
     /**
-     * 获取Ui最外层父控件
-     * @return
+     * @return 获取SliderUi对象最外层父控件
      */
     View getRootView();
 

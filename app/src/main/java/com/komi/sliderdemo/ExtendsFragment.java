@@ -1,7 +1,6 @@
 package com.komi.sliderdemo;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,25 +22,4 @@ public class ExtendsFragment extends SliderFragment implements FragmentCloseList
         iSlider.slideExit();
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Log.i("KOMI","----------onDestroyView");
-    }
-
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        Log.i("KOMI","-------onDestroy");
-
-    }
-
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        Log.i("KOMI","-------onDetach");
-
-    }
 }
