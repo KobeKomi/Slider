@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/light_green_500">
+
+        <RadioGroup
+            android:id="@+id/fragment_radio_group"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <RadioButton
+                android:id="@+id/fragment_rbt_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/position_left" />
+
+            <RadioButton
+                android:id="@+id/fragment_rbt_right"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/position_right" />
+
+            <RadioButton
+                android:id="@+id/fragment_rbt_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/position_top" />
+
+            <RadioButton
+                android:id="@+id/fragment_rbt_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/position_bottom" />
+
+            <RadioButton
+                android:id="@+id/fragment_rbt_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/position_vertical" />
+
+            <RadioButton
+                android:id="@+id/fragment_rbt_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/position_horizontal" />
+
+            <RadioButton
+                android:id="@+id/fragment_rbt_all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/position_all" />
+        </RadioGroup>
+
+        <Switch
+            android:id="@+id/fragment_swich"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/fragment_radio_group"
+            android:text="@string/edge_only" />
+
+    <TextView
+        android:id="@+id/fragment_counter_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        style="@style/Base.TextAppearance.AppCompat.Large"
+        android:layout_centerInParent="true" />
+
+</RelativeLayout>

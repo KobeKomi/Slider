@@ -1,0 +1,30 @@
+<resources>
+
+    <!--
+        Base application theme, dependent on API level. This theme is replaced
+        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
+    -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+
+    </style>
+
+    <style name="ActivityTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- 这个属性是为了activity滑动时背景为透明,如果在application下设置该属性则所有activity具备该属性-->
+        <!-- 但是这个属性如果放在application下则与activity的动画效果冲突，原本从右向左的动画变为闪现动画-->
+        <!--BUG:如果为MainActivity设置此属性，则所以设置了此属性的activity在大于L版本时按HOME键会闪屏-->
+        <!--疑问:在大于L版本时，可以在代码中通过反射设置，否则目前发现只能在xml中设置-->
+        <!--优化:当连续打开多个设置了该属性的activity时，性能会大大降低-->
+
+        <item name="android:windowIsTranslucent">true</item>
+        <!--<item name="android:windowBackground">@android:color/transparent</item>-->
+    </style>
+
+    <style name="SampleActivityTheme" parent="ActivityTheme">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/light_blue_500</item>
+    </style>
+</resources>

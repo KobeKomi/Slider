@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">SliderDemo</string>
+
+    <string name="sample_activity">sample activity</string>
+    <string name="extend_activity">extends activity</string>
+    <string name="adapter_activity">adapter activity</string>
+    <string name="sample_fragment">sample fragment</string>
+    <string name="extend_fragment">extends fragment</string>
+    <string name="adapter_fragment">adapter fragment</string>
+    <string name="title_activity">title activity</string>
+    <string name="position_left">Left</string>
+    <string name="position_right">Right</string>
+    <string name="position_top">Top</string>
+    <string name="position_bottom">Bottom</string>
+    <string name="position_horizontal">Horizontal</string>
+    <string name="position_vertical">Vertical</string>
+    <string name="position_all">All</string>
+    <string name="title_activity_fragment">Settings</string>
+    <string name="edge_only">edgeOnly:</string>
+
+</resources>
