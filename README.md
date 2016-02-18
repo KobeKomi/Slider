@@ -151,6 +151,14 @@ iSlider.setConfig(mConfig);
 ###ISlider
   ISlider是在SliderUtils.attach*方法返回的接口对象，通过该接口可以操作或者获得Slider对象。
 
+### 使用项目
+
+在项目的build.gradle文件中添加库依赖
+```java
+dependencies{
+    compile 'com.komi.slider:slider:0.1.0'
+}
+```
 
 ###Pull Requests 与 Issues
 
