@@ -6,14 +6,18 @@
 package com.komi.slider;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewGroupCompat;
+import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 /**
@@ -28,8 +32,12 @@ public class Slider extends FrameLayout {
     private float scrimAlpha;
     private float mScrollPercent;
 
-    //ui的view
-    private View mDecorView;
+    private View mSlideChild;
+
+    //slide布局时的坐标
+    private int slideChildLeft;
+    private int slideChildTop;
+
     private ViewDragHelper mDragHelper;
     private SliderListener mListener;
 
@@ -39,36 +47,40 @@ public class Slider extends FrameLayout {
     private SliderConfig mConfig;
     private boolean slideBegin;
 
-    /**
-     * 如果调用了此构造函数，必须调用
-     *
-     * @see #setDecorView(View)
-     */
+
     public Slider(Context context) {
         super(context);
         mConfig = new SliderConfig.Builder().build();
     }
 
-    public Slider(Context context, View decorView) {
-        this(context, decorView, null);
-    }
-
-    public Slider(Context context, View decorView, SliderConfig config) {
+    public Slider(Context context, SliderConfig config) {
         super(context);
-        mDecorView = decorView;
         mConfig = (config == null ? new SliderConfig.Builder().build() : config);
-        if (decorView != null) {
-            initDate();
-        }
+        initDate();
     }
 
-    public void setDecorView(View decorView) {
-        this.mDecorView = decorView;
-        slideBegin = false;
-        if (decorView != null) {
-            initDate();
-        }
+    //通过xml初始化
+    public Slider(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SliderStyle);
+        int edgeFlag = a.getInt(R.styleable.SliderStyle_position, 0);
+        boolean edgeOnly=a.getBoolean(R.styleable.SliderStyle_edgeOnly,false);
+        a.recycle();
+
+        mConfig=new SliderConfig.Builder()
+                .position(SliderPosition.getSliderPosition(edgeFlag))
+                .edgeOnly(edgeOnly)
+                .build();
+        initDate();
     }
+
+
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params) {
+        super.addView(child, index, params);
+        this.mSlideChild =child;
+    }
+
 
     public void setConfig(SliderConfig config) {
         this.mConfig = config;
@@ -78,7 +90,8 @@ public class Slider extends FrameLayout {
         resetDrawScrimType();
     }
 
-    //ALL在背景阴影的解决方案
+    //当mEdgePosition=ALL时,在低于5.0的设备版本下与edgeOnly=false,背景阴影会全屏覆盖。
+    //解决方案:
     private void resetDrawScrimType() {
         if (mEdgePosition == SliderPosition.ALL && !mEdgePosition.isEdgeOnly()) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2) {
@@ -109,10 +122,9 @@ public class Slider extends FrameLayout {
 
 
     public void slideEnter() {
-        //初始化的时候mDecorView的宽高可能为0
-        if (!slideBegin) {
-            Rect rect = mEdgePosition.getSlidingInRect(mDecorView);
-            mDragHelper.smoothSlideViewTo(mDecorView, rect.left, rect.top, rect.right, rect.bottom);
+        if (!slideBegin&& mSlideChild !=null) {
+            Rect rect = mEdgePosition.getSlidingInRect(mSlideChild);
+            mDragHelper.smoothSlideViewTo(mSlideChild, rect.left, rect.top, rect.right, rect.bottom);
             slideBegin = true;
         }
     }
@@ -122,9 +134,11 @@ public class Slider extends FrameLayout {
      * Scroll out contentView
      */
     public void slideExit() {
-        Rect rect = mEdgePosition.getSlidingOutRect(mDecorView);
-        mDragHelper.smoothSlideViewTo(mDecorView, rect.left, rect.top, rect.right, rect.bottom);
-        invalidate();
+        if(mSlideChild !=null) {
+            Rect rect = mEdgePosition.getSlidingOutRect(mSlideChild);
+            mDragHelper.smoothSlideViewTo(mSlideChild, rect.left, rect.top, rect.right, rect.bottom);
+            invalidate();
+        }
 
     }
 
@@ -147,7 +161,6 @@ public class Slider extends FrameLayout {
         mDragHelper = ViewDragHelper.create(this, mConfig.getSensitivity(), new ViewDragCallback());
         mDragHelper.setMinVelocity(minVel);
         ViewGroupCompat.setMotionEventSplittingEnabled(this, false);
-
         setConfig(mConfig);
     }
 
@@ -159,12 +172,10 @@ public class Slider extends FrameLayout {
             return false;
         }
 
-        //false：全屏滑动，ture:边缘滑动
-        if (mConfig.isEdgeOnly()) {
+        if (mConfig.isEdgeOnly()&&mSlideChild!=null) {
             mIsEdgeTouched = canDragFromEdge(ev);
         }
 
-        // Fix for pull request #13 and issue #12
         try {
             interceptForDrag = mDragHelper.shouldInterceptTouchEvent(ev);
         } catch (Exception e) {
@@ -199,11 +210,16 @@ public class Slider extends FrameLayout {
 
 
     private boolean canDragFromEdge(MotionEvent ev) {
+
         float x = ev.getX();
         float y = ev.getY();
-        float size = mEdgePosition.getViewSize(x, y, getWidth(), getHeight());
+        int width=Math.min(mSlideChild.getWidth(),getWidth());
+        int height=Math.min(mSlideChild.getHeight(),getHeight());
+
+        float size = mEdgePosition.getViewSize(x, y, width, height);
         mConfig.setEdgeRange(size);
-        return mEdgePosition.canDragFromEdge(x, y, size, mConfig.getEdgeSize());
+
+        return mEdgePosition.canDragFromEdge(slideChildLeft,slideChildTop,x, y, size, mConfig.getEdgeSize());
     }
 
     /**
@@ -214,26 +230,40 @@ public class Slider extends FrameLayout {
         //当child被捕获时回调
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            boolean edgeCase = !mConfig.isEdgeOnly() || mEdgePosition.tryCaptureView(mDragHelper.isEdgeTouched(mEdgePosition.getEdgeFlags(), pointerId), mIsEdgeTouched);
+            boolean isWrapped=child.getWidth()<getWidth()||child.getHeight()<getHeight();
+
+            boolean initialTouched=isWrapped||mDragHelper.isEdgeTouched(mEdgePosition.getEdgeFlags(),pointerId);
+            boolean captureView=mEdgePosition.tryCaptureView(initialTouched, mIsEdgeTouched);
+            boolean edgeCase = !mConfig.isEdgeOnly() ||captureView;
             return edgeCase;
         }
 
-        //返回指定View在横向上能滑动的最大距离
+        //返回mDecorView在横向上能滑动的最大距离
         @Override
         public int getViewHorizontalDragRange(View child) {
-            return mEdgePosition.getViewHorizontalDragRange(child.getWidth());
+            return mEdgePosition.getViewHorizontalDragRange(getWidth());
         }
 
         @Override
         public int getViewVerticalDragRange(View child) {
-            return mEdgePosition.getViewVerticalDragRange(child.getHeight());
+            return mEdgePosition.getViewVerticalDragRange(getHeight());
         }
 
-        //当子视图位置变化时，会回调这个函数
+        //当mDecorView位置变化时，会回调这个函数
         @Override
         public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
-            super.onViewPositionChanged(changedView, left, top, dx, dy);
-            mScrollPercent = mEdgePosition.onViewPositionChanged(changedView.getWidth(), changedView.getHeight(), left, top);
+            //-----------------------------xxxxxxxxxxxxxxxxxxxxxx
+            boolean hWrapped=changedView.getWidth()<getWidth();
+            boolean vWrapped=changedView.getHeight()<getHeight();
+
+            int slideLeft=hWrapped?slideChildLeft+left:left;
+            int slideTop=vWrapped?slideChildTop:top;
+
+            super.onViewPositionChanged(changedView, slideLeft, slideTop, dx, dy);
+
+            Log.i("KOMI","changedView_LEFT:"+changedView.getLeft()+"----left:"+left+"-----slideLeft:"+slideChildLeft);
+            mScrollPercent = mEdgePosition.onViewPositionChanged(changedView.getWidth(), changedView.getHeight(),left, top,slideChildLeft,slideChildTop);
+
             if (mListener != null) mListener.onSlideChange(mScrollPercent);
             invalidate();
         }
@@ -243,18 +273,26 @@ public class Slider extends FrameLayout {
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             super.onViewReleased(releasedChild, xvel, yvel);
 
-            final int childWidth = releasedChild.getWidth();
-            final int childHeight = releasedChild.getHeight();
-            final int left = releasedChild.getLeft();
-            final int top = releasedChild.getTop();
-            int hThreshold = (int) (childWidth * mConfig.getDistanceThresholdPercent());
-            int vThreshold = (int) (childHeight * mConfig.getDistanceThresholdPercent());
+            final int maxWidth =getWidth();
+            final int maxHeight =getHeight();
+
+            int hThreshold = (int) (releasedChild.getWidth() * mConfig.getDistanceThresholdPercent());
+            int vThreshold = (int) (releasedChild.getHeight() * mConfig.getDistanceThresholdPercent());
             boolean hSwiping = Math.abs(yvel) > mConfig.getVelocityThreshold();
             boolean vSwiping = Math.abs(xvel) > mConfig.getVelocityThreshold();
             float velocityThreshold = mConfig.getVelocityThreshold();
 
-            int settleLeft = mEdgePosition.onViewReleasedHorizontal(childWidth, left, xvel, hThreshold, hSwiping, velocityThreshold);
-            int settleTop = mEdgePosition.onViewReleasedVertical(childHeight, top, yvel, vThreshold, vSwiping, velocityThreshold);
+            boolean hWrapped=releasedChild.getWidth()<getWidth();
+            boolean vWrapped=releasedChild.getHeight()<getHeight();
+
+            final int left = hWrapped?(releasedChild.getLeft()-slideChildLeft):releasedChild.getLeft();
+            final int top = vWrapped?(releasedChild.getTop()-slideChildTop):releasedChild.getTop();
+
+            int settleLeft = mEdgePosition.onViewReleasedHorizontal(hWrapped,maxWidth, left, xvel, hThreshold, hSwiping, velocityThreshold);
+            int settleTop  = mEdgePosition.onViewReleasedVertical(vWrapped,maxHeight, top, yvel, vThreshold, vSwiping, velocityThreshold);
+
+            Log.i("KOMI","--settleLeft:"+settleLeft+"------settleTop:"+settleTop);
+            Log.i("KOMI","--left:"+left+"--------childLeft:"+releasedChild.getLeft()+"-----slideChildLeft:"+slideChildLeft);
 
             mDragHelper.settleCapturedViewAt(settleLeft, settleTop);
             invalidate();
@@ -265,12 +303,12 @@ public class Slider extends FrameLayout {
         //此方法返回一个值，告诉Helper，这个view能滑动的最大（或者负向最大）的横向坐标
         @Override
         public int clampViewPositionHorizontal(View child, int left, int dx) {
-            return mEdgePosition.clampViewPositionHorizontal(child, left, dx);
+            return mEdgePosition.clampViewPositionHorizontal(getWidth(), left, dx);
         }
 
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
-            return mEdgePosition.clampViewPositionVertical(child, top, dy);
+            return mEdgePosition.clampViewPositionVertical(getHeight(), top, dy);
         }
 
         //状态发生变化时回调（IDLE,DRAGGING,SETTING[自动滚动时]）
@@ -284,7 +322,7 @@ public class Slider extends FrameLayout {
 
             switch (state) {
                 case ViewDragHelper.STATE_IDLE:
-                    boolean isOpen = mEdgePosition.onViewDragStateChanged(mDecorView.getLeft(), mDecorView.getTop());
+                    boolean isOpen = mSlideChild !=null&&mEdgePosition.onViewDragStateChanged(mSlideChild.getLeft(), mSlideChild.getTop());
                     if (isOpen) {
                         // State Open
                         if (mListener != null) mListener.onSlideOpened();
@@ -305,7 +343,7 @@ public class Slider extends FrameLayout {
 
     @Override
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
-        final boolean drawContent = child == mDecorView;
+        final boolean drawContent = child == mSlideChild;
         boolean ret = super.drawChild(canvas, child, drawingTime);
         if (scrimAlpha > 0 && drawContent
                 && mDragHelper.getViewDragState() != ViewDragHelper.STATE_IDLE) {
@@ -314,6 +352,11 @@ public class Slider extends FrameLayout {
         return ret;
     }
 
+
+    /**
+     * @param canvas
+     * @param child
+     */
     private void drawScrim(Canvas canvas, View child) {
         final int baseAlpha = (mConfig.getScrimColor() & 0xff000000) >>> 24;
         final int alpha = (int) (baseAlpha * scrimAlpha);
@@ -323,4 +366,11 @@ public class Slider extends FrameLayout {
         canvas.drawColor(color);
     }
 
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        slideChildLeft=mSlideChild.getLeft();
+        slideChildTop=mSlideChild.getTop();
+    }
 }

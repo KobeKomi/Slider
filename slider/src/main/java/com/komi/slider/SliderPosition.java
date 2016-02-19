@@ -1,6 +1,7 @@
 package com.komi.slider;
 
 import android.graphics.Rect;
+import android.util.Log;
 import android.view.View;
 
 /**
@@ -9,13 +10,13 @@ import android.view.View;
 public enum SliderPosition {
     LEFT {
         @Override
-        public boolean tryCaptureView(boolean hEdgeTouched, boolean vEdgeTouched) {
-            return hEdgeTouched;
+        public boolean tryCaptureView(boolean initialTouched, boolean edgeTouched) {
+            return initialTouched&&edgeTouched;
         }
 
         @Override
-        public int clampViewPositionHorizontal(View child, int left, int dx) {
-            return clamp(left, 0, child.getWidth());
+        public int clampViewPositionHorizontal(int maxWidth, int left, int dx) {
+            return clamp(left, 0, maxWidth);
         }
 
         @Override
@@ -29,7 +30,7 @@ public enum SliderPosition {
         }
 
         @Override
-        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top) {
+        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top,int childLeft, int childTop) {
             return percent((float) left, (float) contentViewWidth);
         }
 
@@ -39,16 +40,17 @@ public enum SliderPosition {
         }
 
         @Override
-        public int onViewReleasedHorizontal(int childWidth, int left, float xvel, int hThreshold, boolean hSwiping, float velocityThreshold) {
-            int settleLeft = 0;
+        public int onViewReleasedHorizontal(boolean hWrapped, int maxWidth, int left, float xvel, int hThreshold, boolean hSwiping, float velocityThreshold) {
+            int settleLeft = hWrapped ? left : 0;
+
             if (xvel > 0) {
                 if (Math.abs(xvel) > velocityThreshold && !hSwiping) {
-                    settleLeft = childWidth;
+                    settleLeft = maxWidth;
                 } else if (left > hThreshold) {
-                    settleLeft = childWidth;
+                    settleLeft = maxWidth;
                 }
             } else if (xvel == 0 && left > hThreshold) {
-                settleLeft = childWidth;
+                settleLeft = maxWidth;
             }
 
 
@@ -61,8 +63,20 @@ public enum SliderPosition {
         }
 
         @Override
-        public boolean canDragFromEdge(float x, float y, float edgeRange, float edgeSize) {
-            return x < edgeSize;
+        public boolean canDragFromEdge(int childLeft, int childTop, float x, float y, float edgeRange, float edgeSize) {
+
+            if(childLeft == 0)
+            {
+                Log.i("KOMI","left_canDragFromEdge====0:"+(x < edgeSize));
+
+                return x < edgeSize;
+
+            }else
+            {
+                Log.i("KOMI","left_canDragFromEdge:"+(x > childLeft)+"----:"+(x<childLeft+ edgeSize));
+                return (x > childLeft)&&(x<childLeft+ edgeSize);
+            }
+
         }
 
         @Override
@@ -88,13 +102,13 @@ public enum SliderPosition {
 
     RIGHT {
         @Override
-        public boolean tryCaptureView(boolean hEdgeTouched, boolean vEdgeTouched) {
-            return LEFT.tryCaptureView(hEdgeTouched, vEdgeTouched);
+        public boolean tryCaptureView(boolean initialTouched, boolean edgeTouched) {
+            return LEFT.tryCaptureView(initialTouched, edgeTouched);
         }
 
         @Override
-        public int clampViewPositionHorizontal(View child, int left, int dx) {
-            return clamp(left, -child.getWidth(), 0);
+        public int clampViewPositionHorizontal(int maxWidth, int left, int dx) {
+            return clamp(left, -maxWidth, 0);
         }
 
         @Override
@@ -108,8 +122,8 @@ public enum SliderPosition {
         }
 
         @Override
-        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top) {
-            return LEFT.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top);
+        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top,int childLeft, int childTop) {
+            return LEFT.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top,childLeft,childTop);
         }
 
         @Override
@@ -118,17 +132,17 @@ public enum SliderPosition {
         }
 
         @Override
-        public int onViewReleasedHorizontal(int childWidth, int left, float xvel, int hThreshold, boolean hSwiping, float velocityThreshold) {
+        public int onViewReleasedHorizontal(boolean hWrapped, int maxWidth, int left, float xvel, int hThreshold, boolean hSwiping, float velocityThreshold) {
             int settleLeft = 0;
             if (xvel < 0) {
                 if (Math.abs(xvel) > velocityThreshold && !hSwiping) {
-                    settleLeft = -childWidth;
+                    settleLeft = -maxWidth;
                 } else if (left < -hThreshold) {
-                    settleLeft = -childWidth;
+                    settleLeft = -maxWidth;
                 }
 
             } else if (xvel == 0 && left < -hThreshold) {
-                settleLeft = -childWidth;
+                settleLeft = -maxWidth;
             }
             return settleLeft;
         }
@@ -139,7 +153,7 @@ public enum SliderPosition {
         }
 
         @Override
-        public boolean canDragFromEdge(float x, float y, float edgeRange, float edgeSize) {
+        public boolean canDragFromEdge(int childLeft, int childTop, float x, float y, float edgeRange, float edgeSize) {
             return x > edgeRange - edgeSize;
         }
 
@@ -165,13 +179,13 @@ public enum SliderPosition {
     },
     TOP {
         @Override
-        public boolean tryCaptureView(boolean hEdgeTouched, boolean vEdgeTouched) {
-            return vEdgeTouched;
+        public boolean tryCaptureView(boolean initialTouched, boolean edgeTouched) {
+            return edgeTouched;
         }
 
         @Override
-        public int clampViewPositionVertical(View child, int top, int dy) {
-            return clamp(top, 0, child.getHeight());
+        public int clampViewPositionVertical(int maxHeight, int top, int dy) {
+            return clamp(top, 0, maxHeight);
 
         }
 
@@ -186,7 +200,7 @@ public enum SliderPosition {
         }
 
         @Override
-        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top) {
+        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top,int childLeft, int childTop) {
             return percent((float) top, (float) contentViewHeight);
         }
 
@@ -196,16 +210,16 @@ public enum SliderPosition {
         }
 
         @Override
-        public int onViewReleasedVertical(int childHeight, int top, float yvel, int vThreshold, boolean vSwiping, float velocityThreshold) {
+        public int onViewReleasedVertical(boolean vWrapped, int maxHeight, int top, float yvel, int vThreshold, boolean vSwiping, float velocityThreshold) {
             int settleTop = 0;
             if (yvel > 0) {
                 if (Math.abs(yvel) > velocityThreshold && !vSwiping) {
-                    settleTop = childHeight;
+                    settleTop = maxHeight;
                 } else if (top > vThreshold) {
-                    settleTop = childHeight;
+                    settleTop = maxHeight;
                 }
             } else if (yvel == 0 && top > vThreshold) {
-                settleTop = childHeight;
+                settleTop = maxHeight;
             }
 
             return settleTop;
@@ -217,7 +231,7 @@ public enum SliderPosition {
         }
 
         @Override
-        public boolean canDragFromEdge(float x, float y, float edgeRange, float edgeSize) {
+        public boolean canDragFromEdge(int childLeft, int childTop, float x, float y, float edgeRange, float edgeSize) {
             return y < edgeSize;
         }
 
@@ -243,13 +257,13 @@ public enum SliderPosition {
     },
     BOTTOM {
         @Override
-        public boolean tryCaptureView(boolean hEdgeTouched, boolean vEdgeTouched) {
-            return TOP.tryCaptureView(hEdgeTouched, vEdgeTouched);
+        public boolean tryCaptureView(boolean initialTouched, boolean edgeTouched) {
+            return TOP.tryCaptureView(initialTouched, edgeTouched);
         }
 
         @Override
-        public int clampViewPositionVertical(View child, int top, int dy) {
-            return clamp(top, -child.getHeight(), 0);
+        public int clampViewPositionVertical(int maxHeight, int top, int dy) {
+            return clamp(top, -maxHeight, 0);
         }
 
         @Override
@@ -263,8 +277,8 @@ public enum SliderPosition {
         }
 
         @Override
-        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top) {
-            return TOP.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top);
+        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top,int childLeft, int childTop) {
+            return TOP.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top,childLeft,childTop);
         }
 
         @Override
@@ -273,16 +287,16 @@ public enum SliderPosition {
         }
 
         @Override
-        public int onViewReleasedVertical(int childHeight, int top, float yvel, int vThreshold, boolean vSwiping, float velocityThreshold) {
+        public int onViewReleasedVertical(boolean vWrapped, int maxHeight, int top, float yvel, int vThreshold, boolean vSwiping, float velocityThreshold) {
             int settleTop = 0;
             if (yvel < 0) {
                 if (Math.abs(yvel) > velocityThreshold && !vSwiping) {
-                    settleTop = -childHeight;
+                    settleTop = -maxHeight;
                 } else if (top < -vThreshold) {
-                    settleTop = -childHeight;
+                    settleTop = -maxHeight;
                 }
             } else if (yvel == 0 && top < -vThreshold) {
-                settleTop = -childHeight;
+                settleTop = -maxHeight;
             }
             return settleTop;
         }
@@ -293,7 +307,7 @@ public enum SliderPosition {
         }
 
         @Override
-        public boolean canDragFromEdge(float x, float y, float edgeRange, float edgeSize) {
+        public boolean canDragFromEdge(int childLeft, int childTop, float x, float y, float edgeRange, float edgeSize) {
             return y > edgeRange - edgeSize;
         }
 
@@ -319,13 +333,13 @@ public enum SliderPosition {
     },
     VERTICAL {
         @Override
-        public boolean tryCaptureView(boolean hEdgeTouched, boolean vEdgeTouched) {
-            return TOP.tryCaptureView(hEdgeTouched, vEdgeTouched);
+        public boolean tryCaptureView(boolean initialTouched, boolean edgeTouched) {
+            return TOP.tryCaptureView(initialTouched, edgeTouched);
         }
 
         @Override
-        public int clampViewPositionVertical(View child, int top, int dy) {
-            return clamp(top, -child.getHeight(), child.getHeight());
+        public int clampViewPositionVertical(int maxHeight, int top, int dy) {
+            return clamp(top, -maxHeight, maxHeight);
         }
 
         @Override
@@ -339,8 +353,8 @@ public enum SliderPosition {
         }
 
         @Override
-        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top) {
-            return TOP.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top);
+        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top,int childLeft, int childTop) {
+            return TOP.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top,childLeft,childTop);
         }
 
         @Override
@@ -349,9 +363,9 @@ public enum SliderPosition {
         }
 
         @Override
-        public int onViewReleasedVertical(int childHeight, int top, float yvel, int vThreshold, boolean vSwiping, float velocityThreshold) {
-            int topReleased = TOP.onViewReleasedVertical(childHeight, top, yvel, vThreshold, vSwiping, velocityThreshold);
-            int bottomReleased = BOTTOM.onViewReleasedVertical(childHeight, top, yvel, vThreshold, vSwiping, velocityThreshold);
+        public int onViewReleasedVertical(boolean vWrapped, int maxHeight, int top, float yvel, int vThreshold, boolean vSwiping, float velocityThreshold) {
+            int topReleased = TOP.onViewReleasedVertical(vWrapped, maxHeight, top, yvel, vThreshold, vSwiping, velocityThreshold);
+            int bottomReleased = BOTTOM.onViewReleasedVertical(vWrapped, maxHeight, top, yvel, vThreshold, vSwiping, velocityThreshold);
 
             return topReleased + bottomReleased;
         }
@@ -362,9 +376,9 @@ public enum SliderPosition {
         }
 
         @Override
-        public boolean canDragFromEdge(float x, float y, float edgeRange, float edgeSize) {
-            boolean dragTop = TOP.canDragFromEdge(x, y, edgeRange, edgeSize);
-            boolean dragBottom = BOTTOM.canDragFromEdge(x, y, edgeRange, edgeSize);
+        public boolean canDragFromEdge(int childLeft, int childTop, float x, float y, float edgeRange, float edgeSize) {
+            boolean dragTop = TOP.canDragFromEdge(childLeft, childTop, x, y, edgeRange, edgeSize);
+            boolean dragBottom = BOTTOM.canDragFromEdge(childLeft, childTop, x, y, edgeRange, edgeSize);
             return dragTop || dragBottom;
 
         }
@@ -394,13 +408,13 @@ public enum SliderPosition {
     },
     HORIZONTAL {
         @Override
-        public boolean tryCaptureView(boolean hEdgeTouched, boolean vEdgeTouched) {
-            return LEFT.tryCaptureView(hEdgeTouched, vEdgeTouched);
+        public boolean tryCaptureView(boolean initialTouched, boolean edgeTouched) {
+            return LEFT.tryCaptureView(initialTouched, edgeTouched);
         }
 
         @Override
-        public int clampViewPositionHorizontal(View child, int left, int dx) {
-            return clamp(left, -child.getWidth(), child.getWidth());
+        public int clampViewPositionHorizontal(int maxWidth, int left, int dx) {
+            return clamp(left, -maxWidth, maxWidth);
         }
 
         @Override
@@ -414,8 +428,8 @@ public enum SliderPosition {
         }
 
         @Override
-        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top) {
-            return LEFT.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top);
+        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top,int childLeft, int childTop) {
+            return LEFT.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top,childLeft,childTop);
         }
 
         @Override
@@ -424,9 +438,9 @@ public enum SliderPosition {
         }
 
         @Override
-        public int onViewReleasedHorizontal(int childWidth, int left, float xvel, int hThreshold, boolean hSwiping, float velocityThreshold) {
-            int leftReleased = LEFT.onViewReleasedHorizontal(childWidth, left, xvel, hThreshold, hSwiping, velocityThreshold);
-            int rightReleased = RIGHT.onViewReleasedHorizontal(childWidth, left, xvel, hThreshold, hSwiping, velocityThreshold);
+        public int onViewReleasedHorizontal(boolean hWrapped, int maxWidth, int left, float xvel, int hThreshold, boolean hSwiping, float velocityThreshold) {
+            int leftReleased = LEFT.onViewReleasedHorizontal(hWrapped, maxWidth, left, xvel, hThreshold, hSwiping, velocityThreshold);
+            int rightReleased = RIGHT.onViewReleasedHorizontal(hWrapped, maxWidth, left, xvel, hThreshold, hSwiping, velocityThreshold);
             return leftReleased + rightReleased;
         }
 
@@ -436,9 +450,9 @@ public enum SliderPosition {
         }
 
         @Override
-        public boolean canDragFromEdge(float x, float y, float edgeRange, float edgeSize) {
-            boolean dragLeft = LEFT.canDragFromEdge(x, y, edgeRange, edgeSize);
-            boolean dragRight = RIGHT.canDragFromEdge(x, y, edgeRange, edgeSize);
+        public boolean canDragFromEdge(int childLeft, int childTop, float x, float y, float edgeRange, float edgeSize) {
+            boolean dragLeft = LEFT.canDragFromEdge(childLeft, childTop, x, y, edgeRange, edgeSize);
+            boolean dragRight = RIGHT.canDragFromEdge(childLeft, childTop, x, y, edgeRange, edgeSize);
             return dragLeft || dragRight;
         }
 
@@ -471,25 +485,25 @@ public enum SliderPosition {
         private int height;
 
         @Override
-        public boolean tryCaptureView(boolean hEdgeTouched, boolean vEdgeTouched) {
-            return VERTICAL.tryCaptureView(hEdgeTouched, vEdgeTouched) || HORIZONTAL.tryCaptureView(hEdgeTouched, vEdgeTouched);
+        public boolean tryCaptureView(boolean initialTouched, boolean edgeTouched) {
+            return VERTICAL.tryCaptureView(initialTouched, edgeTouched) || HORIZONTAL.tryCaptureView(initialTouched, edgeTouched);
         }
 
         @Override
-        public int clampViewPositionHorizontal(View child, int left, int dx) {
+        public int clampViewPositionHorizontal(int maxWidth, int left, int dx) {
             if (getSlidingPosition() == HORIZONTAL || !isEdgeOnly()) {
-                return HORIZONTAL.clampViewPositionHorizontal(child, left, dx);
+                return HORIZONTAL.clampViewPositionHorizontal(maxWidth, left, dx);
             } else {
-                return super.clampViewPositionHorizontal(child, left, dx);
+                return super.clampViewPositionHorizontal(maxWidth, left, dx);
             }
         }
 
         @Override
-        public int clampViewPositionVertical(View child, int top, int dy) {
+        public int clampViewPositionVertical(int maxHeight, int top, int dy) {
             if (getSlidingPosition() == VERTICAL || !isEdgeOnly()) {
-                return VERTICAL.clampViewPositionVertical(child, top, dy);
+                return VERTICAL.clampViewPositionVertical(maxHeight, top, dy);
             } else {
-                return super.clampViewPositionVertical(child, top, dy);
+                return super.clampViewPositionVertical(maxHeight, top, dy);
             }
         }
 
@@ -509,19 +523,19 @@ public enum SliderPosition {
         }
 
         @Override
-        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top) {
+        public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top,int childLeft, int childTop) {
             SliderPosition position = getSlidingPosition();
             if (isEdgeOnly()) {
                 if (position != null) {
-                    return position.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top);
+                    return position.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top,childLeft,childTop);
                 } else {
-                    float vPercent = VERTICAL.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top);
-                    float hPercent = HORIZONTAL.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top);
+                    float vPercent = VERTICAL.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top,childLeft,childTop);
+                    float hPercent = HORIZONTAL.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top,childLeft,childTop);
                     return vPercent * hPercent;
                 }
             } else {
-                float vPercent = VERTICAL.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top);
-                float hPercent = HORIZONTAL.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top);
+                float vPercent = VERTICAL.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top,childLeft,childTop);
+                float hPercent = HORIZONTAL.onViewPositionChanged(contentViewWidth, contentViewHeight, left, top,childLeft,childTop);
                 return vPercent * hPercent;
             }
 
@@ -533,19 +547,19 @@ public enum SliderPosition {
         }
 
         @Override
-        public int onViewReleasedHorizontal(int childWidth, int left, float xvel, int hThreshold, boolean hSwiping, float velocityThreshold) {
-            return HORIZONTAL.onViewReleasedHorizontal(childWidth, left, xvel, hThreshold, hSwiping, velocityThreshold);
+        public int onViewReleasedHorizontal(boolean hWrapped, int maxWidth, int left, float xvel, int hThreshold, boolean hSwiping, float velocityThreshold) {
+            return HORIZONTAL.onViewReleasedHorizontal(hWrapped, maxWidth, left, xvel, hThreshold, hSwiping, velocityThreshold);
         }
 
         @Override
-        public int onViewReleasedVertical(int childHeight, int top, float yvel, int vThreshold, boolean vSwiping, float velocityThreshold) {
-            return VERTICAL.onViewReleasedVertical(childHeight, top, yvel, vThreshold, vSwiping, velocityThreshold);
+        public int onViewReleasedVertical(boolean vWrapped, int maxHeight, int top, float yvel, int vThreshold, boolean vSwiping, float velocityThreshold) {
+            return VERTICAL.onViewReleasedVertical(vWrapped, maxHeight, top, yvel, vThreshold, vSwiping, velocityThreshold);
         }
 
         @Override
-        public boolean canDragFromEdge(float x, float y, float edgeRange, float edgeSize) {
-            boolean canDragHorizontal = HORIZONTAL.canDragFromEdge(x, y, edgeRange, edgeSize);
-            boolean canDragVertical = VERTICAL.canDragFromEdge(x, y, edgeRange, edgeSize);
+        public boolean canDragFromEdge(int childLeft, int childTop, float x, float y, float edgeRange, float edgeSize) {
+            boolean canDragHorizontal = HORIZONTAL.canDragFromEdge(childLeft, childTop, x, y, edgeRange, edgeSize);
+            boolean canDragVertical = VERTICAL.canDragFromEdge(childLeft, childTop, x, y, edgeRange, edgeSize);
             if (canDragHorizontal && edgeRange == width) {
                 setSlidingPosition(HORIZONTAL);
                 return canDragHorizontal;
@@ -603,11 +617,10 @@ public enum SliderPosition {
     private boolean edgeOnly;
 
     /**
-     * @return 当position为如下情况时当前滑动的方向判断
+     * @return 当position为如下情况时, 判断当前的滑动方向
      * @see #ALL
      * @see #HORIZONTAL
      * @see #VERTICAL
-     *
      */
     public SliderPosition getSlidingPosition() {
         return slidingPosition;
@@ -625,16 +638,16 @@ public enum SliderPosition {
         this.edgeOnly = edgeOnly;
     }
 
-    public boolean tryCaptureView(boolean hEdgeTouched, boolean vEdgeTouched) {
+    public boolean tryCaptureView(boolean initialTouched, boolean edgeTouched) {
         return false;
     }
 
 
-    public int clampViewPositionHorizontal(View child, int left, int dx) {
+    public int clampViewPositionHorizontal(int maxWidth, int left, int dx) {
         return 0;
     }
 
-    public int clampViewPositionVertical(View child, int top, int dy) {
+    public int clampViewPositionVertical(int maxHeight, int top, int dy) {
         return 0;
     }
 
@@ -647,16 +660,28 @@ public enum SliderPosition {
     }
 
 
-    public int onViewReleasedHorizontal(int childWidth, int left, float xvel, int hThreshold, boolean hSwiping, float velocityThreshold) {
-        return 0;
+    /**
+     * 获取滑动时松开手后，获取横向坐标状态的判断
+     *
+     * @param hWrapped          sliderChild宽度是否小于slider
+     * @param maxWidth          slider的宽度
+     * @param left              sliderChild的left
+     * @param xvel              x轴的滑动速度
+     * @param hThreshold        横向划开宽度阀值
+     * @param hSwiping          是否达到设定的横向划开速度
+     * @param velocityThreshold 横向划开速度阀值
+     * @return
+     */
+    public int onViewReleasedHorizontal(boolean hWrapped, int maxWidth, int left, float xvel, int hThreshold, boolean hSwiping, float velocityThreshold) {
+        return hWrapped ? left : 0;
     }
 
-    public int onViewReleasedVertical(int childHeight, int top, float yvel, int vThreshold, boolean vSwiping, float velocityThreshold) {
-        return 0;
+    public int onViewReleasedVertical(boolean vWrapped, int maxHeight, int top, float yvel, int vThreshold, boolean vSwiping, float velocityThreshold) {
+        return vWrapped ? top : 0;
     }
 
 
-    public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top) {
+    public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top,int childLeft, int childTop) {
         return 0;
     }
 
@@ -665,7 +690,6 @@ public enum SliderPosition {
     }
 
     /**
-     *
      * @return 获取当前position对应的Flags
      */
     public int getEdgeFlags() {
@@ -681,8 +705,8 @@ public enum SliderPosition {
     }
 
 
-    //是否当前方向可滑动
-    public boolean canDragFromEdge(float x, float y, float edgeRange, float edgeSize) {
+    //当前方向是否可滑动
+    public boolean canDragFromEdge(int childLeft, int childTop, float x, float y, float edgeRange, float edgeSize) {
         return false;
     }
 
@@ -691,7 +715,6 @@ public enum SliderPosition {
     }
 
     /**
-     *
      * @return 当ui为activity时，获取当前方向的动画
      */
     public int[] getActivitySlidingAmins() {
@@ -722,7 +745,7 @@ public enum SliderPosition {
     }
 
     public static float percent(float progress, float range) {
-        return 1f - (Math.abs(progress) / range);
+        return Math.max(Math.min(1, 1f - (Math.abs(progress) / range)), 0);
     }
 
     public static SliderPosition getTouchPosition(int left, int top) {
@@ -733,5 +756,14 @@ public enum SliderPosition {
             position = top > 0 ? TOP : BOTTOM;
         }
         return position;
+    }
+
+    public static SliderPosition getSliderPosition(int edgeFlag) {
+        for (SliderPosition position : SliderPosition.values()) {
+            if (position.getEdgeFlags() == edgeFlag) {
+                return position;
+            }
+        }
+        return LEFT;
     }
 }

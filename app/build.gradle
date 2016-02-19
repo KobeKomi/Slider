@@ -28,4 +28,5 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile project(':slider')
+//    compile 'com.komi.slider:slider:0.1.0'
 }

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="SliderStyle">
+        <attr name="position">
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+            <enum name="top" value="4" />
+            <enum name="bottom" value="8" />
+            <enum name="horizontal" value="3" />
+            <enum name="vertical" value="12" />
+            <enum name="all" value="15" />
+        </attr>
+
+        <attr name="edgeOnly" format="boolean" />
+
+    </declare-styleable>
+</resources>

@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         listView.setAdapter(demoAdapter);
 
-
     }
 
 
