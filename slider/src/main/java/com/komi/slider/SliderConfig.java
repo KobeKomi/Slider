@@ -15,7 +15,7 @@ public class SliderConfig {
     private int colorPrimary = -1;
     private int colorSecondary = -1;
     /**
-     * 滑动触摸区域大小
+     * 滑起触摸区域大小
      */
     private float edgeRange = 0;
 
@@ -172,7 +172,7 @@ public class SliderConfig {
     }
 
     /**
-     * Get the slidr listener set by the user to respond to certain events in the sliding
+     * Get the slider listener set by the user to respond to certain events in the sliding
      * mechanism.
      *
      * @return      the slidr listener
@@ -190,9 +190,7 @@ public class SliderConfig {
     }
 
     /**
-     * Has the user configured slidr to only catch at the edge of the screen ?
-     * true:只有边缘可滑动
-     * false:全屏可滑动
+     * Has the user configured slider to only catch at the edge of the screen ?
      * @return      true if is edge capture only
      */
     public boolean isEdgeOnly() {
@@ -310,6 +308,11 @@ public class SliderConfig {
 
         public Builder position(SliderPosition position){
             config.position = position;
+            return this;
+        }
+
+        public Builder edgeOnly(boolean edgeOnly){
+            config.edgeOnly = edgeOnly;
             return this;
         }
 

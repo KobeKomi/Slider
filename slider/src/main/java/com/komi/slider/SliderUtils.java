@@ -50,7 +50,7 @@ public class SliderUtils {
             return null;
         }
         // Setup the slider panel and attach it to the decor
-        final Slider slider = new Slider(ui.getUiActivity(), null, config);
+        final Slider slider = new Slider(ui.getUiActivity(),config);
         //slider.setId(R.id.slidable_panel);
 
         final SliderListener sliderListener = slider.getConfig().getListener();
@@ -122,7 +122,6 @@ public class SliderUtils {
             }else {
                 slider.addView(rootView);
             }
-            slider.setDecorView(slider.getChildAt(0));
         }
 
         ISlider iSlider = proxyISlider(ui, slider.getConfig(), slider);
@@ -222,7 +221,6 @@ public class SliderUtils {
         root.removeView(decorChild);
         slider.addView(decorChild);
         decorChild.setBackgroundColor(Color.WHITE);
-        slider.setDecorView(decorChild);
         root.addView(slider, 0);
     }
 
@@ -260,7 +258,6 @@ public class SliderUtils {
         content.removeView(container);
         slider.addView(container);
         decorChild.removeView(content);
-        slider.setDecorView(container);
         decorChild.addView(slider, 0);
         container.setBackgroundColor(Color.WHITE);
 
