@@ -4,6 +4,8 @@ import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
 
+import com.komi.slider.position.SliderPosition;
+
 /**
  * This class contains the configuration information for all the options available in
  * this library

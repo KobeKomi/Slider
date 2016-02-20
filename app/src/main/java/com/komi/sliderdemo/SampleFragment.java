@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.komi.slider.ISlider;
 import com.komi.slider.SliderConfig;
 import com.komi.slider.SliderListener;
-import com.komi.slider.SliderPosition;
 import com.komi.slider.SliderUtils;
+import com.komi.slider.position.SliderPosition;
 import com.komi.slider.ui.SliderUi;
 
 import java.util.Random;
@@ -46,9 +46,9 @@ public class SampleFragment extends Fragment implements SliderUi,RadioGroup.OnCh
         radioGroup=(RadioGroup)rootView.findViewById(R.id.fragment_radio_group);
         counterTv=(TextView)rootView.findViewById(R.id.fragment_counter_tv);
         Random random =new Random();
-        int position= random.nextInt(SliderPosition.values().length);
+        int position= random.nextInt(SliderPosition.sPositionChildren.length);
 
-        SliderPosition sliderPosition=SliderPosition.values()[position];
+        SliderPosition sliderPosition= SliderPosition.sPositionChildren[position];
         ((RadioButton)rootView.findViewById(RadioBtnIds[position])).setChecked(true);
 
         radioGroup.setOnCheckedChangeListener(this);
@@ -103,25 +103,25 @@ public class SampleFragment extends Fragment implements SliderUi,RadioGroup.OnCh
         {
             default:
             case R.id.fragment_rbt_left:
-                position=SliderPosition.LEFT;
+                position= SliderPosition.LEFT;
                 break;
             case R.id.fragment_rbt_right:
-                position=SliderPosition.RIGHT;
+                position= SliderPosition.RIGHT;
                 break;
             case R.id.fragment_rbt_bottom:
-                position=SliderPosition.BOTTOM;
+                position= SliderPosition.BOTTOM;
                 break;
             case R.id.fragment_rbt_top:
-                position=SliderPosition.TOP;
+                position= SliderPosition.TOP;
                 break;
             case R.id.fragment_rbt_horizontal:
-                position=SliderPosition.HORIZONTAL;
+                position= SliderPosition.HORIZONTAL;
                 break;
             case R.id.fragment_rbt_vertical:
-                position=SliderPosition.VERTICAL;
+                position= SliderPosition.VERTICAL;
                 break;
             case R.id.fragment_rbt_all:
-                position=SliderPosition.ALL;
+                position= SliderPosition.ALL;
                 break;
         }
         mConfig.setPosition(position);

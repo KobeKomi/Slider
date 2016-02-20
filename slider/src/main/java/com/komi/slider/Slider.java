@@ -14,11 +14,12 @@ import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewGroupCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
+import com.komi.slider.position.SliderPosition;
 
 /**
  * Created by Komi on 2016-01-21.
@@ -214,7 +215,7 @@ public class Slider extends FrameLayout {
         int width=Math.min(mSlideChild.getWidth(),getWidth());
         int height=Math.min(mSlideChild.getHeight(),getHeight());
 
-        float size = mEdgePosition.getViewSize(x, y, width, height);
+        float size = mEdgePosition.getViewSize(x, y, width, height,slideChildLeft,slideChildTop);
         mConfig.setEdgeRange(size);
 
         return mEdgePosition.canDragFromEdge(slideChildLeft,slideChildTop,x, y, size, mConfig.getEdgeSize());
@@ -236,11 +237,9 @@ public class Slider extends FrameLayout {
             return edgeCase;
         }
 
-        //返回mSlideChild在横向上能滑动的最大距离
+        //返回mSlideChild在横向上能滑动的最大宽度
         @Override
         public int getViewHorizontalDragRange(View child) {
-
-           // Log.i("KOMI","---range:"+(getWidth()-slideChildLeft));
             return mEdgePosition.getViewHorizontalDragRange(getWidth()-slideChildLeft);
         }
 
@@ -287,26 +286,23 @@ public class Slider extends FrameLayout {
             int endLeft = mEdgePosition.onViewReleasedHorizontal(hWrapped,maxWidth, left, slideChildLeft,xvel, hThreshold, hOverVelocityThreshold, velocityThreshold);
             int endTop  = mEdgePosition.onViewReleasedVertical(vWrapped,maxHeight, top, slideChildTop,yvel, vThreshold, vOverVelocityThreshold, velocityThreshold);
 
-            Log.i("KOMI","--settleLeft:"+endLeft+"------settleTop:"+endTop);
-            Log.i("KOMI","--left:"+left+"--------childLeft:"+releasedChild.getLeft()+"-----slideChildLeft:"+slideChildLeft);
-
             mDragHelper.settleCapturedViewAt(endLeft, endTop);
             invalidate();
 
         }
 
 
-        //对mSlideChild移动时的边界进行控制
+        //对mSlideChild移动时的边界范围进行控制
         @Override
         public int clampViewPositionHorizontal(View child, int left, int dx) {
             boolean hWrapped=isWrappedViewHorizontal(child);
-            return mEdgePosition.clampViewPositionHorizontal(getWidth()-slideChildLeft, left,slideChildLeft,hWrapped);
+            return mEdgePosition.clampViewPositionHorizontal(getWidth(), left,slideChildLeft,hWrapped);
         }
 
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
             boolean vWrapped=isWrappedViewVertical(child);
-            return mEdgePosition.clampViewPositionVertical(getHeight()-slideChildTop, top,slideChildTop,vWrapped);
+            return mEdgePosition.clampViewPositionVertical(getHeight(), top,slideChildTop,vWrapped);
         }
 
         //状态发生变化时回调（IDLE,DRAGGING,SETTING[自动滚动时]）
@@ -359,7 +355,7 @@ public class Slider extends FrameLayout {
         final int baseAlpha = (mConfig.getScrimColor() & 0xff000000) >>> 24;
         final int alpha = (int) (baseAlpha * scrimAlpha);
         final int color = alpha << 24 | (mConfig.getScrimColor() & 0xffffff);
-        mEdgePosition.setScrimRect(child, scrimRect);
+        mEdgePosition.setScrimRect(child,slideChildLeft,slideChildTop,scrimRect);
         canvas.clipRect(scrimRect, Region.Op.DIFFERENCE);
         canvas.drawColor(color);
     }

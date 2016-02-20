@@ -8,16 +8,6 @@ package com.komi.slider;
  */
 public interface SliderListener {
 
-    /**
-     * This is called when the {@link ViewDragHelper} calls it's
-     * state change callback.
-     *
-     * @see ViewDragHelper#STATE_IDLE
-     * @see ViewDragHelper#STATE_DRAGGING
-     * @see ViewDragHelper#STATE_SETTLING
-     *
-     * @param state     the {@link ViewDragHelper} state
-     */
     void onSlideStateChanged(int state);
 
     void onSlideChange(float percent);

@@ -1,0 +1,101 @@
+package com.komi.slider.position;
+
+import android.graphics.Rect;
+import android.view.View;
+
+import com.komi.slider.R;
+import com.komi.slider.ViewDragHelper;
+
+/**
+ * Created by Komi on 2016/2/20.
+ */
+public class LeftPosition extends SliderPosition {
+    private static LeftPosition ourInstance = new LeftPosition();
+
+    public static LeftPosition getInstance() {
+        return ourInstance;
+    }
+
+    private LeftPosition() {
+    }
+
+
+    @Override
+    public boolean tryCaptureView(boolean initialTouched, boolean edgeTouched) {
+        return initialTouched && edgeTouched;
+    }
+
+    @Override
+    public int clampViewPositionHorizontal(int maxWidth, int left, int childLeft, boolean hWrapped) {
+        return clamp(left, childLeft, maxWidth);
+    }
+
+    @Override
+    public int getEdgeFlags() {
+        return ViewDragHelper.EDGE_LEFT;
+    }
+
+    @Override
+    public int getViewHorizontalDragRange(int contentViewWidth) {
+        return contentViewWidth;
+    }
+
+    @Override
+    public float onViewPositionChanged(int contentViewWidth, int contentViewHeight, int left, int top) {
+        return percent((float) left, (float) contentViewWidth);
+    }
+
+    @Override
+    public boolean onViewDragStateChanged(int contentViewLeft, int contentViewTop) {
+        return contentViewLeft == 0;
+    }
+
+    @Override
+    public int onViewReleasedHorizontal(boolean hWrapped, int maxWidth, int left, int childLeft, float xvel, int hThreshold, boolean hOverVelocityThreshold, float velocityThreshold) {
+        int endLeft = childLeft;
+        int currentLeft = left - childLeft;
+        if (xvel > 0) {
+            if (Math.abs(xvel) > velocityThreshold && !hOverVelocityThreshold) {
+                endLeft = maxWidth;
+            } else if (currentLeft > hThreshold) {
+                endLeft = maxWidth;
+            }
+        } else if (xvel == 0 && currentLeft > hThreshold) {
+            endLeft = maxWidth;
+        }
+
+
+        return endLeft;
+    }
+
+
+    @Override
+    public int getViewSize(float x, float y, int width, int height,int childLeft,int childTop) {
+        return getViewWidthOrHeight(width);
+    }
+
+    @Override
+    public boolean canDragFromEdge(int childLeft, int childTop, float x, float y, float edgeRange, float edgeSize) {
+        return (childLeft == 0) ? (x < edgeSize) : (x > childLeft) && (x < childLeft + edgeSize);
+    }
+
+    @Override
+    public void setScrimRect(View child, int childLeft, int childTop, Rect rect) {
+        rect.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
+    }
+
+    @Override
+    public int[] getActivitySlidingAmins() {
+        return new int[]{R.anim.activity_left_in, R.anim.activity_left_out};
+    }
+
+    @Override
+    public Rect getSlidingInRect(View decorView) {
+        return new Rect(decorView.getWidth(), decorView.getTop(), decorView.getLeft(), decorView.getTop());
+    }
+
+    @Override
+    public Rect getSlidingOutRect(View decorView) {
+        return new Rect(decorView.getLeft(), decorView.getTop(), decorView.getWidth(), decorView.getTop());
+    }
+}

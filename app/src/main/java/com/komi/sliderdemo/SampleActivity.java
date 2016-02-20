@@ -13,8 +13,8 @@ import android.widget.Switch;
 import com.komi.slider.ISlider;
 import com.komi.slider.SliderConfig;
 import com.komi.slider.SliderListener;
-import com.komi.slider.SliderPosition;
 import com.komi.slider.SliderUtils;
+import com.komi.slider.position.SliderPosition;
 import com.komi.slider.ui.SliderUi;
 
 import java.util.Random;
@@ -38,9 +38,9 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
 
         radioGroup = (RadioGroup) findViewById(R.id.radio_group);
         Random random = new Random();
-        int position = random.nextInt(SliderPosition.values().length);
+        int position = random.nextInt(SliderPosition.sPositionChildren.length);
 
-        SliderPosition sliderPosition = SliderPosition.values()[position];
+        SliderPosition sliderPosition = SliderPosition.sPositionChildren[position];
         ((RadioButton) findViewById(RadioBtnIds[position])).setChecked(true);
 
         radioGroup.setOnCheckedChangeListener(this);
