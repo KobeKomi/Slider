@@ -11,7 +11,7 @@ import com.komi.slider.SliderUtils;
 /**
  * Created by Komi on 2016-01-27.
  */
-public class SliderActivity extends Activity implements SliderUi {
+public class SliderActivity extends Activity{
 
     protected ISlider iSlider;
 
@@ -35,7 +35,7 @@ public class SliderActivity extends Activity implements SliderUi {
 
     private void attachSlideUi()
     {
-        iSlider= SliderUtils.attachUi(this,null);
+        iSlider= SliderUtils.attachActivity(this,null);
     }
 
     @Override
@@ -44,30 +44,6 @@ public class SliderActivity extends Activity implements SliderUi {
         iSlider.slideExit();
     }
 
-    @Override
-    public final Activity getUiActivity() {
-        return this;
-    }
-
-    @Override
-    public final boolean isActivityUi() {
-        return true;
-    }
-
-    @Override
-    public boolean isFinishingUi() {
-        return isFinishing();
-    }
-
-    @Override
-    public  void finishUi() {
-        finish();
-    }
-
-    @Override
-    public View getRootView() {
-        return getWindow().getDecorView();
-    }
 
 
 

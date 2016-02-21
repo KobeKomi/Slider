@@ -110,10 +110,10 @@ public class AllPosition extends SliderPosition {
 
     @Override
     public int getViewSize(float x, float y, int width, int height,int childLeft,int childTop) {
-        float xDistance = Math.min(Math.abs(x - width), Math.abs(x - childLeft));
-        float yDistance = Math.min(Math.abs(y - height), Math.abs(y - childTop));
         this.width = width;
         this.height = height;
+        float xDistance = Math.min(Math.abs(x - width), Math.abs(x - childLeft));
+        float yDistance = Math.min(Math.abs(y - height), Math.abs(y - childTop));
         int size = xDistance < yDistance ? width : height;
         return size;
 

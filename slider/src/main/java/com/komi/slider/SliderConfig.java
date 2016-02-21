@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.annotation.ColorInt;
 import android.support.annotation.FloatRange;
 
+import com.komi.slider.mode.SlidableMode;
 import com.komi.slider.position.SliderPosition;
 
 /**
@@ -14,42 +15,61 @@ import com.komi.slider.position.SliderPosition;
  */
 public class SliderConfig {
 
-    private int colorPrimary = -1;
-    private int colorSecondary = -1;
+    public static final int   DEFAULT_PRIMARY_COLOR = -1;
+    public static final int   DEFAULT_SECONDARY_COLOR = -1;
+    public static final float DEFAULT_EDGE_SIZE=0;
+    public static final float DEFAULT_EDGE_PERCENT=0.18f;
+    public static final float DEFAULT_SENSITIVITY=1f;
+    public static final int   DEFAULT_SCRIM_COLOR=Color.BLACK;
+    public static final float DEFAULT_SCRIM_START_ALPHA=0.8f;
+    public static final float DEFAULT_SCRIM_END_ALPHA=0f;
+    public static final float DEFAULT_VELOCITY_THRESHOLD=5f;
+    public static final float DEFAULT_DISTANCE_THRESHOLD_PERCENT=0.25f;
+
     /**
-     * 滑起触摸区域大小
+     * 状态栏初始颜色
      */
-    private float edgeRange = 0;
+    private int colorPrimary = DEFAULT_PRIMARY_COLOR;
+
+    /**
+     * 状态栏目的颜色
+     */
+    private int colorSecondary = DEFAULT_SECONDARY_COLOR;
+
+    /**
+     * 可滑起触摸区域大小
+     */
+    private float edgeSize = DEFAULT_EDGE_SIZE;
 
     /**
      * 可滑动区域百分比
      */
-    private float edgePercent = 0.18f;
+    private float edgePercent = DEFAULT_EDGE_PERCENT;
 
     /**
      * 滑动触摸灵敏度
      */
-    private float sensitivity = 1f;
+    private float sensitivity = DEFAULT_SENSITIVITY;
     /**
      * 拉开背景颜色
      */
-    private int scrimColor = Color.BLACK;
+    private int scrimColor = DEFAULT_SCRIM_COLOR;
     /**
      * 开始拉开背景的颜色透明度
      */
-    private float scrimStartAlpha = 0.8f;
+    private float scrimStartAlpha = DEFAULT_SCRIM_START_ALPHA;
     /**
      * 结束拉开背景的颜色透明度
      */
-    private float scrimEndAlpha = 0f;
+    private float scrimEndAlpha = DEFAULT_SCRIM_END_ALPHA;
     /**
      * 速度阈值
      */
-    private float velocityThreshold = 5f;
+    private float velocityThreshold = DEFAULT_VELOCITY_THRESHOLD;
     /**
      * 拉开距离比例阈值
      */
-    private float distanceThresholdPercent = 0.25f;
+    private float distanceThresholdPercent = DEFAULT_DISTANCE_THRESHOLD_PERCENT;
     /**
      * 是否边缘可滑动，true:边缘可滑动，false:全屏可滑动
      */
@@ -59,11 +79,17 @@ public class SliderConfig {
      * 是否滑动进入页面
      */
     private boolean slideEnter =true;
+
+    /**
+     * 是否滑动退出页面
+     */
     private boolean slideExit =true;
 
     private SliderPosition position = SliderPosition.LEFT;
+
     private SliderListener listener;
 
+    private SlidableMode slidableMode = SlidableMode.SINGLE;
     /**
      * Hidden Constructor
      * Use the builder pattern
@@ -139,8 +165,8 @@ public class SliderConfig {
      *
      * @return      the touch area size
      */
-    public float getEdgeRange(){
-        return edgeRange ;
+    public float getEdgeSize(){
+        return edgeSize;
     }
 
     /**
@@ -210,17 +236,16 @@ public class SliderConfig {
     }
 
 
-    public float getEdgeSize()
-    {
-        return edgePercent*edgeRange;
-    }
-
     public boolean isSlideEnter() {
         return slideEnter;
     }
 
     public boolean isSlideExit() {
         return slideExit;
+    }
+
+    public SlidableMode getSlidableMode() {
+        return slidableMode;
     }
 
     /***********************************************************************************************
@@ -237,8 +262,8 @@ public class SliderConfig {
         this.colorSecondary = colorSecondary;
     }
 
-    public void setEdgeRange(float edgeRange) {
-        this.edgeRange = edgeRange;
+    public void setEdgeSize(float range) {
+        this.edgeSize = range*edgePercent;
     }
 
     public void setEdgePercent(@FloatRange(from = 0f, to = 1f) float edgePercent) {
@@ -286,6 +311,10 @@ public class SliderConfig {
         this.slideExit = slideExit;
     }
 
+    public void setSlidableMode(SlidableMode slidableMode) {
+        this.slidableMode = slidableMode;
+    }
+
     /**
      * The Builder for this configuration class. This is the only way to create a
      * configuration
@@ -318,10 +347,6 @@ public class SliderConfig {
             return this;
         }
 
-        public Builder edgeRange(float range){
-            config.edgeRange = range;
-            return this;
-        }
 
         public Builder sensitivity(float sensitivity){
             config.sensitivity = sensitivity;
@@ -360,6 +385,10 @@ public class SliderConfig {
 
         public Builder edgePercent(@FloatRange(from = 0f, to = 1f) float edgeSize){
             config.edgePercent = edgeSize;
+            return this;
+        }
+        public Builder edgeSize(float edgeSize){
+            config.edgeSize = edgeSize;
             return this;
         }
 

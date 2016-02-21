@@ -55,7 +55,7 @@ public class HorizontalPosition extends SliderPosition {
         int leftReleased = LEFT.onViewReleasedHorizontal(hWrapped, maxWidth, left, childLeft, xvel, hThreshold, hOverVelocityThreshold, velocityThreshold);
         int rightReleased = RIGHT.onViewReleasedHorizontal(hWrapped, maxWidth, left, childLeft, xvel, hThreshold, hOverVelocityThreshold, velocityThreshold);
         boolean isRightReleased = rightReleased != childLeft;
-        return (hWrapped&&isRightReleased)?rightReleased:leftReleased;
+        return isRightReleased?rightReleased:leftReleased;
     }
 
     @Override

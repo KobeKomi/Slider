@@ -10,8 +10,17 @@
             <enum name="vertical" value="12" />
             <enum name="all" value="15" />
         </attr>
-
         <attr name="edgeOnly" format="boolean" />
-
+        <attr name="edgePercent" format="float" />
+        <attr name="scrimColor" format="color|reference" />
+        <attr name="scrimStartAlpha" format="float" />
+        <attr name="scrimEndAlpha" format="float" />
+        <attr name="velocityThreshold" format="float" />
+        <attr name="distanceThresholdPercent" format="float" />
+        <attr name="slideEnter" format="boolean" />
+        <attr name="slideExit" format="boolean" />
+        <attr name="sensitivity" format="float" />
+        <attr name="primaryColor" format="color|reference" />
+        <attr name="secondaryColor" format="color|reference" />
     </declare-styleable>
 </resources>

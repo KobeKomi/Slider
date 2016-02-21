@@ -56,10 +56,10 @@ public abstract class SliderPosition {
 
     /**
      * @param maxWidth  宽度可移动到的最大值
-     * @param left      sliderChild移动时的left
-     * @param childLeft sliderChild初始状态的left
-     * @param hWrapped  sliderChild的宽度是否被包裹在slider
-     * @return sliderChild可移动到的宽度值
+     * @param left      slidableChild移动时的left
+     * @param childLeft slidableChild初始状态的left
+     * @param hWrapped  slidableChild的宽度是否被包裹在slider
+     * @return slidableChild可移动到的宽度值
      */
     public int clampViewPositionHorizontal(int maxWidth, int left, int childLeft, boolean hWrapped) {
         return childLeft;
@@ -67,10 +67,10 @@ public abstract class SliderPosition {
 
     /**
      * @param maxHeight 高度可移动最大值
-     * @param top       sliderChild移动时的top
-     * @param childTop  sliderChild初始状态的top
-     * @param vWrapped  sliderChild的高度是否被包裹在slider
-     * @return sliderChild可移动到的高度值
+     * @param top       slidableChild移动时的top
+     * @param childTop  slidableChild初始状态的top
+     * @param vWrapped  slidableChild的高度是否被包裹在slider
+     * @return slidableChild可移动到的高度值
      */
     public int clampViewPositionVertical(int maxHeight, int top, int childTop, boolean vWrapped) {
         return childTop;
@@ -100,15 +100,15 @@ public abstract class SliderPosition {
     /**
      * 获取滑动松开手后，获取横向坐标状态的判断
      *
-     * @param hWrapped               sliderChild的宽度是否被包裹在slider
+     * @param hWrapped               slidableChild的宽度是否被包裹在slider
      * @param maxWidth               slider的宽度
-     * @param left                   sliderChild松手时的left
-     * @param childLeft              sliderChild初始状态的left
+     * @param left                   slidableChild松手时的left
+     * @param childLeft              slidableChild初始状态的left
      * @param xvel                   x轴的滑动速度
      * @param hThreshold             横向划开的宽度的阀值
      * @param hOverVelocityThreshold 是否达到设定的横向划开速度
      * @param velocityThreshold      横向划开速度阀值
-     * @return 松开手后sliderChild要移动到终点的Left位置
+     * @return 松开手后slidableChild要移动到终点的Left位置
      */
     public int onViewReleasedHorizontal(boolean hWrapped, int maxWidth, int left, int childLeft, float xvel, int hThreshold, boolean hOverVelocityThreshold, float velocityThreshold) {
         return childLeft;
@@ -117,15 +117,15 @@ public abstract class SliderPosition {
     /**
      * 获取滑动松开手后，获取纵向坐标状态的判断
      *
-     * @param vWrapped               sliderChild的高度是否被包裹在slider
+     * @param vWrapped               slidableChild的高度是否被包裹在slider
      * @param maxHeight              slider的宽度
-     * @param top                    sliderChild松手时的top
-     * @param childTop               sliderChild初始状态的top
+     * @param top                    slidableChild松手时的top
+     * @param childTop               slidableChild初始状态的top
      * @param yvel                   y轴的滑动速度
      * @param vThreshold             纵向划开的高度的阀值
      * @param vOverVelocityThreshold 是否达到设定的纵向划开速度
      * @param velocityThreshold      纵向划开速度阀值
-     * @return 松开手后sliderChild要移动到终点的top位置
+     * @return 松开手后slidableChild要移动到终点的top位置
      */
     public int onViewReleasedVertical(boolean vWrapped, int maxHeight, int top, int childTop, float yvel, int vThreshold, boolean vOverVelocityThreshold, float velocityThreshold) {
         return childTop;
@@ -158,7 +158,7 @@ public abstract class SliderPosition {
      * @param y      y落点坐标值
      * @param width  可触摸宽度最大值
      * @param height 可触摸高度最大值
-     * @return 设定的可触摸划起sliderChild长或宽的大小
+     * @return 设定的可触摸划起slidableChild长或宽的大小
      * @see SliderPosition
      */
     public int getViewSize(float x, float y, int width, int height, int childLeft, int childTop) {
@@ -167,12 +167,12 @@ public abstract class SliderPosition {
 
 
     /**
-     * @param childLeft sliderChild的初始left
-     * @param childTop  sliderChild的初始top
+     * @param childLeft slidableChild的初始left
+     * @param childTop  slidableChild的初始top
      * @param x         当前触摸点的x坐标
      * @param y         当前触摸点的x坐标
-     * @param edgeRange 可触摸划起sliderChild的范围
-     * @param edgeSize  设定的可触摸划起sliderChild长或宽的大小
+     * @param edgeRange 可触摸划起slidableChild的范围
+     * @param edgeSize  设定的可触摸划起slidableChild长或宽的大小
      * @return 当前方向是否可滑动
      */
     public boolean canDragFromEdge(int childLeft, int childTop, float x, float y, float edgeRange, float edgeSize) {
@@ -183,9 +183,9 @@ public abstract class SliderPosition {
     /**
      * 设置背景阴影区域
      *
-     * @param child     sliderChild
-     * @param childLeft sliderChild初始的Left
-     * @param childTop  sliderChild初始的Top
+     * @param child     slidableChild
+     * @param childLeft slidableChild初始的Left
+     * @param childTop  slidableChild初始的Top
      * @param rect      阴影区域
      */
     public void setScrimRect(View child, int childLeft, int childTop, Rect rect) {
@@ -200,9 +200,9 @@ public abstract class SliderPosition {
 
 
     /**
-     * 加入sliderChild时要达到的坐标
+     * 加入slidableChild时要达到的坐标
      *
-     * @param decorView sliderChild
+     * @param decorView slidableChild
      * @return 目标坐标值
      */
     public Rect getSlidingInRect(View decorView) {
@@ -210,9 +210,9 @@ public abstract class SliderPosition {
     }
 
     /**
-     * 移除sliderChild时要达到的坐标
+     * 移除slidableChild时要达到的坐标
      *
-     * @param decorView sliderChild
+     * @param decorView slidableChild
      * @return 目标坐标值
      */
     public Rect getSlidingOutRect(View decorView) {

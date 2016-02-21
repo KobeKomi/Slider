@@ -1,6 +1,5 @@
 package com.komi.sliderdemo;
 
-import android.app.Activity;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -17,7 +16,6 @@ import com.komi.slider.SliderConfig;
 import com.komi.slider.SliderListener;
 import com.komi.slider.SliderUtils;
 import com.komi.slider.position.SliderPosition;
-import com.komi.slider.ui.SliderUi;
 
 import java.util.Random;
 
@@ -25,7 +23,7 @@ import java.util.Random;
 /**
  * Created by Komi on 2016-01-29.
  */
-public class SampleFragment extends Fragment implements SliderUi,RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,FragmentCloseListener{
+public class SampleFragment extends Fragment implements RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,FragmentCloseListener{
 
     private SliderConfig mConfig;
     private ISlider iSlider;
@@ -61,7 +59,7 @@ public class SampleFragment extends Fragment implements SliderUi,RadioGroup.OnCh
                 .edge(false)
                 .build();
 
-        iSlider = SliderUtils.attachUi(this, mConfig);
+        iSlider = SliderUtils.attachFragment(this, rootView,mConfig);
         edgeSwitch = (Switch)rootView.findViewById(R.id.fragment_swich);
         edgeSwitch.setOnCheckedChangeListener(this);
         edgeSwitch.setChecked(mConfig.isEdgeOnly());
@@ -138,31 +136,6 @@ public class SampleFragment extends Fragment implements SliderUi,RadioGroup.OnCh
                 iSlider.setConfig(mConfig);
                 break;
         }
-    }
-
-    @Override
-    public Activity getUiActivity() {
-        return getActivity();
-    }
-
-    @Override
-    public boolean isActivityUi() {
-        return false;
-    }
-
-    @Override
-    public boolean isFinishingUi() {
-        return isRemoving();
-    }
-
-    @Override
-    public void finishUi() {
-        getUiActivity().getFragmentManager().beginTransaction().remove(this).commit();
-    }
-
-    @Override
-    public View getRootView() {
-        return rootView;
     }
 
     @Override

@@ -54,7 +54,7 @@ public class VerticalPosition extends SliderPosition {
         int topReleased = TOP.onViewReleasedVertical(vWrapped, maxHeight, top, childTop, yvel, vThreshold, vOverVelocityThreshold, velocityThreshold);
         int bottomReleased = BOTTOM.onViewReleasedVertical(vWrapped, maxHeight, top, childTop, yvel, vThreshold, vOverVelocityThreshold, velocityThreshold);
         boolean isBottomReleased = bottomReleased != childTop;
-        return (vWrapped&&isBottomReleased)?bottomReleased:topReleased;
+        return isBottomReleased?bottomReleased:topReleased;
     }
 
     @Override

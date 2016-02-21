@@ -19,7 +19,7 @@ public class AdapterFragment extends Fragment implements FragmentCloseListener{
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         rootView=inflater.inflate(R.layout.fragment_adapter, container, false);
-        iSlider = SliderUtils.attachFragment(this, null,rootView);
+        iSlider = SliderUtils.attachFragment(this,rootView, null);
         return iSlider.getSliderView();
     }
 

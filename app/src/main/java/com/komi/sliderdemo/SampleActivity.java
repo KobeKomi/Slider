@@ -1,6 +1,5 @@
 package com.komi.sliderdemo;
 
-import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -15,11 +14,10 @@ import com.komi.slider.SliderConfig;
 import com.komi.slider.SliderListener;
 import com.komi.slider.SliderUtils;
 import com.komi.slider.position.SliderPosition;
-import com.komi.slider.ui.SliderUi;
 
 import java.util.Random;
 
-public class SampleActivity extends AppCompatActivity implements View.OnClickListener, SliderUi, RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
+public class SampleActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
 
     private SliderConfig mConfig;
     private Switch edgeSwitch;
@@ -56,7 +54,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 .listener(listener)
                 .build();
 
-        iSlider = SliderUtils.attachUi(this, mConfig);
+        iSlider = SliderUtils.attachActivity(this, mConfig);
 
         edgeSwitch = (Switch) findViewById(R.id.swich);
         edgeSwitch.setOnCheckedChangeListener(this);
@@ -134,31 +132,6 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 iSlider.setConfig(mConfig);
                 break;
         }
-    }
-
-    @Override
-    public Activity getUiActivity() {
-        return this;
-    }
-
-    @Override
-    public boolean isActivityUi() {
-        return true;
-    }
-
-    @Override
-    public boolean isFinishingUi() {
-        return isFinishing();
-    }
-
-    @Override
-    public void finishUi() {
-        finish();
-    }
-
-    @Override
-    public View getRootView() {
-        return getWindow().getDecorView();
     }
 
 
