@@ -1,5 +1,6 @@
 package com.komi.slider.mode;
 
+import android.support.v4.util.SparseArrayCompat;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -9,7 +10,9 @@ import java.util.ArrayList;
  */
 public class AllMode extends SlidableMode {
     private static AllMode ourInstance = new AllMode();
+
     protected ArrayList<View> slidableChildrenList=new ArrayList<>();
+    private SparseArrayCompat<View> fastSlidingChildrenArray = new SparseArrayCompat<>();
 
     public static AllMode getInstance() {
         return ourInstance;
@@ -21,7 +24,22 @@ public class AllMode extends SlidableMode {
 
     @Override
     public View getSlidableChild(View touchChild) {
-        View slidableChild=touchChild!=null?touchChild:slidableChildrenList.get(slidableChildrenList.size()-1);
+
+        View slidableChild;
+        switch (getSort())
+        {
+            case POSITIVE:
+                slidableChild=slidableChildrenList.get(0);
+                break;
+            case REVERSE:
+                slidableChild=slidableChildrenList.get(slidableChildrenList.size()-1);
+                break;
+            default:
+            case TOUCH:
+                slidableChild=touchChild;
+                break;
+
+        }
         return slidableChild;
     }
 
@@ -33,5 +51,15 @@ public class AllMode extends SlidableMode {
     @Override
     public void removeSlidableChild(View child) {
         slidableChildrenList.remove(child);
+    }
+
+    @Override
+    public void addFastSlidingChild(View child) {
+        fastSlidingChildrenArray.put(child.hashCode(),child);
+    }
+
+    @Override
+    public SparseArrayCompat<View> getFastSlidingChildren() {
+        return fastSlidingChildrenArray;
     }
 }

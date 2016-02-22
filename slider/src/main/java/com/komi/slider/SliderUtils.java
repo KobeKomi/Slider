@@ -62,9 +62,9 @@ public class SliderUtils {
             }
 
             @Override
-            public void onSlideClosed() {
+            public void onSlideClosed(View slidableChild) {
                 if (sliderListener != null) {
-                    sliderListener.onSlideClosed();
+                    sliderListener.onSlideClosed(slidableChild);
                 }
 
                 if (!ui.isFinishingUi()) {

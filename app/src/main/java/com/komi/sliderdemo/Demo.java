@@ -20,7 +20,7 @@ public enum Demo {
         }
     },
 
-    ADAPTER_ACTIVITY(AdapterActivity.class.getName(), R.string.adapter_activity) {
+    XML_ACTIVITY(XmlActivity.class.getName(), R.string.xml_activity) {
         @Override
         public boolean isActivity() {
             return true;

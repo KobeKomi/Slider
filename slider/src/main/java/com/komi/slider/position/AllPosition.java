@@ -77,8 +77,8 @@ public class AllPosition extends SliderPosition {
     }
 
     @Override
-    public boolean onViewDragStateChanged(int contentViewLeft, int contentViewTop) {
-        return VERTICAL.onViewDragStateChanged(contentViewLeft, contentViewTop) && HORIZONTAL.onViewDragStateChanged(contentViewLeft, contentViewTop);
+    public boolean onViewDragStateChanged(int left, int top,int childLeft,int childTop) {
+        return  VERTICAL.onViewDragStateChanged(left,top,childLeft,childTop)&&HORIZONTAL.onViewDragStateChanged(left,top,childLeft,childTop);
     }
 
     @Override

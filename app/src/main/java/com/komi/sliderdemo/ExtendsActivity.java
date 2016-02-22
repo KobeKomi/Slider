@@ -10,6 +10,5 @@ public class ExtendsActivity extends SliderActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_extends);
-
     }
 }

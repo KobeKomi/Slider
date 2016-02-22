@@ -89,7 +89,9 @@ public class SliderConfig {
 
     private SliderListener listener;
 
-    private SlidableMode slidableMode = SlidableMode.SINGLE;
+    private SlidableMode slidableMode = SlidableMode.ALL;
+
+
     /**
      * Hidden Constructor
      * Use the builder pattern
@@ -248,6 +250,10 @@ public class SliderConfig {
         return slidableMode;
     }
 
+    public SlidableMode.Sort getSlidableSort() {
+        return slidableMode.getSort();
+    }
+
     /***********************************************************************************************
      *
      * Setters
@@ -313,6 +319,10 @@ public class SliderConfig {
 
     public void setSlidableMode(SlidableMode slidableMode) {
         this.slidableMode = slidableMode;
+    }
+
+    public void setSlidableSort(SlidableMode.Sort slidableSort) {
+        this.slidableMode.setSort(slidableSort);
     }
 
     /**

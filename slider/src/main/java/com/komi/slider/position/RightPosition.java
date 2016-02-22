@@ -46,8 +46,8 @@ public class RightPosition extends SliderPosition {
     }
 
     @Override
-    public boolean onViewDragStateChanged(int contentViewLeft, int contentViewTop) {
-        return LEFT.onViewDragStateChanged(contentViewLeft, contentViewTop);
+    public boolean onViewDragStateChanged(int left, int top,int childLeft,int childTop) {
+        return LEFT.onViewDragStateChanged(left,top,childLeft, childTop);
     }
 
     @Override

@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".MainActivity">
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -25,7 +26,11 @@
         <activity
             android:name=".ExtendsActivity"
             android:theme="@style/ActivityTheme" />
-        <activity android:name=".AdapterActivity" />
+        <activity android:name=".XmlActivity" />
+        <activity
+            android:name=".XmllActivity"
+            android:label="@string/title_activity_xmll"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

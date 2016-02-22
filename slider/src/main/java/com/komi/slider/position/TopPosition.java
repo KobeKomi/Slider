@@ -45,8 +45,8 @@ public class TopPosition extends SliderPosition {
     }
 
     @Override
-    public boolean onViewDragStateChanged(int contentViewLeft, int contentViewTop) {
-        return contentViewTop == 0;
+    public boolean onViewDragStateChanged(int left, int top,int childLeft,int childTop) {
+        return top == childTop;
     }
 
     @Override

@@ -155,7 +155,7 @@ public class SliderActivityAdapter extends SliderUi {
                         listener.onSlideOpened();
                     }
                     if (currentValue == 0 && !in) {
-                        listener.onSlideClosed();
+                        listener.onSlideClosed(getRootView());
                     }
                 }
 

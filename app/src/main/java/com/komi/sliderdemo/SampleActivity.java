@@ -48,8 +48,6 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 .primaryColor(primaryColor)
                 .secondaryColor(Color.TRANSPARENT)
                 .position(sliderPosition)
-                .velocityThreshold(2400)
-                .distanceThreshold(.25f)
                 .edge(false)
                 .listener(listener)
                 .build();
@@ -80,7 +78,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         @Override
-        public void onSlideClosed() {
+        public void onSlideClosed(View slidableChild) {
 
         }
     };

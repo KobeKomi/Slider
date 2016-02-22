@@ -3,7 +3,7 @@
 
     <string name="sample_activity">sample activity</string>
     <string name="extend_activity">extends activity</string>
-    <string name="adapter_activity">adapter activity</string>
+    <string name="xml_activity">xml activity</string>
     <string name="sample_fragment">sample fragment</string>
     <string name="extend_fragment">extends fragment</string>
     <string name="adapter_fragment">adapter fragment</string>
@@ -17,5 +17,10 @@
     <string name="position_all">All</string>
     <string name="title_activity_fragment">Settings</string>
     <string name="edge_only">edgeOnly:</string>
-
+    <string name="title_activity_basic">BasicActivity</string>
+    <string name="text_github">GITHUB</string>
+    <string name="github_url"><![CDATA[https://github.com/KobeKomi/Slider]]></string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="title_activity_xmll">XmllActivity</string>
 </resources>

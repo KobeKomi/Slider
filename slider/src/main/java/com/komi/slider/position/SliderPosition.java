@@ -136,7 +136,7 @@ public abstract class SliderPosition {
         return 0;
     }
 
-    public boolean onViewDragStateChanged(int contentViewLeft, int contentViewTop) {
+    public boolean onViewDragStateChanged(int left, int top,int childLeft,int childTop) {
         return false;
     }
 

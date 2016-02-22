@@ -14,6 +14,7 @@ import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewGroupCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +49,7 @@ public class Slider extends FrameLayout {
     private SliderConfig mConfig;
     private boolean slideBegin;
 
+    private boolean fastSlidingTag;
 
     public Slider(Context context) {
         super(context);
@@ -238,6 +240,7 @@ public class Slider extends FrameLayout {
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
         final boolean drawContent = child == mSlidableChild;
         boolean ret = super.drawChild(canvas, child, drawingTime);
+
         if (scrimAlpha > 0 && drawContent
                 && mDragHelper.getViewDragState() != ViewDragHelper.STATE_IDLE) {
             drawScrim(canvas, child);
@@ -261,7 +264,6 @@ public class Slider extends FrameLayout {
         canvas.drawColor(color);
     }
 
-
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         super.addView(child, index, params);
@@ -271,11 +273,9 @@ public class Slider extends FrameLayout {
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
+                        addFastSlidingChild();
                         mSlidableChild = mConfig.getSlidableMode().getSlidableChild(v);
-                        if (mSlidableChild != null) {
-                            slidableChildLeft = mSlidableChild.getLeft();
-                            slidableChildTop = mSlidableChild.getTop();
-                        }
+                        setSlidableChildInfo();
                         break;
                 }
                 return false;
@@ -283,11 +283,28 @@ public class Slider extends FrameLayout {
         });
     }
 
+
+    private void addFastSlidingChild() {
+        if (fastSlidingTag && mSlidableChild != null) {
+            Log.i("KOMI", "fastSliding----------:" + mSlidableChild.hashCode());
+            mConfig.getSlidableMode().addFastSlidingChild(mSlidableChild);
+        }
+    }
+
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-        mSlidableChild = mConfig.getSlidableMode().getSlidableChild(null);
+        if (mSlidableChild == null) {
+            mSlidableChild = mConfig.getSlidableMode().getSlidableChild(null);
+        }
+        setSlidableChildInfo();
+    }
 
+    private void setSlidableChildInfo() {
+        if (mSlidableChild != null) {
+            slidableChildLeft = mSlidableChild.getLeft();
+            slidableChildTop = mSlidableChild.getTop();
+        }
     }
 
     /**
@@ -377,9 +394,6 @@ public class Slider extends FrameLayout {
 
             mDragHelper.settleCapturedViewAt(endLeft, endTop);
 
-            if (endLeft != slidableChildLeft || endTop != slidableChildTop) {
-                mConfig.getSlidableMode().removeSlidableChild(mSlidableChild);
-            }
             invalidate();
 
         }
@@ -405,24 +419,58 @@ public class Slider extends FrameLayout {
             if (mListener != null) {
                 mListener.onSlideStateChanged(state);
             }
-
             switch (state) {
                 case ViewDragHelper.STATE_IDLE:
-                    boolean isOpen = mSlidableChild != null && mConfig.getPosition().onViewDragStateChanged(mSlidableChild.getLeft(), mSlidableChild.getTop());
-                    if (isOpen) {
+                    fastSlidingTag = false;
+
+                    if (isOpen()) {
                         // State Open
                         if (mListener != null) mListener.onSlideOpened();
+                        Log.i("KOMI", "--------------isOpen_LEFT:" + getChildCount());
+
                     } else {
                         // State Closed
-                        if (mListener != null) mListener.onSlideClosed();
+                        if (mListener != null) mListener.onSlideClosed(mSlidableChild);
+
+                        int fastSlidingViewSize = mConfig.getSlidableMode().getFastSlidingChildren().size();
+
+                        if (fastSlidingViewSize>0) {
+
+                            for (int i = 0; i < fastSlidingViewSize; i++) {
+                                View fastSlidingView = mConfig.getSlidableMode().getFastSlidingChildren().valueAt(i);
+                                removeView(fastSlidingView);
+
+                                Log.i("KOMI", "--------------CLOSE_LEFT_fast:" + getChildCount()
+                                        + "----i" + i + "---view:" + fastSlidingView.hashCode());
+                            }
+                            mConfig.getSlidableMode().getFastSlidingChildren().clear();
+                        }else
+                        {
+                            Log.i("KOMI", "--------------CLOSE_LEFT_no_fast");
+                        }
+
+
+                        removeView(mSlidableChild);
+                        mSlidableChild = null;
                     }
+
                     break;
                 case ViewDragHelper.STATE_DRAGGING:
                     break;
                 case ViewDragHelper.STATE_SETTLING:
+                    if (!isOpen()) {
+                        fastSlidingTag = true;
+                        mConfig.getSlidableMode().removeSlidableChild(mSlidableChild);
+                        Log.i("KOMI", "--------------STATE_SETTLING_fastSliding:" + mSlidableChild.hashCode());
+                    }
+
                     break;
             }
 
+        }
+
+        private boolean isOpen() {
+            return mSlidableChild != null && mConfig.getPosition().onViewDragStateChanged(mSlidableChild.getLeft(), mSlidableChild.getTop(), slidableChildLeft, slidableChildTop);
         }
     }
 }
