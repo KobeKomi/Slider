@@ -19,7 +19,7 @@ public class ExtendsFragment extends SliderFragment implements FragmentCloseList
 
     @Override
     public void fragmentClosed() {
-        iSlider.slideExit();
+        iSlider.autoExit();
     }
 
 }

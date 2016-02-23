@@ -78,7 +78,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         }
 
         @Override
-        public void onSlideClosed(View slidableChild) {
+        public void onSlideClosed() {
 
         }
     };
@@ -136,7 +136,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        iSlider.slideExit();
+        iSlider.autoExit();
     }
 
 }

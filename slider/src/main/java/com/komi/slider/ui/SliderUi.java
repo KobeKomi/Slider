@@ -1,7 +1,6 @@
 package com.komi.slider.ui;
 
 import android.app.Activity;
-import android.view.View;
 
 import com.komi.slider.Slider;
 
@@ -15,27 +14,18 @@ public abstract class SliderUi {
      */
     public abstract Activity getUiActivity();
 
-    /**
-     * @return 是否正在关闭SliderUi对象
-     */
-    public abstract boolean isFinishingUi();
 
     /**
      * 关闭SliderUi对象的操作
      */
-    public abstract void finishUi();
+    public abstract void finishUi(Slider slider);
 
-    /**
-     * @return 获取SliderUi对象最外层父控件
-     */
-    public abstract View getRootView();
 
+    public abstract void autoExit(Slider slider);
 
     public abstract void addSlidableChild(Slider slider);
 
-    public abstract void slideExit(Slider slider);
 
-    public abstract void slideEnter(Slider slider,boolean immediately);
 
 
 }

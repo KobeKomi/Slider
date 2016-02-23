@@ -84,12 +84,12 @@ public class VerticalPosition extends SliderPosition {
     }
 
     @Override
-    public Rect getSlidingInRect(View decorView) {
-        return TOP.getSlidingInRect(decorView);
+    public int[] getEnterTarget(View childView,int maxWidth,int maxHeight) {
+        return TOP.getEnterTarget(childView,maxWidth,maxHeight);
     }
 
     @Override
-    public Rect getSlidingOutRect(View decorView) {
-        return BOTTOM.getSlidingOutRect(decorView);
+    public int[] getExitTarget(View childView,int maxWidth,int maxHeight) {
+        return BOTTOM.getExitTarget(childView,maxWidth,maxHeight);
     }
 }

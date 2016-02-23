@@ -27,7 +27,7 @@ public class AdapterFragment extends Fragment implements FragmentCloseListener{
     public void fragmentClosed() {
         if(iSlider!=null)
         {
-            iSlider.slideExit();
+            iSlider.autoExit();
         }
     }
 

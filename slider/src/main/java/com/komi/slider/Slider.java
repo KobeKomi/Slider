@@ -14,7 +14,6 @@ import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewGroupCompat;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,12 +41,12 @@ public class Slider extends FrameLayout {
     private int slidableChildTop;
 
     private ViewDragHelper mDragHelper;
+
     private SliderListener mListener;
     private boolean mIsLocked = false;
     private boolean mIsEdgeTouched = false;
 
     private SliderConfig mConfig;
-    private boolean slideBegin;
 
     private boolean fastSlidingTag;
 
@@ -121,6 +120,16 @@ public class Slider extends FrameLayout {
         return mConfig;
     }
 
+
+    public ViewDragHelper getViewDragHelper() {
+        return mDragHelper;
+    }
+
+
+    public View getSlidableChild() {
+        return mSlidableChild;
+    }
+
     /**
      * 锁定slider,不能滑动
      */
@@ -138,25 +147,6 @@ public class Slider extends FrameLayout {
     }
 
 
-    public void slideEnter() {
-        if (!slideBegin && mSlidableChild != null) {
-            Rect rect = mConfig.getPosition().getSlidingInRect(mSlidableChild);
-            mDragHelper.smoothSlideViewTo(mSlidableChild, rect.left, rect.top, rect.right, rect.bottom);
-            slideBegin = true;
-        }
-    }
-
-
-    public void slideExit() {
-        if (mSlidableChild != null) {
-            Rect rect = mConfig.getPosition().getSlidingOutRect(mSlidableChild);
-            mDragHelper.smoothSlideViewTo(mSlidableChild, rect.left, rect.top, rect.right, rect.bottom);
-            invalidate();
-        }
-
-    }
-
-
     public void setOnPanelSlideListener(SliderListener listener) {
         mListener = listener;
     }
@@ -169,6 +159,8 @@ public class Slider extends FrameLayout {
         final float minVel = MIN_FLING_VELOCITY * density;
         mDragHelper = ViewDragHelper.create(this, mConfig.getSensitivity(), new ViewDragCallback());
         mDragHelper.setMinVelocity(minVel);
+
+
         ViewGroupCompat.setMotionEventSplittingEnabled(this, false);
         setConfig(mConfig);
     }
@@ -268,14 +260,20 @@ public class Slider extends FrameLayout {
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         super.addView(child, index, params);
         mConfig.getSlidableMode().addSlidableChild(child);
+        mSlidableChild = child;
         child.setOnTouchListener(new OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
-                        addFastSlidingChild();
-                        mSlidableChild = mConfig.getSlidableMode().getSlidableChild(v);
-                        setSlidableChildInfo();
+                        if (!fastSlidingTag) {
+                            mSlidableChild = mConfig.getSlidableMode().getSlidableChild(v);
+                            if (mSlidableChild != null) {
+                                slidableChildLeft = mSlidableChild.getLeft();
+                                slidableChildTop = mSlidableChild.getTop();
+                                mSlidableChild.bringToFront();
+                            }
+                        }
                         break;
                 }
                 return false;
@@ -284,28 +282,20 @@ public class Slider extends FrameLayout {
     }
 
 
-    private void addFastSlidingChild() {
-        if (fastSlidingTag && mSlidableChild != null) {
-            Log.i("KOMI", "fastSliding----------:" + mSlidableChild.hashCode());
-            mConfig.getSlidableMode().addFastSlidingChild(mSlidableChild);
-        }
-    }
-
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
+
         if (mSlidableChild == null) {
             mSlidableChild = mConfig.getSlidableMode().getSlidableChild(null);
         }
-        setSlidableChildInfo();
-    }
-
-    private void setSlidableChildInfo() {
         if (mSlidableChild != null) {
             slidableChildLeft = mSlidableChild.getLeft();
             slidableChildTop = mSlidableChild.getTop();
         }
+
     }
+
 
     /**
      * @param childView
@@ -426,34 +416,11 @@ public class Slider extends FrameLayout {
                     if (isOpen()) {
                         // State Open
                         if (mListener != null) mListener.onSlideOpened();
-                        Log.i("KOMI", "--------------isOpen_LEFT:" + getChildCount());
-
                     } else {
                         // State Closed
-                        if (mListener != null) mListener.onSlideClosed(mSlidableChild);
-
-                        int fastSlidingViewSize = mConfig.getSlidableMode().getFastSlidingChildren().size();
-
-                        if (fastSlidingViewSize>0) {
-
-                            for (int i = 0; i < fastSlidingViewSize; i++) {
-                                View fastSlidingView = mConfig.getSlidableMode().getFastSlidingChildren().valueAt(i);
-                                removeView(fastSlidingView);
-
-                                Log.i("KOMI", "--------------CLOSE_LEFT_fast:" + getChildCount()
-                                        + "----i" + i + "---view:" + fastSlidingView.hashCode());
-                            }
-                            mConfig.getSlidableMode().getFastSlidingChildren().clear();
-                        }else
-                        {
-                            Log.i("KOMI", "--------------CLOSE_LEFT_no_fast");
-                        }
-
-
-                        removeView(mSlidableChild);
+                        if (mListener != null) mListener.onSlideClosed();
                         mSlidableChild = null;
                     }
-
                     break;
                 case ViewDragHelper.STATE_DRAGGING:
                     break;
@@ -461,16 +428,22 @@ public class Slider extends FrameLayout {
                     if (!isOpen()) {
                         fastSlidingTag = true;
                         mConfig.getSlidableMode().removeSlidableChild(mSlidableChild);
-                        Log.i("KOMI", "--------------STATE_SETTLING_fastSliding:" + mSlidableChild.hashCode());
                     }
 
                     break;
             }
 
         }
-
-        private boolean isOpen() {
-            return mSlidableChild != null && mConfig.getPosition().onViewDragStateChanged(mSlidableChild.getLeft(), mSlidableChild.getTop(), slidableChildLeft, slidableChildTop);
-        }
     }
+
+    /**
+     * 表示mSlidableChild是否在目标位置
+     *
+     * @return true   在目标位置否则不在
+     */
+    private boolean isOpen() {
+        return mSlidableChild != null && mConfig.getPosition().onViewDragStateChanged(mSlidableChild.getLeft(), mSlidableChild.getTop(), slidableChildLeft, slidableChildTop);
+    }
+
+
 }

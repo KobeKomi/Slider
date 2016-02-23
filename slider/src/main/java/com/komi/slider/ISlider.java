@@ -12,14 +12,7 @@ public interface ISlider {
 
     SliderConfig getConfig();
 
-    void slideExit();
-
-    /**
-     * @param immediately
-     *
-     * 针对非activity界面，为true时，立即自动滑动进入界面，但可能会无效，因为view的大小还没初始化
-     */
-    void slideEnter(boolean immediately);
+    void autoExit();
 
     Slider getSliderView();
 }

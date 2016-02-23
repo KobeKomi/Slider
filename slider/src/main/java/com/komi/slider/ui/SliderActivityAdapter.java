@@ -39,20 +39,12 @@ public class SliderActivityAdapter extends SliderUi {
 
 
     @Override
-    public boolean isFinishingUi() {
-        return activity.isFinishing();
+    public void finishUi(Slider slider) {
+        if(!activity.isFinishing()) {
+            activity.finish();
+        }
     }
 
-
-    @Override
-    public void finishUi() {
-        activity.finish();
-    }
-
-    @Override
-    public View getRootView() {
-        return activity.getWindow().getDecorView();
-    }
 
     @Override
     public void addSlidableChild(Slider slider) {
@@ -61,17 +53,22 @@ public class SliderActivityAdapter extends SliderUi {
         } else {
             replaceToActivity(slider);
         }
+        boolean isSlideEnter=slider.getConfig().isSlideEnter();
+        if(isSlideEnter) {
+            slideEnter(slider);
+        }
     }
 
+
     @Override
-    public void slideExit(Slider slider) {
+    public void autoExit(Slider slider) {
         int aminId = slider.getConfig().getPosition().getActivitySlidingAmins()[1];
         getUiActivity().overridePendingTransition(0, aminId);
         listenerActivity(slider.getConfig(), aminId, 1, 0);
     }
 
-    @Override
-    public void slideEnter(Slider slider,boolean immediately) {
+
+    public void slideEnter(Slider slider) {
         //View显示前为activity拉开的背景透明化。也可以在AndroidManifest里为activity配置android:theme为
         //<item name="android:windowIsTranslucent">true</item>
         // Utils.convertActivityToTranslucent(ui.getUiActivity());
@@ -80,6 +77,11 @@ public class SliderActivityAdapter extends SliderUi {
         listenerActivity(slider.getConfig(), aminId, 0, 1);
 
     }
+
+    private View getRootView() {
+        return activity.getWindow().getDecorView();
+    }
+
 
     //直接作为activity的parent加入用 replaceToActivity替代
     @Deprecated
@@ -155,7 +157,7 @@ public class SliderActivityAdapter extends SliderUi {
                         listener.onSlideOpened();
                     }
                     if (currentValue == 0 && !in) {
-                        listener.onSlideClosed(getRootView());
+                        listener.onSlideClosed();
                     }
                 }
 

@@ -200,22 +200,26 @@ public abstract class SliderPosition {
 
 
     /**
-     * 加入slidableChild时要达到的坐标
+     * 加入slidableChild时要达到的坐标，左进（右出），右进（左出），上进（下出），下进(上出)
      *
-     * @param decorView slidableChild
-     * @return 目标坐标值
+     * @param childView slidableChild
+     * @param maxWidth  达到的宽度距离
+     * @param maxHeight 达到的高度距离
+     * @return 目标坐标值(startLeft,startTop)
      */
-    public Rect getSlidingInRect(View decorView) {
+    public int[] getEnterTarget(View childView,int maxWidth,int maxHeight) {
         return null;
     }
 
     /**
-     * 移除slidableChild时要达到的坐标
+     * 移除slidableChild时要达到的坐标,（左进）右出，（右进）左出，（上进）下出，(下进)上出
      *
-     * @param decorView slidableChild
-     * @return 目标坐标值
+     * @param childView slidableChild
+     * @param maxWidth  达到的宽度距离
+     * @param maxHeight 达到的高度距离
+     * @return 目标坐标值(finalLeft, finalTop)
      */
-    public Rect getSlidingOutRect(View decorView) {
+    public int[] getExitTarget(View childView,int maxWidth,int maxHeight) {
         return null;
     }
 

@@ -91,6 +91,7 @@ public class SliderConfig {
 
     private SlidableMode slidableMode = SlidableMode.ALL;
 
+    private boolean finishUi=true;
 
     /**
      * Hidden Constructor
@@ -254,6 +255,10 @@ public class SliderConfig {
         return slidableMode.getSort();
     }
 
+    public boolean isFinishUi() {
+        return finishUi;
+    }
+
     /***********************************************************************************************
      *
      * Setters
@@ -323,6 +328,10 @@ public class SliderConfig {
 
     public void setSlidableSort(SlidableMode.Sort slidableSort) {
         this.slidableMode.setSort(slidableSort);
+    }
+
+    public void setFinishUi(boolean finishUi) {
+        this.finishUi = finishUi;
     }
 
     /**
@@ -417,6 +426,10 @@ public class SliderConfig {
             return this;
         }
 
+        public Builder finishUi(boolean finishUi){
+            config.finishUi = finishUi;
+            return this;
+        }
         public SliderConfig build(){
             return config;
         }

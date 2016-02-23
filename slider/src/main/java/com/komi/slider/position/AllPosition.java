@@ -135,14 +135,16 @@ public class AllPosition extends SliderPosition {
     }
 
     @Override
-    public Rect getSlidingInRect(View decorView) {
-        return new Rect(-decorView.getWidth(), decorView.getHeight(), decorView.getLeft(), decorView.getTop());
+    public int[] getEnterTarget(View childView,int maxWidth,int maxHeight) {
+        int []enterTarget={-maxWidth,maxHeight};
+        return enterTarget;
 
     }
 
     @Override
-    public Rect getSlidingOutRect(View decorView) {
-        return new Rect(decorView.getLeft(), decorView.getTop(), -decorView.getWidth(), decorView.getHeight());
+    public int[] getExitTarget(View childView,int maxWidth,int maxHeight) {
+        int []exitTarget={-maxWidth, maxHeight};
+        return exitTarget;
 
     }
 }

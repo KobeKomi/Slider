@@ -6,7 +6,19 @@
 
     <item android:id="@+id/menu_add"
         android:title=""
-        android:orderInCategory="90"
+        android:orderInCategory="10"
         android:icon="@android:drawable/ic_menu_add"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/menu_del"
+        android:title=""
+        android:orderInCategory="9"
+        android:icon="@android:drawable/ic_menu_delete"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/menu_more"
+        android:title=""
+        android:orderInCategory="8"
+        android:icon="@android:drawable/ic_menu_more"
         app:showAsAction="ifRoom" />
 </menu>

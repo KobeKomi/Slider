@@ -87,7 +87,7 @@ public class SampleFragment extends Fragment implements RadioGroup.OnCheckedChan
         }
 
         @Override
-        public void onSlideClosed(View slidableChild) {
+        public void onSlideClosed() {
             firstTimeOpened=false;
 
         }
@@ -140,6 +140,6 @@ public class SampleFragment extends Fragment implements RadioGroup.OnCheckedChan
 
     @Override
     public void fragmentClosed() {
-        iSlider.slideExit();
+        iSlider.autoExit();
     }
 }

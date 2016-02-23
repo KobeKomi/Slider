@@ -84,12 +84,12 @@ public class HorizontalPosition extends SliderPosition {
     }
 
     @Override
-    public Rect getSlidingInRect(View decorView) {
-        return LEFT.getSlidingInRect(decorView);
+    public int[] getEnterTarget(View childView,int maxWidth,int maxHeight) {
+        return LEFT.getEnterTarget(childView,maxWidth,maxHeight);
     }
 
     @Override
-    public Rect getSlidingOutRect(View decorView) {
-        return RIGHT.getSlidingOutRect(decorView);
+    public int[] getExitTarget(View childView,int maxWidth,int maxHeight) {
+        return RIGHT.getExitTarget(childView,maxWidth,maxHeight);
     }
 }

@@ -2,18 +2,17 @@ package com.komi.sliderdemo;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.komi.slider.ISlider;
 import com.komi.slider.Slider;
-import com.komi.slider.SliderListener;
+import com.komi.slider.SliderUtils;
 
 public class XmlActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -23,48 +22,19 @@ public class XmlActivity extends AppCompatActivity implements View.OnClickListen
     private final int TOP_MARGIN = 30;
     private int row = 0;
     private int column = 0;
-    private int maxColumn = 1;
-
+    private ISlider iSlider;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_adapter);
         setTitle(this.getClass().getSimpleName());
         sliderLayout = (Slider) findViewById(R.id.slider_layout);
-        sliderLayout.setOnPanelSlideListener(new SliderListener() {
-            @Override
-            public void onSlideStateChanged(int state) {
-
-            }
-
-            @Override
-            public void onSlideChange(float percent) {
-
-            }
-
-            @Override
-            public void onSlideOpened() {
-
-            }
-
-            @Override
-            public void onSlideClosed(View slidableChild) {
-
-            }
-        });
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.xml_fab);
-//        fab.setOnClickListener(this);
     }
 
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()) {
-//            case R.id.xml_fab:
-//
-//                break;
-        }
+
     }
 
     @Override
@@ -79,7 +49,11 @@ public class XmlActivity extends AppCompatActivity implements View.OnClickListen
             case R.id.menu_add:
                 addSliderChild();
                 return true;
-
+            case R.id.menu_del:
+                if(iSlider!=null) {
+                    iSlider.autoExit();
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -101,24 +75,16 @@ public class XmlActivity extends AppCompatActivity implements View.OnClickListen
 
         int maxRow = sliderLayout.getHeight() / (LEFT_MARGIN + IMG_SIZE);
 
-
-        params.topMargin = row * (LEFT_MARGIN + IMG_SIZE);
-
+        params.topMargin = row * (TOP_MARGIN + IMG_SIZE);
 
         boolean overHeight = row == maxRow;
 
-        Log.i("KOMI", "column:" + column + "-----row:" + row + "-----overWidth:" + overWidth + "---overHeight:" + overHeight);
+       // Log.i("KOMI", "column:" + column + "-----row:" + row + "-----overWidth:" + overWidth + "---overHeight:" + overHeight);
 
         if (!overHeight) {
             imageView.setLayoutParams(params);
-            sliderLayout.addView(imageView);
-            sliderLayout.getViewTreeObserver().addOnGlobalLayoutListener(
-                    new ViewTreeObserver.OnGlobalLayoutListener() {
-                        public void onGlobalLayout() {
-                            sliderLayout.slideEnter();
-                        }
-                    }
-            );
+            iSlider=SliderUtils.attachView(sliderLayout,imageView,null);
+            customSlideEnter(imageView,sliderLayout.getWidth(),params.topMargin,params.leftMargin,params.topMargin);
             if (overWidth) {
                 row++;
             }
@@ -127,5 +93,14 @@ public class XmlActivity extends AppCompatActivity implements View.OnClickListen
         }
 
     }
+
+    private void customSlideEnter(View view,int startLeft,int startTop,int finalLeft,int finalTop) {
+        iSlider.getConfig().setFinishUi(false);
+        iSlider.getConfig().setSlideEnter(false);
+        sliderLayout.getViewDragHelper().smoothSlideViewTo(view, startLeft, startTop, finalLeft, finalTop);
+        iSlider.getConfig().setFinishUi(true);
+    }
+
+
 
 }

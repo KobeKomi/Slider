@@ -41,7 +41,7 @@ public class SliderActivity extends Activity{
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        iSlider.slideExit();
+        iSlider.autoExit();
     }
 
 

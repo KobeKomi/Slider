@@ -10,6 +10,7 @@ import android.view.View;
 import com.komi.slider.ui.SliderUi;
 import com.komi.slider.ui.SliderActivityAdapter;
 import com.komi.slider.ui.SliderFragmentAdapter;
+import com.komi.slider.ui.SliderViewAdapter;
 
 
 /**
@@ -18,27 +19,47 @@ import com.komi.slider.ui.SliderFragmentAdapter;
 public class SliderUtils {
 
     public static ISlider attachActivity(Activity activity, SliderConfig config) {
+        return attachActivity(null,activity,config);
+    }
+
+    public static ISlider attachActivity(Slider slider,Activity activity, SliderConfig config) {
         SliderUi sliderUi=new SliderActivityAdapter(activity);
-        return attachUi(sliderUi,config);
+        return attachUi(slider,sliderUi,config);
     }
 
     public static ISlider attachFragment(Fragment fragment,View rootView, SliderConfig config) {
-        SliderUi sliderUi=new SliderFragmentAdapter(fragment,rootView);
-        return attachUi(sliderUi,config);
+        return attachFragment(null,fragment,rootView,config);
     }
 
-    private static ISlider attachUi(SliderUi ui, SliderConfig config) {
+    public static ISlider attachFragment(Slider slider,Fragment fragment,View rootView, SliderConfig config) {
+        SliderUi sliderUi=new SliderFragmentAdapter(fragment,rootView);
+        return attachUi(slider,sliderUi,config);
+    }
+
+    public static ISlider attachView(View view, SliderConfig config) {
+        return attachView(null,view,config);
+    }
+
+    public static ISlider attachView(Slider slider,View view, SliderConfig config) {
+        SliderUi sliderUi=new SliderViewAdapter(view);
+        return attachUi(slider,sliderUi,config);
+    }
+
+
+    private static ISlider attachUi(Slider slider,SliderUi ui, SliderConfig config) {
         if (ui == null) {
             return null;
         }
-        final Slider slider = new Slider(ui.getUiActivity(),config);
-        ISlider iSlider = attachUi(ui, slider,false);
+        if(slider==null) {
+            slider = new Slider(ui.getUiActivity(), config);
+        }
+        ISlider iSlider = attachUi(ui, slider);
         return iSlider;
     }
 
 
 
-    public static ISlider attachUi(final SliderUi ui, final Slider slider , boolean immediately) {
+    public static ISlider attachUi(final SliderUi ui, final Slider slider) {
 
 
         final SliderListener sliderListener = slider.getConfig().getListener();
@@ -62,15 +83,13 @@ public class SliderUtils {
             }
 
             @Override
-            public void onSlideClosed(View slidableChild) {
+            public void onSlideClosed() {
                 if (sliderListener != null) {
-                    sliderListener.onSlideClosed(slidableChild);
+                    sliderListener.onSlideClosed();
                 }
-
-                if (!ui.isFinishingUi()) {
-                    ui.finishUi();
+                if(slider.getConfig().isFinishUi()) {
+                    ui.finishUi(slider);
                 }
-
             }
 
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
@@ -90,17 +109,12 @@ public class SliderUtils {
                 }
             }
         });
-
-
-        ui.addSlidableChild(slider);
-        ISlider iSlider = proxyISlider(ui, slider.getConfig(), slider);
-        iSlider.slideEnter(immediately);
-
-        return iSlider;
+        return proxyISlider(ui, slider);
     }
 
-    private static ISlider proxyISlider(final SliderUi ui, final SliderConfig config, final Slider slider) {
+    private static ISlider proxyISlider(final SliderUi ui, final Slider slider) {
 
+        ui.addSlidableChild(slider);
 
         final ISlider iSlider = new ISlider() {
             @Override
@@ -125,19 +139,11 @@ public class SliderUtils {
 
 
             @Override
-            public void slideExit() {
-                if (config.isSlideExit()) {
-                   ui.slideExit(slider);
-                }
+            public void autoExit() {
+                ui.autoExit(slider);
             }
 
-            @Override
-            public void slideEnter(boolean immediately) {
-                if (config.isSlideEnter()) {
-                    ui.slideEnter(slider,immediately);
-                }
 
-            }
             @Override
             public Slider getSliderView() {
                 return slider;

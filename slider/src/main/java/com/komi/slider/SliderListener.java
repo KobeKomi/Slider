@@ -1,7 +1,5 @@
 package com.komi.slider;
 
-import android.view.View;
-
 /**
  * This listener interface is for receiving events from the sliding panel such as state changes
  * and slide progress
@@ -16,6 +14,6 @@ public interface SliderListener {
 
     void onSlideOpened();
 
-    void onSlideClosed(View slidableChild);
+    void onSlideClosed();
 
 }

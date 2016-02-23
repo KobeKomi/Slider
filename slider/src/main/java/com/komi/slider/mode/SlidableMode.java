@@ -1,6 +1,5 @@
 package com.komi.slider.mode;
 
-import android.support.v4.util.SparseArrayCompat;
 import android.view.View;
 
 /**
@@ -38,11 +37,4 @@ public abstract class SlidableMode {
 
     }
 
-    public void addFastSlidingChild(View child) {
-
-    }
-
-    public SparseArrayCompat<View> getFastSlidingChildren() {
-        return null;
-    }
 }
