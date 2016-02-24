@@ -7,9 +7,10 @@ import android.app.Fragment;
 import android.os.Build;
 import android.view.View;
 
-import com.komi.slider.ui.SliderUi;
 import com.komi.slider.ui.SliderActivityAdapter;
 import com.komi.slider.ui.SliderFragmentAdapter;
+import com.komi.slider.ui.SliderUi;
+import com.komi.slider.ui.SliderV4FragmentAdapter;
 import com.komi.slider.ui.SliderViewAdapter;
 
 
@@ -19,11 +20,12 @@ import com.komi.slider.ui.SliderViewAdapter;
 public class SliderUtils {
 
     public static ISlider attachActivity(Activity activity, SliderConfig config) {
-        return attachActivity(null,activity,config);
+        return attachActivity(null,activity,true,config);
     }
 
-    public static ISlider attachActivity(Slider slider,Activity activity, SliderConfig config) {
-        SliderUi sliderUi=new SliderActivityAdapter(activity);
+    public static ISlider attachActivity(Slider slider,Activity activity, boolean replace,SliderConfig config) {
+        SliderActivityAdapter sliderUi=new SliderActivityAdapter(activity);
+        sliderUi.setReplace(replace);
         return attachUi(slider,sliderUi,config);
     }
 
@@ -36,12 +38,21 @@ public class SliderUtils {
         return attachUi(slider,sliderUi,config);
     }
 
-    public static ISlider attachView(View view, SliderConfig config) {
-        return attachView(null,view,config);
+    public static ISlider attachV4Fragment(android.support.v4.app.Fragment fragment, View rootView, SliderConfig config) {
+        return attachV4Fragment(null,fragment,rootView,config);
     }
 
-    public static ISlider attachView(Slider slider,View view, SliderConfig config) {
-        SliderUi sliderUi=new SliderViewAdapter(view);
+    public static ISlider attachV4Fragment(Slider slider, android.support.v4.app.Fragment fragment, View rootView, SliderConfig config) {
+        SliderUi sliderUi=new SliderV4FragmentAdapter(fragment,rootView);
+        return attachUi(slider,sliderUi,config);
+    }
+
+    public static ISlider attachView(Activity activity, SliderConfig config) {
+        return attachView(activity,null,config);
+    }
+
+    public static ISlider attachView(Activity activity, Slider slider, SliderConfig config) {
+        SliderViewAdapter sliderUi=new SliderViewAdapter(activity);
         return attachUi(slider,sliderUi,config);
     }
 
@@ -88,7 +99,7 @@ public class SliderUtils {
                     sliderListener.onSlideClosed();
                 }
                 if(slider.getConfig().isFinishUi()) {
-                    ui.finishUi(slider);
+                    ui.slideAfter(slider);
                 }
             }
 
@@ -109,12 +120,14 @@ public class SliderUtils {
                 }
             }
         });
+
+        ui.slideBefore(slider);
+
         return proxyISlider(ui, slider);
     }
 
     private static ISlider proxyISlider(final SliderUi ui, final Slider slider) {
 
-        ui.addSlidableChild(slider);
 
         final ISlider iSlider = new ISlider() {
             @Override
@@ -139,8 +152,8 @@ public class SliderUtils {
 
 
             @Override
-            public void autoExit() {
-                ui.autoExit(slider);
+            public void slideExit() {
+                ui.slideExit(slider);
             }
 
 

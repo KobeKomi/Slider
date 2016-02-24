@@ -7,6 +7,7 @@ import android.view.View;
  * Created by Komi on 2016/2/21.
  */
 public class CustomMode extends SlidableMode {
+
     private static CustomMode ourInstance = new CustomMode();
 
     public static CustomMode getInstance() {
@@ -24,10 +25,14 @@ public class CustomMode extends SlidableMode {
     }
 
 
-
     @Override
     public void removeSlidableChild(View child) {
         customSlidableChildrenList.remove(getViewKey(child));
+    }
+
+    @Override
+    public void clearSlidableChildren() {
+        customSlidableChildrenList.clear();
     }
 
     @Override
@@ -38,8 +43,7 @@ public class CustomMode extends SlidableMode {
 
     }
 
-    private int getViewKey(View child)
-    {
-        return child!=null?child.hashCode():0;
+    private int getViewKey(View child) {
+        return child != null ? child.hashCode() : 0;
     }
 }

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/menu_add"
+        android:icon="@android:drawable/ic_menu_add"
+        android:orderInCategory="100"
+        android:title=""
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/menu_del"
+        android:icon="@android:drawable/ic_menu_delete"
+        android:orderInCategory="90"
+        android:title=""
+        app:showAsAction="always" />
+
+    <group
+        android:id="@+id/menu_group_slider_position"
+        android:checkableBehavior="single"
+        android:orderInCategory="89"
+        app:showAsAction="ifRoom">
+
+        <item
+            android:id="@+id/menu_position_left"
+            android:checked="true"
+            android:title="left" />
+        <item
+            android:id="@+id/menu_position_right"
+            android:title="right" />
+        <item
+            android:id="@+id/menu_position_top"
+            android:title="top" />
+        <item
+            android:id="@+id/menu_position_bottom"
+            android:title="bottom" />
+        <item
+            android:id="@+id/menu_position_horizontal"
+            android:title="horizontal" />
+        <item
+            android:id="@+id/menu_position_vertical"
+            android:title="vertical" />
+        <item
+            android:id="@+id/menu_position_all"
+            android:title="all" />
+    </group>
+
+
+    <group
+        android:id="@+id/menu_group_slider_sliable_mode"
+        android:checkableBehavior="single"
+        android:orderInCategory="89"
+        app:showAsAction="ifRoom">
+
+        <item
+            android:id="@+id/menu_mode_all"
+            android:checked="true"
+            android:title="MODE_ALL" />
+        <item
+            android:id="@+id/menu_mode_single"
+            android:title="MODE_SINGLE" />
+
+        <item
+            android:id="@+id/menu_mode_custom"
+            android:title="MODE_CUSTOM" />
+
+    </group>
+
+</menu>

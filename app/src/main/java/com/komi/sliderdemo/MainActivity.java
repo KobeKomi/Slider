@@ -17,6 +17,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+/**
+ * Created by Komi on 2016/2/03.
+ */
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private Fragment currentFragment;

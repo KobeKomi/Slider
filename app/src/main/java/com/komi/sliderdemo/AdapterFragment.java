@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import com.komi.slider.ISlider;
 import com.komi.slider.SliderUtils;
 
-
+/**
+ * Created by Komi on 2016/2/16.
+ */
 public class AdapterFragment extends Fragment implements FragmentCloseListener{
 
     private ISlider iSlider;
@@ -27,7 +29,7 @@ public class AdapterFragment extends Fragment implements FragmentCloseListener{
     public void fragmentClosed() {
         if(iSlider!=null)
         {
-            iSlider.autoExit();
+            iSlider.slideExit();
         }
     }
 

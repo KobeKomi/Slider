@@ -1,41 +1,43 @@
 package com.komi.sliderdemo;
 
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
-import android.widget.Toast;
 
-import com.komi.slider.ISlider;
 import com.komi.slider.Slider;
-import com.komi.slider.SliderUtils;
+import com.komi.slider.SliderListener;
+import com.komi.slider.mode.SlidableMode;
+import com.komi.slider.ui.SliderAppCompatActivity;
 
-public class XmlActivity extends AppCompatActivity implements View.OnClickListener {
+/**
+ * Created by Komi on 2016/2/16.
+ */
+public class XmlActivity extends SliderAppCompatActivity implements SliderListener{
 
     private Slider sliderLayout;
-    private final int IMG_SIZE = 250;
-    private final int LEFT_MARGIN = 20;
-    private final int TOP_MARGIN = 30;
-    private int row = 0;
-    private int column = 0;
-    private ISlider iSlider;
+    private int imgSizeWidth;
+    private int imgSizeHeight;
+    private int marginTop;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_adapter);
-        setTitle(this.getClass().getSimpleName());
-        sliderLayout = (Slider) findViewById(R.id.slider_layout);
+        setContentView(R.layout.activity_xml);
+        setTitle(Demo.XML_ACTIVITY.titleResId);
+        sliderLayout=(Slider)findViewById(R.id.xml_slider_layout);
+        sliderLayout.setOnPanelSlideListener(this);
+        sliderLayout.getConfig().setScrimStartAlpha(0);
+        sliderLayout.getConfig().setScrimEndAlpha(0);
+        sliderLayout.getConfig().setSlidableMode(SlidableMode.SINGLE);
+        imgSizeWidth=(int)getResources().getDimension(R.dimen.xml_img_width);
+        imgSizeHeight =(int)getResources().getDimension(R.dimen.xml_img_height);
+        marginTop=(int)getResources().getDimension(R.dimen.xml_img_margin_top);
     }
 
-
-    @Override
-    public void onClick(View v) {
-
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -46,61 +48,58 @@ public class XmlActivity extends AppCompatActivity implements View.OnClickListen
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_add:
-                addSliderChild();
-                return true;
-            case R.id.menu_del:
-                if(iSlider!=null) {
-                    iSlider.autoExit();
-                }
+            case R.id.menu_xml_add:
+                addChildView();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+
     }
 
 
-    private void addSliderChild() {
-        ImageView imageView = new ImageView(this);
-        imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setImageResource(DemoUtils.getRandomPicRes());
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(IMG_SIZE, IMG_SIZE);
-        int childCount = sliderLayout.getChildCount();
-        params.gravity = Gravity.TOP;
-        int maxColumn = sliderLayout.getWidth() / (LEFT_MARGIN + IMG_SIZE);
-        column = childCount % maxColumn;
-        boolean overWidth = column + 1 == maxColumn;
-        params.leftMargin = column * (LEFT_MARGIN + IMG_SIZE);
+    @Override
+    public void onSlideStateChanged(int state) {
 
+    }
 
-        int maxRow = sliderLayout.getHeight() / (LEFT_MARGIN + IMG_SIZE);
+    @Override
+    public void onSlideChange(float percent) {
 
-        params.topMargin = row * (TOP_MARGIN + IMG_SIZE);
+    }
 
-        boolean overHeight = row == maxRow;
+    @Override
+    public void onSlideOpened() {
 
-       // Log.i("KOMI", "column:" + column + "-----row:" + row + "-----overWidth:" + overWidth + "---overHeight:" + overHeight);
+    }
 
-        if (!overHeight) {
-            imageView.setLayoutParams(params);
-            iSlider=SliderUtils.attachView(sliderLayout,imageView,null);
-            customSlideEnter(imageView,sliderLayout.getWidth(),params.topMargin,params.leftMargin,params.topMargin);
-            if (overWidth) {
-                row++;
-            }
-        } else {
-            Toast.makeText(XmlActivity.this, "Over Slider", Toast.LENGTH_SHORT).show();
+    @Override
+    public void onSlideClosed() {
+        if(sliderLayout.getSlidableChild()!=null)
+        {
+            sliderLayout.removeView(sliderLayout.getSlidableChild());
         }
 
     }
 
-    private void customSlideEnter(View view,int startLeft,int startTop,int finalLeft,int finalTop) {
-        iSlider.getConfig().setFinishUi(false);
-        iSlider.getConfig().setSlideEnter(false);
-        sliderLayout.getViewDragHelper().smoothSlideViewTo(view, startLeft, startTop, finalLeft, finalTop);
-        iSlider.getConfig().setFinishUi(true);
+    private void addChildView()
+    {
+        if(sliderLayout.getChildCount()<10) {
+            ImageView imageView = new ImageView(this);
+            imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            imageView.setImageResource(DemoUtils.getRandomPicRes2());
+            FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(imgSizeWidth, imgSizeHeight);
+            params.gravity = Gravity.CENTER_HORIZONTAL;
+            params.topMargin = sliderLayout.getChildCount() * marginTop;
+            imageView.setLayoutParams(params);
+            sliderLayout.addView(imageView);
+
+            //custom enter animation
+            PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 0, 1f);
+            PropertyValuesHolder pvhZ = PropertyValuesHolder.ofFloat("scaleY", 0, 1f);
+            ObjectAnimator.ofPropertyValuesHolder(imageView, pvhY,pvhZ).setDuration(400).start();
+
+
+        }
     }
-
-
-
 }

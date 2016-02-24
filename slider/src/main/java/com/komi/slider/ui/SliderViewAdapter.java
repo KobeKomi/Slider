@@ -11,20 +11,21 @@ import com.komi.slider.Slider;
 public class SliderViewAdapter extends SliderUi {
 
 
-    private View view;
+    private Activity activity;
 
-    public SliderViewAdapter(View view) {
-        this.view = view;
+    public SliderViewAdapter(Activity activity) {
+        this.activity=activity;
     }
+
 
     @Override
     public Activity getUiActivity() {
-        return (Activity) view.getContext();
+        return activity;
     }
 
 
     @Override
-    public void finishUi(Slider slider) {
+    public void slideAfter(Slider slider) {
         View slidableChild = slider.getSlidableChild();
         if (slidableChild != null) {
             slider.removeView(slidableChild);
@@ -33,20 +34,14 @@ public class SliderViewAdapter extends SliderUi {
 
 
     @Override
-    public void addSlidableChild(Slider slider) {
-        slider.getConfig().setScrimStartAlpha(0);
-        slider.getConfig().setScrimEndAlpha(0);
-
-        if (view != null) {
-            slider.addView(view);
-        }
+    public void slideBefore(Slider slider) {
         if (slider.getConfig().isSlideEnter()) {
             slideEnter(slider);
         }
     }
 
     @Override
-    public void autoExit(Slider slider) {
+    public void slideExit(Slider slider) {
         View slidableChild = slider.getSlidableChild();
         if (slidableChild != null) {
             int[] exitTarget = slider.getConfig().getPosition().getExitTarget(slidableChild, slider.getWidth(), slider.getHeight());

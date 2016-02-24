@@ -2,10 +2,10 @@
     <string name="app_name">SliderDemo</string>
 
     <string name="sample_activity">sample activity</string>
-    <string name="extend_activity">extends activity</string>
+    <string name="custom_activity">custom activity</string>
     <string name="xml_activity">xml activity</string>
     <string name="sample_fragment">sample fragment</string>
-    <string name="extend_fragment">extends fragment</string>
+    <string name="link_lv_fragment">link listView fragment</string>
     <string name="adapter_fragment">adapter fragment</string>
     <string name="title_activity">title activity</string>
     <string name="position_left">Left</string>
@@ -23,4 +23,5 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="title_activity_xmll">XmllActivity</string>
+    <string name="stay_tuned">Stay tuned</string>
 </resources>

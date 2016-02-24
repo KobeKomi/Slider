@@ -6,5 +6,11 @@
     tools:context="com.komi.sliderdemo.AdapterFragment">
 
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/stay_tuned"
+        android:textSize="23sp" />
 
 </FrameLayout>

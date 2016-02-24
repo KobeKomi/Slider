@@ -36,4 +36,11 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="XmlImgStyle">
+        <item name="android:layout_width">@dimen/xml_img_width</item>
+        <item name="android:layout_height">@dimen/xml_img_height</item>
+        <item name="android:layout_gravity">center_horizontal</item>
+        <item name="android:scaleType">centerCrop</item>
+        </style>
 </resources>

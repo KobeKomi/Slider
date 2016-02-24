@@ -29,12 +29,12 @@ public class SliderConfig {
     /**
      * 状态栏初始颜色
      */
-    private int colorPrimary = DEFAULT_PRIMARY_COLOR;
+    private int primaryColor = DEFAULT_PRIMARY_COLOR;
 
     /**
      * 状态栏目的颜色
      */
-    private int colorSecondary = DEFAULT_SECONDARY_COLOR;
+    private int secondaryColor = DEFAULT_SECONDARY_COLOR;
 
     /**
      * 可滑起触摸区域大小
@@ -112,7 +112,7 @@ public class SliderConfig {
      * @return      the primary status bar color
      */
     public int getPrimaryColor(){
-        return colorPrimary;
+        return primaryColor;
     }
 
     /**
@@ -122,7 +122,7 @@ public class SliderConfig {
      * @return      the secondary status bar color
      */
     public int getSecondaryColor(){
-        return colorSecondary;
+        return secondaryColor;
     }
 
     /**
@@ -217,7 +217,7 @@ public class SliderConfig {
      * @return true if primary and secondary color are set
      */
     public boolean areStatusBarColorsValid(){
-        return colorPrimary != -1 && colorSecondary != -1;
+        return primaryColor != -1 && secondaryColor != -1;
     }
 
     /**
@@ -251,9 +251,7 @@ public class SliderConfig {
         return slidableMode;
     }
 
-    public SlidableMode.Sort getSlidableSort() {
-        return slidableMode.getSort();
-    }
+
 
     public boolean isFinishUi() {
         return finishUi;
@@ -265,12 +263,12 @@ public class SliderConfig {
      *
      */
 
-    public void setColorPrimary(int colorPrimary) {
-        this.colorPrimary = colorPrimary;
+    public void setPrimaryColor(int primaryColor) {
+        this.primaryColor = primaryColor;
     }
 
-    public void setColorSecondary(int colorSecondary) {
-        this.colorSecondary = colorSecondary;
+    public void setSecondaryColor(int secondaryColor) {
+        this.secondaryColor = secondaryColor;
     }
 
     public void setEdgeSize(float range) {
@@ -326,9 +324,7 @@ public class SliderConfig {
         this.slidableMode = slidableMode;
     }
 
-    public void setSlidableSort(SlidableMode.Sort slidableSort) {
-        this.slidableMode.setSort(slidableSort);
-    }
+
 
     public void setFinishUi(boolean finishUi) {
         this.finishUi = finishUi;
@@ -347,12 +343,12 @@ public class SliderConfig {
         }
 
         public Builder primaryColor(@ColorInt int color){
-            config.colorPrimary = color;
+            config.primaryColor = color;
             return this;
         }
 
         public Builder secondaryColor(@ColorInt int color){
-            config.colorSecondary = color;
+            config.secondaryColor = color;
             return this;
         }
 

@@ -13,7 +13,7 @@ public enum Demo {
         }
     },
 
-    EXTENDS_ACTIVITY(ExtendsActivity.class.getName(), R.string.extend_activity) {
+    CUSTOM_ACTIVITY(CustomActivity.class.getName(), R.string.custom_activity) {
         @Override
         public boolean isActivity() {
             return true;
@@ -29,7 +29,7 @@ public enum Demo {
 
     SAMPLE_FRAGMENT(SampleFragment.class.getName(), R.string.sample_fragment),
 
-    EXTENDS_FRAGMENT(ExtendsFragment.class.getName(), R.string.extend_fragment),
+    LINK_LISTVIEW_FRAGMENT(LinkListViewFragment.class.getName(), R.string.link_lv_fragment),
 
     ADAPTER_FRAGMENT(AdapterFragment.class.getName(), R.string.adapter_fragment);
 

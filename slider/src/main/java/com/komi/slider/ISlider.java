@@ -12,7 +12,7 @@ public interface ISlider {
 
     SliderConfig getConfig();
 
-    void autoExit();
+    void slideExit();
 
     Slider getSliderView();
 }

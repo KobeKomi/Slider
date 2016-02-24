@@ -17,6 +17,9 @@ import com.komi.slider.position.SliderPosition;
 
 import java.util.Random;
 
+/**
+ * Created by Komi on 2016/2/03.
+ */
 public class SampleActivity extends AppCompatActivity implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener {
 
     private SliderConfig mConfig;
@@ -136,7 +139,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        iSlider.autoExit();
+        iSlider.slideExit();
     }
 
 }

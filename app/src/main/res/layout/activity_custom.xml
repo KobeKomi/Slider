@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.komi.slider.Slider xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:slider="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/custom_slider_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    slider:position="left"
+    slider:edgeOnly="false"
+    tools:context=".CustomActivity">
+
+
+
+
+
+</com.komi.slider.Slider>

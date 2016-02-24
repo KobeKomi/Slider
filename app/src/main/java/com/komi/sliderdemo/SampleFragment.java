@@ -21,7 +21,7 @@ import java.util.Random;
 
 
 /**
- * Created by Komi on 2016-01-29.
+ * Created by Komi on 2016-02-03.
  */
 public class SampleFragment extends Fragment implements RadioGroup.OnCheckedChangeListener, CompoundButton.OnCheckedChangeListener,FragmentCloseListener{
 
@@ -140,6 +140,6 @@ public class SampleFragment extends Fragment implements RadioGroup.OnCheckedChan
 
     @Override
     public void fragmentClosed() {
-        iSlider.autoExit();
+        iSlider.slideExit();
     }
 }

@@ -20,12 +20,11 @@ import com.komi.slider.SliderListener;
 public class SliderActivityAdapter extends SliderUi {
 
     private Activity activity;
-    private boolean replace=true;
+    private boolean replace;
 
     public SliderActivityAdapter(Activity activity)
     {
         this.activity=activity;
-
     }
 
     public void setReplace(boolean replace) {
@@ -39,7 +38,7 @@ public class SliderActivityAdapter extends SliderUi {
 
 
     @Override
-    public void finishUi(Slider slider) {
+    public void slideAfter(Slider slider) {
         if(!activity.isFinishing()) {
             activity.finish();
         }
@@ -47,13 +46,14 @@ public class SliderActivityAdapter extends SliderUi {
 
 
     @Override
-    public void addSlidableChild(Slider slider) {
+    public void slideBefore(Slider slider) {
         if (!replace) {
             addToActivity(slider);
         } else {
             replaceToActivity(slider);
         }
         boolean isSlideEnter=slider.getConfig().isSlideEnter();
+
         if(isSlideEnter) {
             slideEnter(slider);
         }
@@ -61,7 +61,7 @@ public class SliderActivityAdapter extends SliderUi {
 
 
     @Override
-    public void autoExit(Slider slider) {
+    public void slideExit(Slider slider) {
         int aminId = slider.getConfig().getPosition().getActivitySlidingAmins()[1];
         getUiActivity().overridePendingTransition(0, aminId);
         listenerActivity(slider.getConfig(), aminId, 1, 0);

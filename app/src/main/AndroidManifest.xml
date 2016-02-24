@@ -24,13 +24,11 @@
             android:name=".SampleActivity"
             android:theme="@style/SampleActivityTheme" />
         <activity
-            android:name=".ExtendsActivity"
+            android:name=".CustomActivity"
             android:theme="@style/ActivityTheme" />
-        <activity android:name=".XmlActivity" />
         <activity
-            android:name=".XmllActivity"
-            android:label="@string/title_activity_xmll"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:name=".XmlActivity"
+            android:theme="@style/ActivityTheme" />
     </application>
 
 </manifest>

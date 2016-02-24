@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:slider="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".XmlActivity">
+
+
+    <com.komi.slider.Slider
+        android:id="@+id/xml_slider_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="50dip"
+        android:layout_marginTop="50dip"
+        android:background="@color/light_blue_500"
+        slider:edgeOnly="false"
+        slider:position="all">
+
+        <ImageView
+            style="@style/XmlImgStyle"
+            android:src="@mipmap/a1" />
+
+        <ImageView
+            style="@style/XmlImgStyle"
+            android:layout_marginTop="20dip"
+            android:src="@mipmap/a2" />
+
+        <ImageView
+            style="@style/XmlImgStyle"
+            android:layout_marginTop="40dip"
+            android:src="@mipmap/a3" />
+
+        <ImageView
+            style="@style/XmlImgStyle"
+            android:layout_marginTop="60dip"
+            android:src="@mipmap/a4" />
+
+        <ImageView
+            style="@style/XmlImgStyle"
+            android:layout_marginTop="80dip"
+            android:src="@mipmap/a5" />
+
+        <ImageView
+            style="@style/XmlImgStyle"
+            android:layout_marginTop="100dip"
+            android:src="@mipmap/a6" />
+
+        <ImageView
+            style="@style/XmlImgStyle"
+            android:layout_marginTop="120dip"
+            android:src="@mipmap/a7" />
+
+    </com.komi.slider.Slider>
+
+
+</RelativeLayout>

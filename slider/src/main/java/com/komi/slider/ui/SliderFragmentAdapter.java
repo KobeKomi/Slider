@@ -27,13 +27,14 @@ public class SliderFragmentAdapter extends SliderUi {
 
 
     @Override
-    public void finishUi(Slider slider) {
-        if(!fragment.isRemoving())
-        getUiActivity().getFragmentManager().beginTransaction().remove(fragment).commit();
+    public void slideAfter(Slider slider) {
+        if(!fragment.isRemoving()) {
+            getUiActivity().getFragmentManager().beginTransaction().remove(fragment).commit();
+        }
     }
 
     @Override
-    public void addSlidableChild(final Slider slider) {
+    public void slideBefore(final Slider slider) {
         if (rootView.getParent() == null) {
             slider.addView(rootView);
 
@@ -41,7 +42,10 @@ public class SliderFragmentAdapter extends SliderUi {
                 slider.getViewTreeObserver().addOnGlobalLayoutListener(
                         new ViewTreeObserver.OnGlobalLayoutListener() {
                             public void onGlobalLayout() {
-                                slideEnter(slider);
+                                boolean isSlideEnter=slider.getConfig().isSlideEnter();
+                                if(isSlideEnter) {
+                                    slideEnter(slider);
+                                }
                                 slider.getViewTreeObserver()
                                         .removeGlobalOnLayoutListener(this);
                             }
@@ -52,7 +56,7 @@ public class SliderFragmentAdapter extends SliderUi {
     }
 
     @Override
-    public void autoExit(Slider slider) {
+    public void slideExit(Slider slider) {
         View child=slider.getSlidableChild();
         if(child!=null) {
             int[] exitTarget = slider.getConfig().getPosition().getExitTarget(slider.getSlidableChild(), slider.getWidth(), slider.getHeight());

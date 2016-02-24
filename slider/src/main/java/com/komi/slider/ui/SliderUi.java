@@ -9,21 +9,17 @@ import com.komi.slider.Slider;
  */
 public abstract class SliderUi {
 
-    /**
-     * @return 获取实现SliderUi的activity
-     */
     public abstract Activity getUiActivity();
 
 
-    /**
-     * 关闭SliderUi对象的操作
-     */
-    public abstract void finishUi(Slider slider);
+    public abstract void slideBefore(Slider slider);
 
 
-    public abstract void autoExit(Slider slider);
+    public abstract void slideAfter(Slider slider);
 
-    public abstract void addSlidableChild(Slider slider);
+
+    public abstract void slideExit(Slider slider);
+
 
 
 

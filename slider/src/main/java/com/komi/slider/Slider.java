@@ -259,7 +259,7 @@ public class Slider extends FrameLayout {
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         super.addView(child, index, params);
-        mConfig.getSlidableMode().addSlidableChild(child);
+        //sliderUi为activity,fragment刚开始进入时进行设置
         mSlidableChild = child;
         child.setOnTouchListener(new OnTouchListener() {
             @Override
@@ -268,7 +268,7 @@ public class Slider extends FrameLayout {
                     case MotionEvent.ACTION_DOWN:
                         if (!fastSlidingTag) {
                             mSlidableChild = mConfig.getSlidableMode().getSlidableChild(v);
-                            if (mSlidableChild != null) {
+                            if (mSlidableChild != null&&mSlidableChild==v) {
                                 slidableChildLeft = mSlidableChild.getLeft();
                                 slidableChildTop = mSlidableChild.getTop();
                                 mSlidableChild.bringToFront();
@@ -276,7 +276,7 @@ public class Slider extends FrameLayout {
                         }
                         break;
                 }
-                return false;
+                return true;
             }
         });
     }
@@ -285,7 +285,6 @@ public class Slider extends FrameLayout {
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
-
         if (mSlidableChild == null) {
             mSlidableChild = mConfig.getSlidableMode().getSlidableChild(null);
         }
@@ -293,7 +292,6 @@ public class Slider extends FrameLayout {
             slidableChildLeft = mSlidableChild.getLeft();
             slidableChildTop = mSlidableChild.getTop();
         }
-
     }
 
 
@@ -419,6 +417,7 @@ public class Slider extends FrameLayout {
                     } else {
                         // State Closed
                         if (mListener != null) mListener.onSlideClosed();
+                        mConfig.getSlidableMode().removeSlidableChild(mSlidableChild);
                         mSlidableChild = null;
                     }
                     break;
@@ -427,7 +426,6 @@ public class Slider extends FrameLayout {
                 case ViewDragHelper.STATE_SETTLING:
                     if (!isOpen()) {
                         fastSlidingTag = true;
-                        mConfig.getSlidableMode().removeSlidableChild(mSlidableChild);
                     }
 
                     break;
@@ -444,6 +442,4 @@ public class Slider extends FrameLayout {
     private boolean isOpen() {
         return mSlidableChild != null && mConfig.getPosition().onViewDragStateChanged(mSlidableChild.getLeft(), mSlidableChild.getTop(), slidableChildLeft, slidableChildTop);
     }
-
-
 }
