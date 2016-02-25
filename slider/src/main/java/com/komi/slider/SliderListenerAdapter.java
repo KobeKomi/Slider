@@ -1,7 +1,5 @@
 package com.komi.slider;
 
-import android.view.View;
-
 /**
  * 
  *Created by Komi on 2016-01-21.

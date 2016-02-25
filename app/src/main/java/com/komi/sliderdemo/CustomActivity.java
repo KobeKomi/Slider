@@ -3,7 +3,6 @@ package com.komi.sliderdemo;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -167,10 +166,7 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
     public void setCustomSlidableChild(ImageView customSlidableChild) {
         if(sliderLayout.getConfig().getSlidableMode()==SlidableMode.CUSTOM)
         {
-
             boolean add=DemoUtils.getRandomBoolean();
-            Log.i("KOMI","--------customSlidableChild:"+customSlidableChild.hashCode()+"----add:"+add);
-
             if(add) {
                 sliderLayout.getConfig().getSlidableMode().addCustomSlidableChild(customSlidableChild);
             }

@@ -1,18 +1,22 @@
-Slider  说明
+
+##[中文说明](https://github.com/KobeKomi/Slider/blob/master/README_CN.md)
+
+DESCRIPTION
 =================================== 
-1.slider重在让activity、fragment、view具备滑动功能操作
-2.slider在此版本只需通过简单的继承、xml布局或者直接将上面3种类型对象通过SliderUtils类即可具备滑动功能
+1.The following description from Google Translation,my english is poor!<br />  
+2.Slider purpose is to make the activity, fragment, view with sliding function <br />  
+3.Slider in this version by simply extends or xml layout or added to by SliderUtils class with sliding function<br/>  
 
 ![Slider](images/s1.gif "Gif Example 1") 
 ![Slider](images/s2.gif "Gif Example 2")  
 ![Slider](images/s3.gif "Gif Example 3")  
 
 
-## 使用方法
+## USAGE
 
-1.目前支持activity、fragment、view的滑动
+1.Currently supported activity, fragment, view.<br />  
 
-2.通过如下简单操作，即可让页面具备滑动功能。
+2.By following simple operation, you can make the page with sliding function.
 
 ```java
 public class SampleActivity extends Activity
@@ -26,13 +30,13 @@ public class SampleActivity extends Activity
 }
 ```
 
-亦或通过简单的继承:
+or by extends:
 
 ```java
 public class ExtendsActivity extends SliderActivity {
 }
 ```
-或者是直接通过xml布局，就可以让子View具备滑动功能
+or by xml:
 ```xml
     <com.komi.slider.Slider
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -55,19 +59,23 @@ public class ExtendsActivity extends SliderActivity {
 ```
 
 
-需要注意的是activity在manifest下配置theme需复写android:windowIsTranslucent，否则拉开的背景会全黑。
+
+Note: activity of manifest need to override the configured theme: android: windowIsTranslucent, otherwise slide open the background is black.
+
 ```xml
  <style name="ActivityTheme" parent="Theme.AppCompat.Light.DarkActionBar">
         <item name="android:windowIsTranslucent">true</item>
     </style>
 ```
-如果设备版本大于android 5.0，也可以如下代码。在低于5.0版本下如何能在代码中修改，目前没有深入，所以在此也希望大家能共同完善！
+If the device is greater than the version of android 5.0, you can also use the following code to solve. I now do not know how the device in less than 5.0 version use code to solve, so this also hope that we can work together to improve!
+
 ```java
 SliderUtils.attachUi(this, null);
 Utils.convertActivityToTranslucent activity)
 ```
 
-关于fragment和view实现滑动功能，也基本可以通过类似的方式进行。而fragment不受android:windowIsTranslucent的影响。
+Slide function and view the fragment is not set android:windowIsTranslucent
+
 ```java
 public class SampleFragment extends Fragment 
 {  
@@ -83,8 +91,9 @@ public class SampleFragment extends Fragment
         }
 }
 ```
-或者通过继承,需要注意的是：在SliderFragment中onCreateView由于已经被final覆写了，所以要实现另一个抽象方法
-creatingView并返回当前layout的inflate对象。
+ragment by extends, you need to pay attention to is: Slider Fragment of onCreateView final because they have been overwritten, 
+so another abstract methods to achieve creatingView and returns the current layout of inflate objects.
+
 ```java
 public class ExtendsFragment extends SliderFragment
 {
@@ -98,34 +107,31 @@ public class ExtendsFragment extends SliderFragment
 
 ### SliderConfig、ISlider、SliderListener、SlidableMode
 
-1.如果你想改变Slider的一些属性，可以在任何地方通过iSlider来设置或者在初始化的时候传入,或者通过xml传入，也可以获得slider控件对象，
-直接修改你想要的属性，方式多种多样。
+1.If you want to change the properties of Slider, you can get ISlider to set up, or to get to the Slider by directly modifying the xml property you want<br />  
+
 ```java
 iSlider.setConfig(mConfig);
 ```
-2.ISlider是在SliderUtils.attach*方法返回的接口对象，通过该接口可以操作或者获得Slider对象。
+2.ISlider SliderUtils.attach * interface object is returned by the method by which the interface can be operated or obtained Slider object.<br />  
 
-3.SliderListener可以通过slider对象或者SliderConfig传入,监听滑动状态。
+3.SliderListener can pass parameters from the Slider objects or SliderConfig, for listener sliding state.<br />  
 
-4.SlidableMode：ALL：所有slider的子控件可滑动，custom:传入的自控件可以滑动，single：index为最后的子控件可滑动
+4.SlidableMode: ALL: slider children can slide, custom: set the child can slide, single: you can slide in the last position of the child<br />  
 
-5.其他更多各位可以参考代码。
+5.For more details, please refer to the code<br />  
 
-### 使用项目
+### DEPENDENCIES
 
-在项目的build.gradle文件中添加库依赖
 ```java
 dependencies{
     compile 'com.komi.slider:slider:0.2.0'
 }
 ```
 
-### Issues
+### ISSUES
 
-1.欢迎大家发现问题与共同维护该项目,喜欢就Star吧，关注项目后面会扩展更多实用功能！
-2.如果大家发行有什么Bug或建议都可以通过issues反馈过来，本人有时间会尽量去优化，也愿意和大家一块共同开发此项目！
-3.此项目灵感源于[SwipeBackLayout](https://github.com/ikew0ng/SwipeBackLayout)和[Slidr](https://github.com/r0adkll/Slidr)开源项目进行功能的扩展补充<br />  
-4.！！！！！！！！在此请求英语大神的帮助翻译README文档和代码注释，非常感谢！
+1.Welcome to the Issues and refine the project, if you like, please click on the star, later will expand more useful features!<br /> 
+2.This project extends from[SwipeBackLayout](https://github.com/ikew0ng/SwipeBackLayout)and[Slidr](https://github.com/r0adkll/Slidr)<br />  
 
-## 项目作者
+## AUTHOR
  **[KobeKomi](https://github.com/KobeKomi)** 
