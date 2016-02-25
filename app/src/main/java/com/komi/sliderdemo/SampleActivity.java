@@ -27,7 +27,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
     private ISlider iSlider;
     private RadioGroup radioGroup;
 
-    private int[] RadioBtnIds = {R.id.rbt_left, R.id.rbt_right, R.id.rbt_top, R.id.rbt_bottom, R.id.rbt_vertical, R.id.rbt_horizontal, R.id.rbt_all};
+    private int[] RadioBtnIds = {R.id.rbt_left, R.id.rbt_right, R.id.rbt_top, R.id.rbt_bottom,R.id.rbt_horizontal, R.id.rbt_vertical, R.id.rbt_all};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,6 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         SliderPosition sliderPosition = SliderPosition.sPositionChildren[position];
         ((RadioButton) findViewById(RadioBtnIds[position])).setChecked(true);
 
-        radioGroup.setOnCheckedChangeListener(this);
         int primaryColor = getResources().getColor(R.color.light_blue_500);
 
         mConfig = new SliderConfig.Builder()
@@ -60,8 +59,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         edgeSwitch = (Switch) findViewById(R.id.swich);
         edgeSwitch.setOnCheckedChangeListener(this);
         edgeSwitch.setChecked(mConfig.isEdgeOnly());
-
-
+        radioGroup.setOnCheckedChangeListener(this);
 
     }
 

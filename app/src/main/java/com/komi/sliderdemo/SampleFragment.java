@@ -34,7 +34,7 @@ public class SampleFragment extends Fragment implements RadioGroup.OnCheckedChan
 
     private View rootView;
     private int []RadioBtnIds={R.id.fragment_rbt_left,R.id.fragment_rbt_right,R.id.fragment_rbt_top,
-            R.id.fragment_rbt_bottom,R.id.fragment_rbt_vertical,R.id.fragment_rbt_horizontal,R.id.fragment_rbt_all};
+            R.id.fragment_rbt_bottom,R.id.fragment_rbt_horizontal,R.id.fragment_rbt_vertical,R.id.fragment_rbt_all};
 
 
     @Override

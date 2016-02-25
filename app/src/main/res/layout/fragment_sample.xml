@@ -35,16 +35,16 @@
                 android:text="@string/position_bottom" />
 
             <RadioButton
-                android:id="@+id/fragment_rbt_vertical"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/position_vertical" />
-
-            <RadioButton
                 android:id="@+id/fragment_rbt_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/position_horizontal" />
+
+            <RadioButton
+                android:id="@+id/fragment_rbt_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/position_vertical" />
 
             <RadioButton
                 android:id="@+id/fragment_rbt_all"

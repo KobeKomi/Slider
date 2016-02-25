@@ -14,14 +14,15 @@ import com.komi.slider.ui.SliderFragment;
 /**
  * Created by Komi on 2016-02-05.
  */
-public class LinkListViewFragment extends SliderFragment implements FragmentCloseListener,AbsListView.OnScrollListener{
+public class LinkListViewFragment extends SliderFragment implements FragmentCloseListener, AbsListView.OnScrollListener {
 
     private View rootView;
     private ListView listView;
+
     @Override
     public View creatingView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        rootView=inflater.inflate(R.layout.fragment_listview_link, container, false);
+        rootView = inflater.inflate(R.layout.fragment_listview_link, container, false);
 
 
         return rootView;
@@ -38,8 +39,8 @@ public class LinkListViewFragment extends SliderFragment implements FragmentClos
         ArrayAdapter<String> demoAdapter = new ArrayAdapter<String>(getActivity(),
                 android.R.layout.simple_list_item_1);
 
-        for (int i=0;i<50;i++) {
-            demoAdapter.add("--------:"+i);
+        for (int i = 0; i < 50; i++) {
+            demoAdapter.add("--------:" + i);
         }
         listView.setAdapter(demoAdapter);
         iSlider.getConfig().setPosition(SliderPosition.BOTTOM);
@@ -60,9 +61,8 @@ public class LinkListViewFragment extends SliderFragment implements FragmentClos
             if (view.getLastVisiblePosition() == view.getCount() - 1) {
                 iSlider.unlock();
             }
-        }else if(scrollState==AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL)
-        {
-                iSlider.lock();
+        } else if (scrollState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
+            iSlider.lock();
 
         }
     }

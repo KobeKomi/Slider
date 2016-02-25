@@ -43,7 +43,6 @@ public class Slider extends FrameLayout {
     private ViewDragHelper mDragHelper;
 
     private SliderListener mListener;
-    private boolean mIsLocked = false;
     private boolean mIsEdgeTouched = false;
 
     private SliderConfig mConfig;
@@ -135,7 +134,7 @@ public class Slider extends FrameLayout {
      */
     public void lock() {
         mDragHelper.abort();
-        mIsLocked = true;
+        mConfig.setSlidable(false);
     }
 
     /**
@@ -143,7 +142,7 @@ public class Slider extends FrameLayout {
      */
     public void unlock() {
         mDragHelper.abort();
-        mIsLocked = false;
+        mConfig.setSlidable(true);
     }
 
 
@@ -169,7 +168,7 @@ public class Slider extends FrameLayout {
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
         boolean interceptForDrag;
-        if (mIsLocked) {
+        if (!mConfig.isSlidable()) {
             return false;
         }
         if (mConfig.isEdgeOnly() && mSlidableChild != null) {
@@ -181,12 +180,12 @@ public class Slider extends FrameLayout {
             interceptForDrag = false;
         }
 
-        return interceptForDrag && !mIsLocked;
+        return interceptForDrag && mConfig.isSlidable();
     }
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (mIsLocked) {
+        if (!mConfig.isSlidable()) {
             return false;
         }
         try {

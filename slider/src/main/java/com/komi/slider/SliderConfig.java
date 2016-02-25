@@ -93,6 +93,8 @@ public class SliderConfig {
 
     private boolean finishUi=true;
 
+    private boolean slidable=true;
+
     /**
      * Hidden Constructor
      * Use the builder pattern
@@ -251,10 +253,12 @@ public class SliderConfig {
         return slidableMode;
     }
 
-
-
     public boolean isFinishUi() {
         return finishUi;
+    }
+
+    public boolean isSlidable() {
+        return slidable;
     }
 
     /***********************************************************************************************
@@ -325,9 +329,12 @@ public class SliderConfig {
     }
 
 
-
     public void setFinishUi(boolean finishUi) {
         this.finishUi = finishUi;
+    }
+
+    public void setSlidable(boolean slidable) {
+        this.slidable = slidable;
     }
 
     /**
@@ -424,6 +431,11 @@ public class SliderConfig {
 
         public Builder finishUi(boolean finishUi){
             config.finishUi = finishUi;
+            return this;
+        }
+
+        public Builder slidable(boolean slidable){
+            config.slidable = slidable;
             return this;
         }
         public SliderConfig build(){
