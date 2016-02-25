@@ -74,8 +74,19 @@ SliderUtils.attachUi(this, null);
 Utils.convertActivityToTranslucent activity)
 ```
 
-Slide function and view the fragment is not set android:windowIsTranslucent
+Fragment by extends, you need to pay attention to is: Slider Fragment of onCreateView final because they have been overwritten, 
+so another abstract methods to achieve creatingView and returns the current layout of inflate objects.
 
+```java
+public class ExtendsFragment extends SliderFragment
+{
+    @Override
+    public View creatingView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_entends, container, false);
+    }
+}
+```
+or by SliderUtils
 ```java
 public class SampleFragment extends Fragment 
 {  
@@ -89,18 +100,6 @@ public class SampleFragment extends Fragment
         SliderUtils.attachFragment(this, rootView,null)
         return iSlider.getSliderView();
         }
-}
-```
-ragment by extends, you need to pay attention to is: Slider Fragment of onCreateView final because they have been overwritten, 
-so another abstract methods to achieve creatingView and returns the current layout of inflate objects.
-
-```java
-public class ExtendsFragment extends SliderFragment
-{
-    @Override
-    public View creatingView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_entends, container, false);
-    }
 }
 ```
 
