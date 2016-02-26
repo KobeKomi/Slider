@@ -62,7 +62,6 @@ public class ExtendsActivity extends SliderActivity {
 ```
 如果设备版本大于android 5.0，也可以如下代码。在低于5.0版本下如何能在代码中修改，目前没有深入，所以在此也希望大家能共同完善！
 ```java
-SliderUtils.attachUi(this, null);
 Utils.convertActivityToTranslucent activity)
 ```
 
@@ -77,7 +76,7 @@ public class SampleFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_sample, container, false);
-        SliderUtils.attachFragment(this, rootView,null)
+        iSlider=SliderUtils.attachFragment(this, rootView,null)
         return iSlider.getSliderView();
         }
 }

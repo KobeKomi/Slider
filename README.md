@@ -70,7 +70,6 @@ Note: activity of manifest need to override the configured theme: android: windo
 If the device is greater than the version of android L, you can use the following method instead:
 
 ```java
-SliderUtils.attachUi(this, null);
 Utils.convertActivityToTranslucent activity)
 ```
 
@@ -97,7 +96,7 @@ public class SampleFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_sample, container, false);
-        SliderUtils.attachFragment(this, rootView,null)
+        iSlider=SliderUtils.attachFragment(this, rootView,null)
         return iSlider.getSliderView();
         }
 }
