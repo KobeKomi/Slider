@@ -113,7 +113,7 @@ iSlider.setConfig(mConfig);
 在项目的build.gradle文件中添加库依赖
 ```java
 dependencies{
-    compile 'com.komi.slider:slider:0.2.0'
+    compile 'com.komi.slider:slider:0.2.1'
 }
 ```
 

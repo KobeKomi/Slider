@@ -109,7 +109,7 @@ For more details, please refer to the code<br />
 
 ```java
 dependencies{
-    compile 'com.komi.slider:slider:0.2.0'
+    compile 'com.komi.slider:slider:0.2.1'
 }
 ```
 

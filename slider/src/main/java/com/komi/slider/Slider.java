@@ -49,6 +49,8 @@ public class Slider extends FrameLayout {
 
     private boolean fastSlidingTag;
 
+
+
     public Slider(Context context) {
         super(context);
         mConfig = new SliderConfig.Builder().build();
@@ -441,4 +443,6 @@ public class Slider extends FrameLayout {
     private boolean isOpen() {
         return mSlidableChild != null && mConfig.getPosition().onViewDragStateChanged(mSlidableChild.getLeft(), mSlidableChild.getTop(), slidableChildLeft, slidableChildTop);
     }
+
+
 }
