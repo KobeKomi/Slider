@@ -21,10 +21,7 @@ public class LinkListViewFragment extends SliderFragment implements FragmentClos
 
     @Override
     public View creatingView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
         rootView = inflater.inflate(R.layout.fragment_listview_link, container, false);
-
-
         return rootView;
     }
 

@@ -71,32 +71,27 @@ public class SliderUtils {
 
 
     public static ISlider attachUi(final SliderUi ui, final Slider slider) {
-
-
-        final SliderListener sliderListener = slider.getConfig().getListener();
-
         slider.setOnPanelSlideListener(new SliderListener() {
-
-            private final ArgbEvaluator mEvaluator = new ArgbEvaluator();
+            final ArgbEvaluator mEvaluator = new ArgbEvaluator();
 
             @Override
             public void onSlideStateChanged(int state) {
-                if (sliderListener != null) {
-                    sliderListener.onSlideStateChanged(state);
+                if (slider.getConfig().getListener() != null) {
+                    slider.getConfig().getListener().onSlideStateChanged(state);
                 }
             }
 
             @Override
             public void onSlideOpened() {
-                if (sliderListener != null) {
-                    sliderListener.onSlideOpened();
+                if (slider.getConfig().getListener() != null) {
+                    slider.getConfig().getListener().onSlideOpened();
                 }
             }
 
             @Override
             public void onSlideClosed() {
-                if (sliderListener != null) {
-                    sliderListener.onSlideClosed();
+                if (slider.getConfig().getListener() != null) {
+                    slider.getConfig().getListener().onSlideClosed();
                 }
                 if(slider.getConfig().isFinishUi()) {
                     ui.slideAfter(slider);
@@ -115,8 +110,8 @@ public class SliderUtils {
                     ui.getUiActivity().getWindow().setStatusBarColor(newColor);
                 }
 
-                if (sliderListener != null) {
-                    sliderListener.onSlideChange(percent);
+                if (slider.getConfig().getListener() != null) {
+                    slider.getConfig().getListener().onSlideChange(percent);
                 }
             }
         });
@@ -155,7 +150,6 @@ public class SliderUtils {
             public void slideExit() {
                 ui.slideExit(slider);
             }
-
 
             @Override
             public Slider getSliderView() {
