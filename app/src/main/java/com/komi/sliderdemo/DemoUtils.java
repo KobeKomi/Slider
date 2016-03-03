@@ -1,5 +1,7 @@
 package com.komi.sliderdemo;
 
+import com.komi.slider.position.SliderPosition;
+
 import java.util.Random;
 
 /**
@@ -36,4 +38,12 @@ public class DemoUtils {
     {
         return random.nextBoolean();
     }
+
+    public static SliderPosition getRandomPosition()
+    {
+        int position = random.nextInt(SliderPosition.sPositionChildren.length);
+
+        return SliderPosition.sPositionChildren[position];
+    }
+
 }

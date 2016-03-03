@@ -140,6 +140,7 @@ public class SampleFragment extends Fragment implements RadioGroup.OnCheckedChan
 
     @Override
     public void fragmentClosed() {
-        iSlider.slideExit();
+        if(iSlider!=null)
+            iSlider.slideExit();
     }
 }

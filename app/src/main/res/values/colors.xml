@@ -8,5 +8,6 @@
     <color name="teal_500">#009688</color>
     <color name="green_500">#4CAF50</color>
     <color name="light_green_500">#8BC34A</color>
+    <color name="dialogTopColor">#1b2048</color>
 
 </resources>

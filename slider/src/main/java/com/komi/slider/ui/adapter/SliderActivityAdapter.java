@@ -1,4 +1,4 @@
-package com.komi.slider.ui;
+package com.komi.slider.ui.adapter;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -13,6 +13,7 @@ import android.view.animation.AnimationUtils;
 import com.komi.slider.Slider;
 import com.komi.slider.SliderConfig;
 import com.komi.slider.SliderListener;
+import com.komi.slider.ui.SliderUi;
 
 /**
  * Created by Komi on 2016-02-16.
@@ -20,11 +21,10 @@ import com.komi.slider.SliderListener;
 public class SliderActivityAdapter extends SliderUi {
 
     private Activity activity;
-    private boolean replace;
+    private boolean replace = true;
 
-    public SliderActivityAdapter(Activity activity)
-    {
-        this.activity=activity;
+    public SliderActivityAdapter(Activity activity) {
+        this.activity = activity;
     }
 
     public void setReplace(boolean replace) {
@@ -38,36 +38,20 @@ public class SliderActivityAdapter extends SliderUi {
 
 
     @Override
-    public void slideAfter(Slider slider) {
-        if(!activity.isFinishing()) {
-            activity.finish();
-        }
-    }
-
-
-    @Override
-    public void slideBefore(Slider slider) {
+    public void slideEnterBefore(Slider slider) {
         if (!replace) {
             addToActivity(slider);
         } else {
             replaceToActivity(slider);
         }
-        boolean isSlideEnter=slider.getConfig().isSlideEnter();
+        boolean isSlideEnter = slider.getConfig().isSlideEnter();
 
-        if(isSlideEnter) {
+        if (isSlideEnter) {
             slideEnter(slider);
         }
     }
 
-
     @Override
-    public void slideExit(Slider slider) {
-        int aminId = slider.getConfig().getPosition().getActivitySlidingAmins()[1];
-        getUiActivity().overridePendingTransition(0, aminId);
-        listenerActivity(slider.getConfig(), aminId, 1, 0);
-    }
-
-
     public void slideEnter(Slider slider) {
         //View显示前为activity拉开的背景透明化。也可以在AndroidManifest里为activity配置android:theme为
         //<item name="android:windowIsTranslucent">true</item>
@@ -78,6 +62,22 @@ public class SliderActivityAdapter extends SliderUi {
 
     }
 
+
+    @Override
+    public void slideExit(Slider slider) {
+        int aminId = slider.getConfig().getPosition().getActivitySlidingAmins()[1];
+        getUiActivity().overridePendingTransition(0, aminId);
+        listenerActivity(slider.getConfig(), aminId, 1, 0);
+    }
+
+    @Override
+    public void slideExitAfter(Slider slider) {
+        if (!activity.isFinishing()) {
+            activity.finish();
+        }
+    }
+
+
     private View getRootView() {
         return activity.getWindow().getDecorView();
     }
@@ -85,8 +85,8 @@ public class SliderActivityAdapter extends SliderUi {
 
     //直接作为activity的parent加入用 replaceToActivity替代
     @Deprecated
-    private  void addToActivity(Slider slider) {
-        ViewGroup root = (ViewGroup)getRootView();
+    private void addToActivity(Slider slider) {
+        ViewGroup root = (ViewGroup) getRootView();
 
         getUiActivity().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
@@ -104,10 +104,10 @@ public class SliderActivityAdapter extends SliderUi {
     /**
      * 替换掉activity的parent,减少嵌套
      */
-    private  void replaceToActivity(Slider slider) {
+    private void replaceToActivity(Slider slider) {
         //用slider替换掉activity container parent减少一层嵌套
         //PhoneWindows--decor
-        ViewGroup root = (ViewGroup)getRootView();
+        ViewGroup root = (ViewGroup) getRootView();
 
         //activity拉开的背景透明化,==<item name="android:windowBackground">@android:color/transparent</item>
 
@@ -125,8 +125,8 @@ public class SliderActivityAdapter extends SliderUi {
         View container = content.getChildAt(0);
 
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams
-                    (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-            slider.setLayoutParams(layoutParams);
+                (ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        slider.setLayoutParams(layoutParams);
 
         content.removeView(container);
         slider.addView(container);

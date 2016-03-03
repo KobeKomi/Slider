@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.komi.slider.ISlider;
+import com.komi.slider.SliderConfig;
 import com.komi.slider.SliderUtils;
 
 /**
@@ -15,15 +16,15 @@ import com.komi.slider.SliderUtils;
 public abstract class SliderFragment extends Fragment{
 
     private View rootView;
-
     protected ISlider iSlider;
+    protected SliderConfig mConfig;
 
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView=creatingView(inflater,container,savedInstanceState);
-        iSlider = SliderUtils.attachFragment(this, rootView,null);
+        iSlider = SliderUtils.attachFragment(this, rootView,mConfig);
         return iSlider.getSliderView();
     }
 

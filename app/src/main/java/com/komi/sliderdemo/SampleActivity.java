@@ -40,8 +40,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         radioGroup = (RadioGroup) findViewById(R.id.radio_group);
         Random random = new Random();
         int position = random.nextInt(SliderPosition.sPositionChildren.length);
-
-        SliderPosition sliderPosition = SliderPosition.sPositionChildren[position];
+        SliderPosition sliderPosition = DemoUtils.getRandomPosition();
         ((RadioButton) findViewById(RadioBtnIds[position])).setChecked(true);
 
         int primaryColor = getResources().getColor(R.color.light_blue_500);

@@ -91,6 +91,9 @@ public class SliderConfig {
 
     private SlidableMode slidableMode = SlidableMode.ALL;
 
+    /**
+     * 滑动完成是否退出页面或者关闭页面
+     */
     private boolean finishUi=true;
 
     private boolean slidable=true;

@@ -11,17 +11,13 @@ public abstract class SliderUi {
 
     public abstract Activity getUiActivity();
 
+    public abstract void slideEnterBefore(Slider slider);
 
-    public abstract void slideBefore(Slider slider);
-
-
-    public abstract void slideAfter(Slider slider);
-
+    public abstract void slideEnter(Slider slider);
 
     public abstract void slideExit(Slider slider);
 
-
-
+    public abstract void slideExitAfter(Slider slider);
 
 
 }

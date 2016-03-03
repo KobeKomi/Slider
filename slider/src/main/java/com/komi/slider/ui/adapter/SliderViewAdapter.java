@@ -1,9 +1,10 @@
-package com.komi.slider.ui;
+package com.komi.slider.ui.adapter;
 
 import android.app.Activity;
 import android.view.View;
 
 import com.komi.slider.Slider;
+import com.komi.slider.ui.SliderUi;
 
 /**
  * Created by Komi on 2016-02-23.
@@ -14,7 +15,7 @@ public class SliderViewAdapter extends SliderUi {
     private Activity activity;
 
     public SliderViewAdapter(Activity activity) {
-        this.activity=activity;
+        this.activity = activity;
     }
 
 
@@ -25,20 +26,21 @@ public class SliderViewAdapter extends SliderUi {
 
 
     @Override
-    public void slideAfter(Slider slider) {
-        View slidableChild = slider.getSlidableChild();
-        if (slidableChild != null) {
-            slider.removeView(slidableChild);
-        }
-    }
-
-
-    @Override
-    public void slideBefore(Slider slider) {
+    public void slideEnterBefore(Slider slider) {
         if (slider.getConfig().isSlideEnter()) {
             slideEnter(slider);
         }
     }
+
+    @Override
+    public void slideEnter(Slider slider) {
+        View child = slider.getSlidableChild();
+        if (child != null) {
+            int[] enterTarget = slider.getConfig().getPosition().getEnterTarget(child, slider.getWidth(), slider.getHeight());
+            slider.getViewDragHelper().smoothSlideViewTo(slider.getSlidableChild(), enterTarget[0], enterTarget[1], child.getLeft(), child.getTop());
+        }
+    }
+
 
     @Override
     public void slideExit(Slider slider) {
@@ -48,13 +50,15 @@ public class SliderViewAdapter extends SliderUi {
             slider.getViewDragHelper().smoothSlideViewTo(slider.getSlidableChild(), exitTarget[0], exitTarget[1]);
             slider.invalidate();
         }
+
     }
 
-    public void slideEnter(Slider slider) {
-        View child = slider.getSlidableChild();
-        if (child != null) {
-            int[] enterTarget = slider.getConfig().getPosition().getEnterTarget(child, slider.getWidth(), slider.getHeight());
-            slider.getViewDragHelper().smoothSlideViewTo(slider.getSlidableChild(), enterTarget[0], enterTarget[1], child.getLeft(), child.getTop());
+
+    @Override
+    public void slideExitAfter(Slider slider) {
+        View slidableChild = slider.getSlidableChild();
+        if (slidableChild != null) {
+            slider.removeView(slidableChild);
         }
     }
 }

@@ -42,9 +42,7 @@ public class AdapterFragment extends Fragment implements FragmentCloseListener,S
     @Override
     public void fragmentClosed() {
         if(iSlider!=null)
-        {
             iSlider.slideExit();
-        }
     }
 
     @Override

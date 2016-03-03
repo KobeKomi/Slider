@@ -3,15 +3,17 @@ package com.komi.slider;
 import android.animation.ArgbEvaluator;
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.Dialog;
 import android.app.Fragment;
 import android.os.Build;
 import android.view.View;
 
-import com.komi.slider.ui.SliderActivityAdapter;
-import com.komi.slider.ui.SliderFragmentAdapter;
+import com.komi.slider.ui.adapter.SliderActivityAdapter;
+import com.komi.slider.ui.adapter.SliderDialogFragmentAdapter;
+import com.komi.slider.ui.adapter.SliderFragmentAdapter;
 import com.komi.slider.ui.SliderUi;
-import com.komi.slider.ui.SliderV4FragmentAdapter;
-import com.komi.slider.ui.SliderViewAdapter;
+import com.komi.slider.ui.adapter.SliderV4FragmentAdapter;
+import com.komi.slider.ui.adapter.SliderViewAdapter;
 
 
 /**
@@ -20,54 +22,62 @@ import com.komi.slider.ui.SliderViewAdapter;
 public class SliderUtils {
 
     public static ISlider attachActivity(Activity activity, SliderConfig config) {
-        return attachActivity(null,activity,true,config);
+        return attachActivity(null, activity, config);
     }
 
-    public static ISlider attachActivity(Slider slider,Activity activity, boolean replace,SliderConfig config) {
-        SliderActivityAdapter sliderUi=new SliderActivityAdapter(activity);
-        sliderUi.setReplace(replace);
-        return attachUi(slider,sliderUi,config);
+    public static ISlider attachActivity(Slider slider, Activity activity, SliderConfig config) {
+        SliderUi sliderUi = new SliderActivityAdapter(activity);
+        return attachUi(slider, sliderUi, config);
     }
 
-    public static ISlider attachFragment(Fragment fragment,View rootView, SliderConfig config) {
-        return attachFragment(null,fragment,rootView,config);
+    public static ISlider attachFragment(Fragment fragment, View rootView, SliderConfig config) {
+        return attachFragment(null, fragment, rootView, config);
     }
 
-    public static ISlider attachFragment(Slider slider,Fragment fragment,View rootView, SliderConfig config) {
-        SliderUi sliderUi=new SliderFragmentAdapter(fragment,rootView);
-        return attachUi(slider,sliderUi,config);
+    public static ISlider attachFragment(Slider slider, Fragment fragment, View rootView, SliderConfig config) {
+        SliderUi sliderUi = new SliderFragmentAdapter(fragment, rootView);
+        return attachUi(slider, sliderUi, config);
     }
 
     public static ISlider attachV4Fragment(android.support.v4.app.Fragment fragment, View rootView, SliderConfig config) {
-        return attachV4Fragment(null,fragment,rootView,config);
+        return attachV4Fragment(null, fragment, rootView, config);
     }
 
     public static ISlider attachV4Fragment(Slider slider, android.support.v4.app.Fragment fragment, View rootView, SliderConfig config) {
-        SliderUi sliderUi=new SliderV4FragmentAdapter(fragment,rootView);
-        return attachUi(slider,sliderUi,config);
+        SliderUi sliderUi = new SliderV4FragmentAdapter(fragment, rootView);
+        return attachUi(slider, sliderUi, config);
     }
 
+    public static ISlider attachDialogFragment(Activity activity, Dialog dialog, SliderConfig config) {
+        return attachDialogFragment(activity, null, dialog, config);
+    }
+
+    public static ISlider attachDialogFragment(Activity activity, Slider slider, Dialog dialog, SliderConfig config) {
+        SliderUi sliderUi = new SliderDialogFragmentAdapter(activity, dialog);
+        return attachUi(slider, sliderUi, config);
+    }
+
+
     public static ISlider attachView(Activity activity, SliderConfig config) {
-        return attachView(activity,null,config);
+        return attachView(activity, null, config);
     }
 
     public static ISlider attachView(Activity activity, Slider slider, SliderConfig config) {
-        SliderViewAdapter sliderUi=new SliderViewAdapter(activity);
-        return attachUi(slider,sliderUi,config);
+        SliderViewAdapter sliderUi = new SliderViewAdapter(activity);
+        return attachUi(slider, sliderUi, config);
     }
 
 
-    private static ISlider attachUi(Slider slider,SliderUi ui, SliderConfig config) {
+    public static ISlider attachUi(Slider slider, SliderUi ui, SliderConfig config) {
         if (ui == null) {
             return null;
         }
-        if(slider==null) {
+        if (slider == null) {
             slider = new Slider(ui.getUiActivity(), config);
         }
         ISlider iSlider = attachUi(ui, slider);
         return iSlider;
     }
-
 
 
     public static ISlider attachUi(final SliderUi ui, final Slider slider) {
@@ -93,8 +103,8 @@ public class SliderUtils {
                 if (slider.getConfig().getListener() != null) {
                     slider.getConfig().getListener().onSlideClosed();
                 }
-                if(slider.getConfig().isFinishUi()) {
-                    ui.slideAfter(slider);
+                if (slider.getConfig().isFinishUi()) {
+                    ui.slideExitAfter(slider);
                 }
             }
 
@@ -116,7 +126,7 @@ public class SliderUtils {
             }
         });
 
-        ui.slideBefore(slider);
+        ui.slideEnterBefore(slider);
 
         return proxyISlider(ui, slider);
     }
@@ -148,21 +158,28 @@ public class SliderUtils {
 
             @Override
             public void slideExit() {
-                ui.slideExit(slider);
+                if (slider.getConfig().isSlideExit()) {
+                    ui.slideExit(slider);
+                } else {
+                    if (slider.getConfig().isFinishUi()) {
+                        ui.slideExitAfter(slider);
+                    }
+                }
             }
 
             @Override
             public Slider getSliderView() {
                 return slider;
             }
+
+            @Override
+            public SliderUi getSliderUi() {
+                return ui;
+            }
         };
 
         return iSlider;
     }
-
-
-
-
 
 
 }

@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.komi.slider.ISlider;
+import com.komi.slider.SliderConfig;
 import com.komi.slider.SliderUtils;
 
 
@@ -14,6 +15,7 @@ import com.komi.slider.SliderUtils;
 public class SliderActivity extends Activity{
 
     protected ISlider iSlider;
+    protected SliderConfig mConfig;
 
     @Override
     public void setContentView(View view) {
@@ -35,7 +37,7 @@ public class SliderActivity extends Activity{
 
     private void attachSlideUi()
     {
-        iSlider= SliderUtils.attachActivity(this,null);
+        iSlider= SliderUtils.attachActivity(this,mConfig);
     }
 
     @Override

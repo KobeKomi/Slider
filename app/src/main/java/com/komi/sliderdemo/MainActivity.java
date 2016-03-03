@@ -1,5 +1,6 @@
 package com.komi.sliderdemo;
 
+import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -17,12 +18,17 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.flyco.dialog.listener.OnBtnClickL;
+import com.flyco.dialog.widget.NormalDialog;
+import com.komi.slider.SliderUtils;
+
 /**
  * Created by Komi on 2016/2/03.
  */
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private Fragment currentFragment;
+    private BaseDialog dialog;
     private FragmentManager fragmentManager;
     private SparseArrayCompat<Fragment> fragmentArray = new SparseArrayCompat<>();
 
@@ -55,26 +61,50 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        switch (Demo.values()[position].getType())
+        {
+            case ACTIVITY:
+                Class activityClass = null;
+                try {
+                    activityClass = Class.forName(Demo.values()[position].className);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (activityClass != null) {
+                    Intent intent = new Intent(this, activityClass);
+                    startActivity(intent);
+                }
+                break;
+            case FRAGMENT:
+                showFragment(Demo.values()[position].className,false);
 
-        if (Demo.values()[position].isActivity()) {
-            Class activityClass = null;
-            try {
-                activityClass = Class.forName(Demo.values()[position].className);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
-            }
-            if (activityClass != null) {
-                Intent intent = new Intent(this, activityClass);
-                startActivity(intent);
-            }
-
-        } else {
-            showFragment(Demo.values()[position].className);
-
+                break;
+            case DIALOG_FRAGMENT:
+                showFragment(Demo.values()[position].className,true);
+                break;
+            case DIALOG:
+                NormalDialogOneBtn();
+                break;
         }
-
     }
 
+    private void NormalDialogOneBtn() {
+        final NormalDialog dialog = new NormalDialog(this);
+        dialog.setCanceledOnTouchOutside(false);
+        SliderUtils.attachDialogFragment(this,dialog,null);
+
+        dialog.content("你今天的抢购名额已用完~")//
+                .btnNum(1)
+                .btnText("继续逛逛")//
+                .show();
+
+        dialog.setOnBtnClickL(new OnBtnClickL() {
+            @Override
+            public void onBtnClick() {
+                dialog.dismiss();
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
@@ -89,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    private void showFragment(String fragmentName) {
+    private void showFragment(String fragmentName,boolean dialog) {
         int key = fragmentName.hashCode();
         currentFragment = fragmentArray.get(key);
 
@@ -97,13 +127,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             currentFragment = Fragment.instantiate(this, fragmentName);
             fragmentArray.put(key, currentFragment);
         }
+            if (!currentFragment.isAdded()) {
+                if(!dialog) {
 
-        if (!currentFragment.isAdded()) {
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.add(R.id.fragment_container, currentFragment);
-            transaction.addToBackStack(null);
-            transaction.commit();
-        }
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.add(R.id.fragment_container, currentFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+                }else
+                {
+                    ((DialogFragment)currentFragment).show(getFragmentManager(), "");
+
+                }
+            }
+
     }
 
 
@@ -144,4 +181,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         startActivity(Intent.createChooser(shareIntent, "Share App"));
     }
+
+
 }

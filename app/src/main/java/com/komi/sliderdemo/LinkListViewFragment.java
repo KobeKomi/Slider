@@ -47,8 +47,8 @@ public class LinkListViewFragment extends SliderFragment implements FragmentClos
 
     @Override
     public void fragmentClosed() {
-        iSlider.slideExit();
-
+        if(iSlider!=null)
+            iSlider.slideExit();
     }
 
 
