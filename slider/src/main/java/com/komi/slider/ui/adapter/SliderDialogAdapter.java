@@ -173,7 +173,7 @@ public class SliderDialogAdapter extends SliderUi {
             }
         });
 
-        ValueAnimator valueAnimator = ValueAnimator.ofFloat(0, 1);
+        ValueAnimator valueAnimator = ValueAnimator.ofFloat(enter?0:1,enter?1:0);
         valueAnimator.setDuration(duration);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
             valueAnimator.setInterpolator(animatorSet.getInterpolator());

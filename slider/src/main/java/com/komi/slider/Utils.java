@@ -7,9 +7,7 @@ import android.os.Build;
 
 import java.lang.reflect.Method;
 
-/**
- * Created by Chaojun Wang on 6/9/14.
- */
+
 public class Utils {
     private Utils() {
     }
