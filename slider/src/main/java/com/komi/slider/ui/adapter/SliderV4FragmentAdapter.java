@@ -56,7 +56,7 @@ public class SliderV4FragmentAdapter extends SliderUi {
         View child = slider.getSlidableChild();
         if (child != null) {
             int[] enterTarget = slider.getConfig().getPosition().getEnterTarget(child, slider.getWidth(), slider.getHeight());
-            slider.getViewDragHelper().smoothSlideViewTo(slider.getSlidableChild(), enterTarget[0], enterTarget[1], child.getLeft(), child.getTop());
+            slider.getViewDragHelper().smoothSlideViewTo(slider.getSlidableChild(), enterTarget[0], enterTarget[1], enterTarget[2], enterTarget[3]);
         }
     }
 
@@ -65,7 +65,7 @@ public class SliderV4FragmentAdapter extends SliderUi {
         View child = slider.getSlidableChild();
         if (child != null) {
             int[] exitTarget = slider.getConfig().getPosition().getExitTarget(slider.getSlidableChild(), slider.getWidth(), slider.getHeight());
-            slider.getViewDragHelper().smoothSlideViewTo(child, exitTarget[0], exitTarget[1]);
+            slider.getViewDragHelper().smoothSlideViewTo(child, exitTarget[2], exitTarget[3]);
         }
         slider.invalidate();
     }

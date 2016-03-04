@@ -39,7 +39,7 @@ public enum Demo {
             return Type.DIALOG_FRAGMENT;
         }
     },
-    DIALOG(BaseDialog.class.getName(), R.string.dialog) {
+    DIALOG("", R.string.dialog) {
         @Override
         public Type getType() {
             return Type.DIALOG;

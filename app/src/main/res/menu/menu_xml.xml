@@ -4,8 +4,15 @@
 
 
     <item
+        android:id="@+id/menu_xml_del"
+        android:icon="@android:drawable/ic_delete"
+        android:orderInCategory="90"
+        android:title=""
+        app:showAsAction="always" />
+
+    <item
         android:id="@+id/menu_xml_add"
-        android:icon="@android:drawable/ic_menu_add"
+        android:icon="@android:drawable/ic_input_add"
         android:orderInCategory="100"
         android:title=""
         app:showAsAction="always" />

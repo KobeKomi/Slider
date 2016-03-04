@@ -6,12 +6,14 @@ import android.os.Bundle;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.komi.slider.Slider;
 import com.komi.slider.SliderListener;
 import com.komi.slider.mode.SlidableMode;
+import com.komi.slider.position.SliderPosition;
 import com.komi.slider.ui.SliderAppCompatActivity;
 
 /**
@@ -51,6 +53,16 @@ public class XmlActivity extends SliderAppCompatActivity implements SliderListen
             case R.id.menu_xml_add:
                 addChildView();
                 return true;
+
+            case R.id.menu_xml_del:
+                View slidableChild=sliderLayout.getSlidableChild();
+                sliderLayout.getConfig().setPosition(DemoUtils.getRandomPosition());
+                if(slidableChild!=null) {
+                    int[] exitTarget = sliderLayout.getConfig().getPosition().getExitTarget(sliderLayout.getSlidableChild(), sliderLayout.getWidth(), sliderLayout.getHeight());
+                    sliderLayout.getViewDragHelper().smoothSlideViewTo(slidableChild, exitTarget[2], exitTarget[3]);
+                    sliderLayout.invalidate();
+                }
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
@@ -75,6 +87,7 @@ public class XmlActivity extends SliderAppCompatActivity implements SliderListen
 
     @Override
     public void onSlideClosed() {
+
         if(sliderLayout.getSlidableChild()!=null)
         {
             sliderLayout.removeView(sliderLayout.getSlidableChild());
@@ -93,13 +106,11 @@ public class XmlActivity extends SliderAppCompatActivity implements SliderListen
             params.topMargin = sliderLayout.getChildCount() * marginTop;
             imageView.setLayoutParams(params);
             sliderLayout.addView(imageView);
-
+            sliderLayout.getConfig().setPosition(SliderPosition.ALL);
             //custom enter animation
             PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("scaleX", 0, 1f);
             PropertyValuesHolder pvhZ = PropertyValuesHolder.ofFloat("scaleY", 0, 1f);
             ObjectAnimator.ofPropertyValuesHolder(imageView, pvhY,pvhZ).setDuration(400).start();
-
-
         }
     }
 }

@@ -89,13 +89,13 @@ public class RightPosition extends SliderPosition {
 
     @Override
     public int[] getEnterTarget(View childView,int maxWidth,int maxHeight) {
-        int []enterTarget={-maxWidth, childView.getTop()};
+        int []enterTarget={-maxWidth, childView.getTop(),childView.getLeft(),childView.getTop()};
         return enterTarget;
     }
 
     @Override
     public int[] getExitTarget(View childView,int maxWidth,int maxHeight) {
-        int []exitTarget={-maxWidth, childView.getTop()};
+        int []exitTarget={childView.getLeft(),childView.getTop(),-maxWidth, childView.getTop()};
         return exitTarget;
     }
 }

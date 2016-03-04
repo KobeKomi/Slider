@@ -3,18 +3,18 @@
 
 DESCRIPTION
 ===================================
-1.Slider purpose is to make the activity, fragment, view with sliding function <br />  
+1.Slider purpose is to make a page with sliding function <br />  
 2.Slider in this version by simply extends or xml layout or added to by SliderUtils class with sliding function<br/>  
 ![Slider](images/s1.gif "Gif Example 1")
 ![Slider](images/s2.gif "Gif Example 2")
 ![Slider](images/s3.gif "Gif Example 3")
-
+![Slider](images/s4.gif "Gif Example 4")
 
 ## USAGE
 
-1.Currently supported Activity, Fragment, View.<br />  
+1.Currently supported Activity, Fragment, DialogFragment,Dilaog and View.<br />  
 
-2.By following simple operation, it may have a sliding function.
+2.By following simple operation, it may have a sliding function.<br />
 
 by SliderUtils.attach*
 
@@ -70,6 +70,7 @@ Note: activity of manifest need to override the configured theme: android: windo
 If the device is greater than the version of android L, you can use the following method instead:
 
 ```java
+SliderUtils.attachUi(this, null);
 Utils.convertActivityToTranslucent activity)
 ```
 
@@ -96,12 +97,26 @@ public class SampleFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.fragment_sample, container, false);
-        iSlider=SliderUtils.attachFragment(this, rootView,null)
+        SliderUtils.attachFragment(this, rootView,null)
         return iSlider.getSliderView();
         }
 }
 ```
-or by xml...<br /> 
+
+DialogFragment:  extends SliderDialogFragment or like this: 
+```java
+public class SlidabelDialogFragment extends DialogFragment
+{
+    protected ISlider iSlider;
+    
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        iSlider = SliderUtils.attachDialog(getActivity(),getDialog(),mConfig);
+    }
+}
+```
+
 For more details, please refer to the code<br />  
 
 
@@ -109,7 +124,7 @@ For more details, please refer to the code<br />
 
 ```java
 dependencies{
-    compile 'com.komi.slider:slider:0.2.1'
+    compile 'com.komi.slider:slider:0.4.0'
 }
 ```
 

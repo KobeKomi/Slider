@@ -46,8 +46,8 @@ public class HorizontalPosition extends SliderPosition {
     }
 
     @Override
-    public boolean onViewDragStateChanged(int left, int top,int childLeft,int childTop) {
-        return LEFT.onViewDragStateChanged(left,top,childLeft,childTop);
+    public boolean onViewDragStateChanged(int left, int top, int childLeft, int childTop) {
+        return LEFT.onViewDragStateChanged(left, top, childLeft, childTop);
     }
 
     @Override
@@ -55,12 +55,12 @@ public class HorizontalPosition extends SliderPosition {
         int leftReleased = LEFT.onViewReleasedHorizontal(hWrapped, maxWidth, left, childLeft, xvel, hThreshold, hOverVelocityThreshold, velocityThreshold);
         int rightReleased = RIGHT.onViewReleasedHorizontal(hWrapped, maxWidth, left, childLeft, xvel, hThreshold, hOverVelocityThreshold, velocityThreshold);
         boolean isRightReleased = rightReleased != childLeft;
-        return isRightReleased?rightReleased:leftReleased;
+        return isRightReleased ? rightReleased : leftReleased;
     }
 
     @Override
-    public int getViewSize(float x, float y, int width, int height,int childLeft,int childTop) {
-        return LEFT.getViewSize(x, y, width, height,childLeft,childTop);
+    public int getViewSize(float x, float y, int width, int height, int childLeft, int childTop) {
+        return LEFT.getViewSize(x, y, width, height, childLeft, childTop);
     }
 
     @Override
@@ -71,25 +71,26 @@ public class HorizontalPosition extends SliderPosition {
     }
 
     @Override
-    public int[] getActivitySlidingAmins() {
-        return new int[]{R.anim.activity_left_in, R.anim.activity_right_out};
-    }
-
-    @Override
-    public void setScrimRect(View child,int childLeft,int childTop, Rect rect) {
-        SliderPosition position = getTouchPosition(child.getLeft(), childLeft,child.getTop(),childTop);
+    public void setScrimRect(View child, int childLeft, int childTop, Rect rect) {
+        SliderPosition position = getTouchPosition(child.getLeft(), childLeft, child.getTop(), childTop);
         if (position != null) {
-            position.setScrimRect(child,childLeft,childTop,rect);
+            position.setScrimRect(child, childLeft, childTop, rect);
         }
     }
 
     @Override
-    public int[] getEnterTarget(View childView,int maxWidth,int maxHeight) {
-        return LEFT.getEnterTarget(childView,maxWidth,maxHeight);
+    public int[] getActivitySlidingAmins() {
+        return new int[]{R.anim.activity_left_in, R.anim.activity_right_out};
+    }
+
+
+    @Override
+    public int[] getEnterTarget(View childView, int maxWidth, int maxHeight) {
+        return LEFT.getEnterTarget(childView, maxWidth, maxHeight);
     }
 
     @Override
-    public int[] getExitTarget(View childView,int maxWidth,int maxHeight) {
-        return RIGHT.getExitTarget(childView,maxWidth,maxHeight);
+    public int[] getExitTarget(View childView, int maxWidth, int maxHeight) {
+        return RIGHT.getExitTarget(childView, maxWidth, maxHeight);
     }
 }

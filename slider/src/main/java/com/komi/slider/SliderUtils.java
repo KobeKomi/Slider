@@ -9,7 +9,7 @@ import android.os.Build;
 import android.view.View;
 
 import com.komi.slider.ui.adapter.SliderActivityAdapter;
-import com.komi.slider.ui.adapter.SliderDialogFragmentAdapter;
+import com.komi.slider.ui.adapter.SliderDialogAdapter;
 import com.komi.slider.ui.adapter.SliderFragmentAdapter;
 import com.komi.slider.ui.SliderUi;
 import com.komi.slider.ui.adapter.SliderV4FragmentAdapter;
@@ -48,12 +48,12 @@ public class SliderUtils {
         return attachUi(slider, sliderUi, config);
     }
 
-    public static ISlider attachDialogFragment(Activity activity, Dialog dialog, SliderConfig config) {
-        return attachDialogFragment(activity, null, dialog, config);
+    public static ISlider attachDialog(Activity activity, Dialog dialog, SliderConfig config) {
+        return attachDialog(activity, null, dialog, config);
     }
 
-    public static ISlider attachDialogFragment(Activity activity, Slider slider, Dialog dialog, SliderConfig config) {
-        SliderUi sliderUi = new SliderDialogFragmentAdapter(activity, dialog);
+    public static ISlider attachDialog(Activity activity, Slider slider, Dialog dialog, SliderConfig config) {
+        SliderUi sliderUi = new SliderDialogAdapter(activity, dialog);
         return attachUi(slider, sliderUi, config);
     }
 

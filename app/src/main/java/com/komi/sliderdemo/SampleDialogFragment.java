@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.komi.slider.SliderConfig;
 import com.komi.slider.SliderListenerAdapter;
@@ -17,11 +18,13 @@ public class SampleDialogFragment extends SliderDialogFragment implements Fragme
 
     private View rootView;
     private Dialog mDialog;
-
+    private ImageView imageView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         rootView = inflater.inflate(R.layout.dialog_fragment, container, false);
+        imageView=(ImageView)rootView.findViewById(R.id.fragment_dialog_img);
+        imageView.setImageResource(DemoUtils.getRandomPicRes2());
         mConfig = new SliderConfig.Builder()
                 .scrimStartAlpha(0)
                 .scrimEndAlpha(0)

@@ -1,26 +1,34 @@
 package com.komi.sliderdemo;
 
+import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.util.SparseArrayCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.flyco.dialog.listener.OnBtnClickL;
-import com.flyco.dialog.widget.NormalDialog;
+import com.komi.slider.SliderConfig;
 import com.komi.slider.SliderUtils;
+import com.komi.slider.position.SliderPosition;
+import com.komi.slider.ui.SliderUi;
+import com.komi.slider.ui.adapter.SliderDialogAdapter;
 
 /**
  * Created by Komi on 2016/2/03.
@@ -28,7 +36,7 @@ import com.komi.slider.SliderUtils;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
 
     private Fragment currentFragment;
-    private BaseDialog dialog;
+
     private FragmentManager fragmentManager;
     private SparseArrayCompat<Fragment> fragmentArray = new SparseArrayCompat<>();
 
@@ -61,8 +69,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (Demo.values()[position].getType())
-        {
+        switch (Demo.values()[position].getType()) {
             case ACTIVITY:
                 Class activityClass = null;
                 try {
@@ -76,34 +83,47 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                 }
                 break;
             case FRAGMENT:
-                showFragment(Demo.values()[position].className,false);
+                showFragment(Demo.values()[position].className, false);
 
                 break;
             case DIALOG_FRAGMENT:
-                showFragment(Demo.values()[position].className,true);
+                showFragment(Demo.values()[position].className, true);
                 break;
             case DIALOG:
-                NormalDialogOneBtn();
+                showSliderDialog();
                 break;
         }
     }
 
-    private void NormalDialogOneBtn() {
-        final NormalDialog dialog = new NormalDialog(this);
-        dialog.setCanceledOnTouchOutside(false);
-        SliderUtils.attachDialogFragment(this,dialog,null);
+    private void showSliderDialog() {
+        AlertDialog dialog = new AlertDialog.Builder(this, R.style.DialogTheme)
+                .setTitle("Slider Dialog")
+                .setMessage("you can slide dialog")
+                .setIcon(R.mipmap.ic_launcher)
+                .setPositiveButton("Yes", null)
+                .setNegativeButton("No", null)
+                .create();
 
-        dialog.content("你今天的抢购名额已用完~")//
-                .btnNum(1)
-                .btnText("继续逛逛")//
-                .show();
+        dialog.show();
+        ViewGroup decorChild = (ViewGroup) ((ViewGroup) dialog.getWindow().getDecorView()).getChildAt(0);
+        FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) decorChild.getLayoutParams();
+        layoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        layoutParams.gravity = Gravity.CENTER;
+        layoutParams.setMargins(50, 0, 50, 0);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            decorChild.setBackgroundColor(Color.WHITE);
+        }
 
-        dialog.setOnBtnClickL(new OnBtnClickL() {
-            @Override
-            public void onBtnClick() {
-                dialog.dismiss();
-            }
-        });
+        SliderConfig config = new SliderConfig.Builder().build();
+        config.setPosition(SliderPosition.ALL);
+        config.setScrimStartAlpha(0);
+        config.setScrimEndAlpha(0);
+        config.setEdgeOnly(false);
+        SliderUi sliderUi = new SliderDialogAdapter(this, dialog);
+        ((SliderDialogAdapter) sliderUi).setLayoutParams(layoutParams);
+
+        SliderUtils.attachUi(null, sliderUi, config);
     }
 
     @Override
@@ -119,7 +139,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         }
     }
 
-    private void showFragment(String fragmentName,boolean dialog) {
+    private void showFragment(String fragmentName, boolean dialog) {
         int key = fragmentName.hashCode();
         currentFragment = fragmentArray.get(key);
 
@@ -127,22 +147,20 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             currentFragment = Fragment.instantiate(this, fragmentName);
             fragmentArray.put(key, currentFragment);
         }
-            if (!currentFragment.isAdded()) {
-                if(!dialog) {
+        if (!currentFragment.isAdded()) {
+            if (!dialog) {
 
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.add(R.id.fragment_container, currentFragment);
-                    transaction.addToBackStack(null);
-                    transaction.commit();
-                }else
-                {
-                    ((DialogFragment)currentFragment).show(getFragmentManager(), "");
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.add(R.id.fragment_container, currentFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            } else {
+                ((DialogFragment) currentFragment).show(getFragmentManager(), "");
 
-                }
             }
+        }
 
     }
-
 
 
     @Override

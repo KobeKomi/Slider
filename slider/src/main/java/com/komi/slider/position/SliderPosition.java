@@ -6,7 +6,7 @@ import android.view.View;
 /**
  * Created by Komi on 2016/2/20.
  */
-public abstract class SliderPosition {
+public abstract class SliderPosition implements PositionExtensions {
 
 
     public static SliderPosition LEFT=LeftPosition.getInstance();
@@ -22,9 +22,6 @@ public abstract class SliderPosition {
 
     private boolean edgeOnly;
 
-    private int childInitialLeft;
-
-    private int childInitialTop;
 
 
     /**
@@ -191,37 +188,7 @@ public abstract class SliderPosition {
     public void setScrimRect(View child, int childLeft, int childTop, Rect rect) {
     }
 
-    /**
-     * @return 当ui为activity时，获取当前方向的动画
-     */
-    public int[] getActivitySlidingAmins() {
-        return new int[]{android.R.anim.fade_in, android.R.anim.fade_out};
-    }
 
-
-    /**
-     * 加入slidableChild时要达到的坐标，左进（右出），右进（左出），上进（下出），下进(上出)
-     *
-     * @param childView slidableChild
-     * @param maxWidth  达到的宽度距离
-     * @param maxHeight 达到的高度距离
-     * @return 目标坐标值(startLeft,startTop)
-     */
-    public int[] getEnterTarget(View childView,int maxWidth,int maxHeight) {
-        return null;
-    }
-
-    /**
-     * 移除slidableChild时要达到的坐标,（左进）右出，（右进）左出，（上进）下出，(下进)上出
-     *
-     * @param childView slidableChild
-     * @param maxWidth  达到的宽度距离
-     * @param maxHeight 达到的高度距离
-     * @return 目标坐标值(finalLeft, finalTop)
-     */
-    public int[] getExitTarget(View childView,int maxWidth,int maxHeight) {
-        return null;
-    }
 
 
     /**

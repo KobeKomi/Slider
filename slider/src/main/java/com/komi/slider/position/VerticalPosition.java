@@ -71,16 +71,17 @@ public class VerticalPosition extends SliderPosition {
     }
 
     @Override
-    public int[] getActivitySlidingAmins() {
-        return new int[]{R.anim.activity_top_in, R.anim.activity_bottom_out};
-    }
-
-    @Override
     public void setScrimRect(View child,int childLeft,int childTop, Rect rect) {
         SliderPosition position = getTouchPosition(child.getLeft(), childLeft,child.getTop(),childTop);
         if (position != null) {
             position.setScrimRect(child, childLeft,childTop,rect);
         }
+    }
+
+
+    @Override
+    public int[] getActivitySlidingAmins() {
+        return new int[]{R.anim.activity_top_in, R.anim.activity_bottom_out};
     }
 
     @Override

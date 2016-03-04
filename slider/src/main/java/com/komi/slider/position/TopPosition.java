@@ -86,17 +86,15 @@ public class TopPosition extends SliderPosition {
         return new int[]{R.anim.activity_top_in, R.anim.activity_top_out};
     }
 
-
-
     @Override
     public int[] getEnterTarget(View childView,int maxWidth,int maxHeight) {
-        int []enterTarget={childView.getLeft(), maxHeight};
+        int []enterTarget={childView.getLeft(), maxHeight,childView.getLeft(),childView.getTop()};
         return enterTarget;
     }
 
     @Override
     public int[] getExitTarget(View childView,int maxWidth,int maxHeight) {
-        int []exitTarget={ childView.getLeft(), maxHeight};
+        int []exitTarget={childView.getLeft(),childView.getTop(),childView.getLeft(), maxHeight};
         return exitTarget;
     }
 }

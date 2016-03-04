@@ -112,7 +112,9 @@ public class Slider extends FrameLayout {
     private void resetDrawScrimType() {
         if (mConfig.getPosition() == SliderPosition.ALL && !mConfig.getPosition().isEdgeOnly()) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                if(mConfig.getScrimStartAlpha()!=0||mConfig.getScrimEndAlpha()!=0) {
+                    setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
             }
         }
     }
@@ -287,7 +289,7 @@ public class Slider extends FrameLayout {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (mSlidableChild == null) {
-            mSlidableChild = mConfig.getSlidableMode().getSlidableChild(null);
+            mSlidableChild = mConfig.getSlidableMode().getSlidableChild(getChildAt(getChildCount()-1));
         }
         if (mSlidableChild != null) {
             slidableChildLeft = mSlidableChild.getLeft();

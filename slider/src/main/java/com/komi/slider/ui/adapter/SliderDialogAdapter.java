@@ -24,7 +24,7 @@ import com.komi.slider.ui.SliderUi;
 /**
  * Created by Komi on 2016-03-02.
  */
-public class SliderDialogFragmentAdapter extends SliderUi {
+public class SliderDialogAdapter extends SliderUi {
 
     private Dialog dialog;
     private Activity activity;
@@ -34,7 +34,7 @@ public class SliderDialogFragmentAdapter extends SliderUi {
     private DisplayMetrics dm;
     private FrameLayout.LayoutParams layoutParams;
 
-    public SliderDialogFragmentAdapter(Activity activity, Dialog dialog) {
+    public SliderDialogAdapter(Activity activity, Dialog dialog) {
         this.activity = activity;
         this.dialog = dialog;
         dm = activity.getResources().getDisplayMetrics();
@@ -76,8 +76,8 @@ public class SliderDialogFragmentAdapter extends SliderUi {
         View child = slider.getSlidableChild();
         if (child != null) {
             int[] enterTarget = slider.getConfig().getPosition().getEnterTarget(child, dm.widthPixels, dm.heightPixels);
-            Animator xEnter = ObjectAnimator.ofFloat(child, "translationX", enterTarget[0], slider.getLeft());
-            Animator yEnter = ObjectAnimator.ofFloat(child, "translationY", enterTarget[1], slider.getTop());
+            Animator xEnter = ObjectAnimator.ofFloat(child, "translationX", enterTarget[0],enterTarget[2]);
+            Animator yEnter = ObjectAnimator.ofFloat(child, "translationY", enterTarget[1],enterTarget[3]);
             listenerDialogFragment(slider, true, xEnter, yEnter);
         }
     }
@@ -86,9 +86,9 @@ public class SliderDialogFragmentAdapter extends SliderUi {
     public void slideExit(Slider slider) {
         View child = slider.getSlidableChild();
         if (child != null) {
-            int[] exitTarget = slider.getConfig().getPosition().getExitTarget(child, dm.widthPixels, dm.heightPixels);
-            Animator xExit = ObjectAnimator.ofFloat(child, "translationX", slider.getLeft(), exitTarget[0]);
-            Animator yExit = ObjectAnimator.ofFloat(child, "translationY", slider.getTop(), exitTarget[1]);
+            int[] exitTarget = slider.getConfig().getPosition().getExitTarget(slider, dm.widthPixels, dm.heightPixels);
+            Animator xExit = ObjectAnimator.ofFloat(child, "translationX",  exitTarget[0],exitTarget[2]);
+            Animator yExit = ObjectAnimator.ofFloat(child, "translationY", exitTarget[1],exitTarget[3]);
             listenerDialogFragment(slider, false, xExit, yExit);
         }
         slider.invalidate();

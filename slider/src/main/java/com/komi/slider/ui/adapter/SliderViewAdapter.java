@@ -37,7 +37,7 @@ public class SliderViewAdapter extends SliderUi {
         View child = slider.getSlidableChild();
         if (child != null) {
             int[] enterTarget = slider.getConfig().getPosition().getEnterTarget(child, slider.getWidth(), slider.getHeight());
-            slider.getViewDragHelper().smoothSlideViewTo(slider.getSlidableChild(), enterTarget[0], enterTarget[1], child.getLeft(), child.getTop());
+            slider.getViewDragHelper().smoothSlideViewTo(slider.getSlidableChild(), enterTarget[0], enterTarget[1], enterTarget[2], enterTarget[3]);
         }
     }
 
@@ -47,7 +47,7 @@ public class SliderViewAdapter extends SliderUi {
         View slidableChild = slider.getSlidableChild();
         if (slidableChild != null) {
             int[] exitTarget = slider.getConfig().getPosition().getExitTarget(slidableChild, slider.getWidth(), slider.getHeight());
-            slider.getViewDragHelper().smoothSlideViewTo(slider.getSlidableChild(), exitTarget[0], exitTarget[1]);
+            slider.getViewDragHelper().smoothSlideViewTo(slider.getSlidableChild(), exitTarget[2], exitTarget[3]);
             slider.invalidate();
         }
 

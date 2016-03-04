@@ -134,16 +134,22 @@ public class AllPosition extends SliderPosition {
 
     }
 
+
+    @Override
+    public int[] getActivitySlidingAmins() {
+        return new int[]{android.R.anim.fade_in, android.R.anim.fade_out};
+    }
+
     @Override
     public int[] getEnterTarget(View childView,int maxWidth,int maxHeight) {
-        int []enterTarget={-maxWidth,maxHeight};
+        int []enterTarget={-maxWidth,maxHeight,childView.getLeft(),childView.getTop()};
         return enterTarget;
 
     }
 
     @Override
     public int[] getExitTarget(View childView,int maxWidth,int maxHeight) {
-        int []exitTarget={-maxWidth, maxHeight};
+        int []exitTarget={childView.getLeft(),childView.getTop(),-maxWidth, maxHeight};
         return exitTarget;
 
     }
