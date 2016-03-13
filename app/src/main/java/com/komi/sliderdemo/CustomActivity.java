@@ -1,14 +1,19 @@
 package com.komi.sliderdemo;
 
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.komi.slider.ISlider;
@@ -23,6 +28,7 @@ import com.komi.slider.position.SliderPosition;
 public class CustomActivity extends AppCompatActivity implements View.OnClickListener {
 
     private Slider sliderLayout;
+    private Toolbar toolbar;
     private final int IMG_SIZE = 250;
     private final int LEFT_MARGIN = 20;
     private final int TOP_MARGIN = 30;
@@ -33,8 +39,14 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_custom);
-        setTitle(this.getClass().getSimpleName());
+
+        toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
+        toolbar.setTitle(this.getClass().getSimpleName());
+        setSupportActionBar(toolbar);
+        resetToolBarHeight();
+
         sliderLayout = (Slider) findViewById(R.id.custom_slider_layout);
         activitySlider=SliderUtils.attachActivity(this,null);
         activitySlider.getConfig().setSecondaryColor(Color.TRANSPARENT);
@@ -42,6 +54,21 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
         SliderUtils.attachView(this,sliderLayout,null);
         sliderLayout.getConfig().setScrimStartAlpha(0);
         sliderLayout.getConfig().setScrimEndAlpha(0);
+    }
+
+    private void resetToolBarHeight() {
+        LinearLayout.LayoutParams layoutParams=(LinearLayout.LayoutParams)toolbar.getLayoutParams();
+        int statusBarHeight=DemoUtils.getStatusBarHeight(this);
+        TypedValue typedValue = new TypedValue();
+        int[] attribute = new int[] { android.R.attr.actionBarSize };
+        TypedArray array =obtainStyledAttributes(typedValue.resourceId, attribute);
+        int actionbarSize = array.getDimensionPixelSize(0 /* index */, -1 /* default size */);
+        array.recycle();
+        layoutParams.height=actionbarSize+statusBarHeight;
+        layoutParams.width= LinearLayout.LayoutParams.MATCH_PARENT;
+
+        toolbar.setLayoutParams(layoutParams);
+        toolbar.setPadding(0,statusBarHeight,0,0);
     }
 
 
@@ -172,4 +199,17 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
             }
         }
     }
+
+    private void hideStatusBar() {
+        WindowManager.LayoutParams attrs = getWindow().getAttributes();
+        attrs.flags |= WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        getWindow().setAttributes(attrs);
+    }
+
+    private void showStatusBar() {
+        WindowManager.LayoutParams attrs = getWindow().getAttributes();
+        attrs.flags &= ~WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        getWindow().setAttributes(attrs);
+    }
+
 }

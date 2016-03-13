@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/green_500">
 
 
     <item
@@ -15,12 +16,14 @@
         android:icon="@android:drawable/ic_menu_delete"
         android:orderInCategory="90"
         android:title=""
+        android:layout_marginTop="50dip"
         app:showAsAction="always" />
 
     <group
         android:id="@+id/menu_group_slider_position"
         android:checkableBehavior="single"
         android:orderInCategory="89"
+        android:layout_marginTop="50dip"
         app:showAsAction="ifRoom">
 
         <item

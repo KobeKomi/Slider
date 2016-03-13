@@ -26,7 +26,7 @@
             android:theme="@style/SampleActivityTheme" />
         <activity
             android:name=".CustomActivity"
-            android:theme="@style/ActivityTheme" />
+            android:theme="@style/CustomActivityTheme" />
         <activity
             android:name=".XmlActivity"
             android:theme="@style/ActivityTheme" />

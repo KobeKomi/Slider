@@ -23,6 +23,13 @@
         <!--<item name="android:windowBackground">@android:color/transparent</item>-->
     </style>
 
+    <style name="CustomActivityTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">true</item>
+    </style>
+
+
     <style name="SampleActivityTheme" parent="ActivityTheme">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/light_blue_500</item>
