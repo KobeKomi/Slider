@@ -1,4 +1,4 @@
-package com.komi.slider.ui.adapter;
+package com.komi.slider.ui.adapter.support;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
@@ -12,12 +12,12 @@ import com.komi.slider.ui.SliderUi;
 /**
  * Created by Komi on 2016-02-24.
  */
-public class SliderV4FragmentAdapter extends SliderUi {
+public class SliderFragmentAdapter extends SliderUi {
 
     private Fragment fragment;
     private View rootView;
 
-    public SliderV4FragmentAdapter(Fragment fragment, View rootView) {
+    public SliderFragmentAdapter(Fragment fragment, View rootView) {
         this.fragment = fragment;
         this.rootView = rootView;
     }

@@ -31,25 +31,7 @@
             android:layout_marginTop="40dip"
             android:src="@mipmap/a3" />
 
-        <ImageView
-            style="@style/XmlImgStyle"
-            android:layout_marginTop="60dip"
-            android:src="@mipmap/a4" />
 
-        <ImageView
-            style="@style/XmlImgStyle"
-            android:layout_marginTop="80dip"
-            android:src="@mipmap/a5" />
-
-        <ImageView
-            style="@style/XmlImgStyle"
-            android:layout_marginTop="100dip"
-            android:src="@mipmap/a6" />
-
-        <ImageView
-            style="@style/XmlImgStyle"
-            android:layout_marginTop="120dip"
-            android:src="@mipmap/a7" />
 
     </com.komi.slider.Slider>
 

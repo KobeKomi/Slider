@@ -29,9 +29,9 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
 
     private Slider sliderLayout;
     private Toolbar toolbar;
-    private final int IMG_SIZE = 250;
-    private final int LEFT_MARGIN = 20;
-    private final int TOP_MARGIN = 30;
+    private  int imgSize;
+    private  int leftMargin;
+    private  int topMargin;
     private int row = 0;
     private int column = 0;
     private ISlider activitySlider;
@@ -41,6 +41,10 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
         super.onCreate(savedInstanceState);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS);
         setContentView(R.layout.activity_custom);
+        int[] wh=DemoUtils.getScreenWH(this);
+        imgSize=(int)(wh[0]*0.23f);
+        leftMargin =(int)(wh[0]*0.02f);
+        topMargin =(int)(wh[0]*0.025f);
 
         toolbar = (Toolbar) findViewById(R.id.custom_toolbar);
         toolbar.setTitle(this.getClass().getSimpleName());
@@ -151,18 +155,18 @@ public class CustomActivity extends AppCompatActivity implements View.OnClickLis
         ImageView imageView = new ImageView(this);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
         imageView.setImageResource(DemoUtils.getRandomPicRes());
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(IMG_SIZE, IMG_SIZE);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(imgSize, imgSize);
         int childCount = sliderLayout.getChildCount();
         params.gravity = Gravity.TOP;
-        int maxColumn = sliderLayout.getWidth() / (LEFT_MARGIN + IMG_SIZE);
+        int maxColumn = sliderLayout.getWidth() / (leftMargin + imgSize);
         column = childCount % maxColumn;
         boolean overWidth = column + 1 == maxColumn;
-        params.leftMargin = column * (LEFT_MARGIN + IMG_SIZE);
+        params.leftMargin = column * (leftMargin + imgSize);
 
 
-        int maxRow = sliderLayout.getHeight() / (LEFT_MARGIN + IMG_SIZE);
+        int maxRow = sliderLayout.getHeight() / (leftMargin + imgSize);
 
-        params.topMargin = row * (TOP_MARGIN + IMG_SIZE);
+        params.topMargin = row * (topMargin + imgSize);
 
         boolean overHeight = row == maxRow;
 

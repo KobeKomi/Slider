@@ -25,6 +25,9 @@ public abstract class SliderFragment extends Fragment{
                              Bundle savedInstanceState) {
         rootView=creatingView(inflater,container,savedInstanceState);
         iSlider = SliderUtils.attachFragment(this, rootView,mConfig);
+        if (mConfig == null) {
+            mConfig=iSlider.getConfig();
+        }
         return iSlider.getSliderView();
     }
 

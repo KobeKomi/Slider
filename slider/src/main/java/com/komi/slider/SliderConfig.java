@@ -87,7 +87,7 @@ public class SliderConfig {
 
     private SliderPosition position = SliderPosition.LEFT;
 
-    private SliderListener listener;
+    private SliderListener sliderListener;
 
     private SlidableMode slidableMode = SlidableMode.ALL;
 
@@ -208,13 +208,13 @@ public class SliderConfig {
     }
 
     /**
-     * Get the slider listener set by the user to respond to certain events in the sliding
+     * Get the slider SliderListener set by the user to respond to certain events in the sliding
      * mechanism.
      *
-     * @return      the slidr listener
+     * @return      the SliderListener
      */
-    public SliderListener getListener(){
-        return listener;
+    public SliderListener getSliderListener(){
+        return sliderListener;
     }
 
     /**
@@ -315,8 +315,8 @@ public class SliderConfig {
         this.position = position;
     }
 
-    public void setListener(SliderListener listener) {
-        this.listener = listener;
+    public void setSliderListener(SliderListener sliderListener) {
+        this.sliderListener = sliderListener;
     }
 
     public void setSlideEnter(boolean slideEnter) {
@@ -417,8 +417,8 @@ public class SliderConfig {
             return this;
         }
 
-        public Builder listener(SliderListener listener){
-            config.listener = listener;
+        public Builder sliderListener(SliderListener sliderListener){
+            config.sliderListener = sliderListener;
             return this;
         }
 

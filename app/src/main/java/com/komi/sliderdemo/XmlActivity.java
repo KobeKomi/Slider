@@ -7,39 +7,45 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.komi.slider.Slider;
-import com.komi.slider.SliderListener;
 import com.komi.slider.mode.SlidableMode;
 import com.komi.slider.position.SliderPosition;
-import com.komi.slider.ui.SliderAppCompatActivity;
+import com.komi.slider.ui.support.SliderAppCompatActivity;
 
 /**
  * Created by Komi on 2016/2/16.
  */
-public class XmlActivity extends SliderAppCompatActivity implements SliderListener{
+public class XmlActivity extends SliderAppCompatActivity {
 
     private Slider sliderLayout;
     private int imgSizeWidth;
     private int imgSizeHeight;
     private int marginTop;
+    private int screenWidth;
+    private int screenHeight;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_xml);
         setTitle(Demo.XML_ACTIVITY.titleResId);
         sliderLayout=(Slider)findViewById(R.id.xml_slider_layout);
-        sliderLayout.setOnPanelSlideListener(this);
         sliderLayout.getConfig().setScrimStartAlpha(0);
         sliderLayout.getConfig().setScrimEndAlpha(0);
         sliderLayout.getConfig().setSlidableMode(SlidableMode.SINGLE);
-        imgSizeWidth=(int)getResources().getDimension(R.dimen.xml_img_width);
-        imgSizeHeight =(int)getResources().getDimension(R.dimen.xml_img_height);
-        marginTop=(int)getResources().getDimension(R.dimen.xml_img_margin_top);
+        int[] wh=DemoUtils.getScreenWH(this);
+        screenWidth=wh[0];
+        screenHeight=wh[1];
+        imgSizeWidth=(int)(screenWidth*0.8f);
+        imgSizeHeight =(int)(screenHeight*0.3f);
+        marginTop=(int)(screenHeight*0.02f);
+
+
+        iSlider.setConfig(mConfig);
     }
+
 
 
     @Override
@@ -70,31 +76,6 @@ public class XmlActivity extends SliderAppCompatActivity implements SliderListen
 
     }
 
-
-    @Override
-    public void onSlideStateChanged(int state) {
-
-    }
-
-    @Override
-    public void onSlideChange(float percent) {
-
-    }
-
-    @Override
-    public void onSlideOpened() {
-
-    }
-
-    @Override
-    public void onSlideClosed() {
-
-        if(sliderLayout.getSlidableChild()!=null)
-        {
-            sliderLayout.removeView(sliderLayout.getSlidableChild());
-        }
-
-    }
 
     private void addChildView()
     {

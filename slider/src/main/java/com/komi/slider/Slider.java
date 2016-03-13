@@ -46,9 +46,8 @@ public class Slider extends FrameLayout {
     private boolean mIsEdgeTouched = false;
 
     private SliderConfig mConfig;
-
     private boolean fastSlidingTag;
-
+    private SliderConfigListener configListener;
 
 
     public Slider(Context context) {
@@ -104,6 +103,7 @@ public class Slider extends FrameLayout {
         this.mConfig = config;
         mConfig.getPosition().setEdgeOnly(mConfig.isEdgeOnly());
         mDragHelper.setEdgeTrackingEnabled(mConfig.getPosition().getEdgeFlags());
+        mListener=mConfig.getSliderListener();
         resetDrawScrimType();
     }
 
@@ -150,8 +150,12 @@ public class Slider extends FrameLayout {
     }
 
 
-    public void setOnPanelSlideListener(SliderListener listener) {
+    public void setSliderListener(SliderListener listener) {
         mListener = listener;
+    }
+
+    protected void setSliderConfigListener(SliderConfigListener configListener) {
+        this.configListener = configListener;
     }
 
     /**
@@ -357,7 +361,8 @@ public class Slider extends FrameLayout {
 
             mScrollPercent = mConfig.getPosition().onViewPositionChanged(changedView.getWidth(), changedView.getHeight(), slideLeft, slideTop);
 
-            if (mListener != null) mListener.onSlideChange(mScrollPercent);
+            if(mListener != null) mListener.onSlideChange(mScrollPercent);
+            if(configListener!=null)configListener.onSlideChange(mScrollPercent);
             invalidate();
         }
 
@@ -420,6 +425,8 @@ public class Slider extends FrameLayout {
                     } else {
                         // State Closed
                         if (mListener != null) mListener.onSlideClosed();
+                        if (configListener != null) configListener.onSlideClosed();
+
                         mConfig.getSlidableMode().removeSlidableChild(mSlidableChild);
                         mSlidableChild = null;
                     }

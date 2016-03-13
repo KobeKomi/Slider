@@ -1,7 +1,7 @@
-package com.komi.slider.ui;
+package com.komi.slider.ui.support;
 
-import android.app.DialogFragment;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 
 import com.komi.slider.ISlider;
 import com.komi.slider.SliderConfig;

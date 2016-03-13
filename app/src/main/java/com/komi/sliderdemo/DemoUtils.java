@@ -1,6 +1,8 @@
 package com.komi.sliderdemo;
 
 import android.content.Context;
+import android.util.DisplayMetrics;
+import android.view.WindowManager;
 
 import com.komi.slider.position.SliderPosition;
 
@@ -55,5 +57,16 @@ public class DemoUtils {
             result = context.getResources().getDimensionPixelSize(resourceId);
         }
         return result;
+    }
+
+    public static int[] getScreenWH(Context context)
+    {
+        DisplayMetrics dm = new DisplayMetrics();
+        WindowManager wm=(WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(dm);
+        int screenWidth = dm.widthPixels;
+        int screenHeight = dm.heightPixels ;
+        int []wh={screenWidth,screenHeight};
+        return wh;
     }
 }

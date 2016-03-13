@@ -36,7 +36,7 @@ public class AdapterFragment extends Fragment implements FragmentCloseListener,S
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         mConfig=iSlider.getConfig();
-        mConfig.setListener(this);
+        mConfig.setSliderListener(this);
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.komi.slider.ui;
+package com.komi.slider.ui.support;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,7 +13,7 @@ import com.komi.slider.SliderUtils;
 /**
  * Created by Komi on 2016-02-24.
  */
-public abstract class SliderV4Fragment extends Fragment{
+public abstract class SliderFragment extends Fragment{
 
     private View rootView;
 
@@ -25,6 +25,9 @@ public abstract class SliderV4Fragment extends Fragment{
                              Bundle savedInstanceState) {
         rootView=creatingView(inflater,container,savedInstanceState);
         iSlider = SliderUtils.attachV4Fragment(this, rootView,mConfig);
+        if (mConfig == null) {
+            mConfig=iSlider.getConfig();
+        }
         return iSlider.getSliderView();
     }
 

@@ -29,7 +29,7 @@ public class SampleDialogFragment extends SliderDialogFragment implements Fragme
                 .scrimStartAlpha(0)
                 .scrimEndAlpha(0)
                 .edgeOnly(false)
-                .listener(listener)
+                .sliderListener(listener)
                 .position(DemoUtils.getRandomPosition())
                 .build();
         return rootView;

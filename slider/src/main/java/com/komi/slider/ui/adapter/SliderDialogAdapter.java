@@ -148,7 +148,7 @@ public class SliderDialogAdapter extends SliderUi {
 
     private void listenerDialogFragment(final Slider slider, final boolean enter, Animator... animators) {
         int duration = activity.getResources().getInteger(android.R.integer.config_mediumAnimTime);
-        final SliderListener listener = slider.getConfig().getListener();
+        final SliderListener listener = slider.getConfig().getSliderListener();
 
         animatorSet.setDuration(duration);
         animatorSet.playTogether(animators);

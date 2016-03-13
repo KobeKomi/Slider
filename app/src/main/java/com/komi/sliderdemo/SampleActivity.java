@@ -50,7 +50,7 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 .secondaryColor(Color.TRANSPARENT)
                 .position(sliderPosition)
                 .edge(false)
-                .listener(listener)
+                .sliderListener(listener)
                 .build();
 
         iSlider = SliderUtils.attachActivity(this, mConfig);

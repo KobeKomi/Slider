@@ -10,9 +10,8 @@ import android.view.View;
 
 import com.komi.slider.ui.adapter.SliderActivityAdapter;
 import com.komi.slider.ui.adapter.SliderDialogAdapter;
-import com.komi.slider.ui.adapter.SliderFragmentAdapter;
 import com.komi.slider.ui.SliderUi;
-import com.komi.slider.ui.adapter.SliderV4FragmentAdapter;
+import com.komi.slider.ui.adapter.support.SliderFragmentAdapter;
 import com.komi.slider.ui.adapter.SliderViewAdapter;
 
 
@@ -35,7 +34,7 @@ public class SliderUtils {
     }
 
     public static ISlider attachFragment(Slider slider, Fragment fragment, View rootView, SliderConfig config) {
-        SliderUi sliderUi = new SliderFragmentAdapter(fragment, rootView);
+        SliderUi sliderUi = new com.komi.slider.ui.adapter.SliderFragmentAdapter(fragment, rootView);
         return attachUi(slider, sliderUi, config);
     }
 
@@ -44,7 +43,7 @@ public class SliderUtils {
     }
 
     public static ISlider attachV4Fragment(Slider slider, android.support.v4.app.Fragment fragment, View rootView, SliderConfig config) {
-        SliderUi sliderUi = new SliderV4FragmentAdapter(fragment, rootView);
+        SliderUi sliderUi = new SliderFragmentAdapter(fragment, rootView);
         return attachUi(slider, sliderUi, config);
     }
 
@@ -75,39 +74,20 @@ public class SliderUtils {
         if (slider == null) {
             slider = new Slider(ui.getUiActivity(), config);
         }
-        ISlider iSlider = attachUi(ui, slider);
+        ISlider iSlider = attachUi(slider,ui);
         return iSlider;
     }
 
 
-    public static ISlider attachUi(final SliderUi ui, final Slider slider) {
-        slider.setOnPanelSlideListener(new SliderListener() {
+    public static ISlider attachUi(final Slider slider,final SliderUi ui) {
+        slider.setSliderConfigListener(new SliderConfigListener() {
             final ArgbEvaluator mEvaluator = new ArgbEvaluator();
-
-            @Override
-            public void onSlideStateChanged(int state) {
-                if (slider.getConfig().getListener() != null) {
-                    slider.getConfig().getListener().onSlideStateChanged(state);
-                }
-            }
-
-            @Override
-            public void onSlideOpened() {
-                if (slider.getConfig().getListener() != null) {
-                    slider.getConfig().getListener().onSlideOpened();
-                }
-            }
-
             @Override
             public void onSlideClosed() {
-                if (slider.getConfig().getListener() != null) {
-                    slider.getConfig().getListener().onSlideClosed();
-                }
                 if (slider.getConfig().isFinishUi()) {
                     ui.slideExitAfter(slider);
                 }
             }
-
             @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             @Override
             public void onSlideChange(float percent) {
@@ -118,10 +98,6 @@ public class SliderUtils {
                     int newColor = (int) mEvaluator.evaluate(percent, slider.getConfig().getSecondaryColor(),
                             slider.getConfig().getPrimaryColor());
                     ui.getUiActivity().getWindow().setStatusBarColor(newColor);
-                }
-
-                if (slider.getConfig().getListener() != null) {
-                    slider.getConfig().getListener().onSlideChange(percent);
                 }
             }
         });

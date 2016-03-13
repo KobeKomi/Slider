@@ -55,7 +55,7 @@ public class SampleFragment extends Fragment implements RadioGroup.OnCheckedChan
                 .position(sliderPosition)
                 .velocityThreshold(2400)
                 .distanceThreshold(.25f)
-                .listener(listener)
+                .sliderListener(listener)
                 .edge(false)
                 .build();
 

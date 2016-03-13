@@ -1,6 +1,6 @@
-package com.komi.slider.ui;
+package com.komi.slider.ui.support;
 
-import android.app.Activity;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -10,9 +10,9 @@ import com.komi.slider.SliderUtils;
 
 
 /**
- * Created by Komi on 2016-01-27.
+ * Created by Komi on 2016-02-24.
  */
-public class SliderActivity extends Activity{
+public class SliderAppCompatActivity extends AppCompatActivity {
 
     protected ISlider iSlider;
     protected SliderConfig mConfig;
@@ -35,9 +35,8 @@ public class SliderActivity extends Activity{
         attachSlideUi();
     }
 
-    private void attachSlideUi()
-    {
-        iSlider= SliderUtils.attachActivity(this,mConfig);
+    private void attachSlideUi() {
+        iSlider = SliderUtils.attachActivity(this, mConfig);
         if (mConfig == null) {
             mConfig=iSlider.getConfig();
         }
@@ -48,8 +47,6 @@ public class SliderActivity extends Activity{
         super.onBackPressed();
         iSlider.slideExit();
     }
-
-
 
 
 }

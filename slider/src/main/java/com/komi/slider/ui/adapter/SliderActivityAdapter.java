@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
@@ -142,7 +143,7 @@ public class SliderActivityAdapter extends SliderUi {
         final boolean in = values[0] < values[values.length - 1];
 
         Animation animation = AnimationUtils.loadAnimation(getUiActivity(), aminId);
-        final SliderListener listener = config.getListener();
+        final SliderListener listener = config.getSliderListener();
 
         ValueAnimator valueAnimator = ValueAnimator.ofFloat(values);
         valueAnimator.setDuration(animation.getDuration());
