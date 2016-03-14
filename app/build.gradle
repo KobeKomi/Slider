@@ -8,8 +8,8 @@ android {
         applicationId "com.komi.sliderdemo"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 4
-        versionName "0.3.0"
+        versionCode 5
+        versionName "0.3.1"
     }
     buildTypes {
         release {
@@ -28,6 +28,6 @@ dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     testCompile 'junit:junit:4.12'
     compile project(':slider')
-    //compile 'com.komi.slider:slider:0.3.0'
+    //compile 'com.komi.slider:slider:0.3.1'
     compile 'com.android.support:design:23.1.1'
 }

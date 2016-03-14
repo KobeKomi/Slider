@@ -11,6 +11,7 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.komi.slider.Slider;
+import com.komi.slider.SliderListenerAdapter;
 import com.komi.slider.mode.SlidableMode;
 import com.komi.slider.position.SliderPosition;
 import com.komi.slider.ui.support.SliderAppCompatActivity;
@@ -35,15 +36,13 @@ public class XmlActivity extends SliderAppCompatActivity {
         sliderLayout.getConfig().setScrimStartAlpha(0);
         sliderLayout.getConfig().setScrimEndAlpha(0);
         sliderLayout.getConfig().setSlidableMode(SlidableMode.SINGLE);
+        sliderLayout.setSliderListener(listenerAdapter);
         int[] wh=DemoUtils.getScreenWH(this);
         screenWidth=wh[0];
         screenHeight=wh[1];
         imgSizeWidth=(int)(screenWidth*0.8f);
         imgSizeHeight =(int)(screenHeight*0.3f);
         marginTop=(int)(screenHeight*0.02f);
-
-
-        iSlider.setConfig(mConfig);
     }
 
 
@@ -75,6 +74,18 @@ public class XmlActivity extends SliderAppCompatActivity {
         }
 
     }
+
+    private SliderListenerAdapter listenerAdapter=new SliderListenerAdapter()
+    {
+        @Override
+        public void onSlideClosed() {
+            if(sliderLayout.getSlidableChild()!=null)
+            {
+                sliderLayout.removeView(sliderLayout.getSlidableChild());
+            }
+        }
+    };
+
 
 
     private void addChildView()
