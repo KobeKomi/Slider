@@ -152,6 +152,11 @@ public class SliderUtils {
             public SliderUi getSliderUi() {
                 return ui;
             }
+
+            @Override
+            public void refreshConfig() {
+                slider.setConfig(getConfig());
+            }
         };
 
         return iSlider;

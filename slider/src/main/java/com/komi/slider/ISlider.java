@@ -20,4 +20,5 @@ public interface ISlider {
 
     SliderUi getSliderUi();
 
+    void refreshConfig();
 }
