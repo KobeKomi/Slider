@@ -50,7 +50,6 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
                 .secondaryColor(Color.TRANSPARENT)
                 .position(sliderPosition)
                 .edge(false)
-                .sliderListener(listener)
                 .build();
 
         iSlider = SliderUtils.attachActivity(this, mConfig);
@@ -61,27 +60,6 @@ public class SampleActivity extends AppCompatActivity implements View.OnClickLis
         radioGroup.setOnCheckedChangeListener(this);
 
     }
-
-    private SliderListener listener = new SliderListener() {
-        @Override
-        public void onSlideStateChanged(int state) {
-
-        }
-
-        @Override
-        public void onSlideChange(float percent) {
-        }
-
-        @Override
-        public void onSlideOpened() {
-
-        }
-
-        @Override
-        public void onSlideClosed() {
-
-        }
-    };
 
 
     @Override

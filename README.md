@@ -124,7 +124,7 @@ For more details, please refer to the code<br />
 
 ```java
 dependencies{
-    compile 'com.komi.slider:slider:0.3.2'
+    compile 'com.komi.slider:slider:0.4.0'
 }
 ```
 

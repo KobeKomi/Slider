@@ -13,7 +13,7 @@ import android.widget.TextView;
 
 import com.komi.slider.ISlider;
 import com.komi.slider.SliderConfig;
-import com.komi.slider.SliderListener;
+import com.komi.slider.SliderListenerAdapter;
 import com.komi.slider.SliderUtils;
 import com.komi.slider.position.SliderPosition;
 
@@ -67,15 +67,7 @@ public class SampleFragment extends Fragment implements RadioGroup.OnCheckedChan
         return iSlider.getSliderView();
     }
 
-    private SliderListener listener=new SliderListener() {
-        @Override
-        public void onSlideStateChanged(int state) {
-        }
-
-        @Override
-        public void onSlideChange(float percent) {
-
-        }
+    private SliderListenerAdapter listener=new SliderListenerAdapter() {
 
         @Override
         public void onSlideOpened() {

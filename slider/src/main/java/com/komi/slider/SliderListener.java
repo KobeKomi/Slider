@@ -1,8 +1,9 @@
 package com.komi.slider;
 
+import android.view.MotionEvent;
+
 /**
- * This slistener interface is for receiving events from the sliding panel such as state changes
- * and slide progress
+ * This interface is for receiving events from the slider such as state changes
  * 
  * Created by Komi on 2016-01-21.
  */
@@ -15,5 +16,7 @@ public interface SliderListener {
     void onSlideOpened();
 
     void onSlideClosed();
+
+    boolean customSlidable(MotionEvent event);
 
 }

@@ -2,6 +2,8 @@ package com.komi.sliderdemo;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
+import android.view.View;
 import android.view.WindowManager;
 
 import com.komi.slider.position.SliderPosition;
@@ -68,5 +70,21 @@ public class DemoUtils {
         int screenHeight = dm.heightPixels ;
         int []wh={screenWidth,screenHeight};
         return wh;
+    }
+
+    /**
+     * @param view
+     * @param ev
+     * @return 判断touch点是否在指定view上
+     */
+    public static boolean inRangeOfView(View view, MotionEvent ev) {
+        int[] location = new int[2];
+        view.getLocationOnScreen(location);
+        int x = location[0];
+        int y = location[1];
+        if (ev.getRawX() < x || ev.getRawX() > (x + view.getWidth()) || ev.getRawY() < y || ev.getRawY() > (y + view.getHeight())) {
+            return false;
+        }
+        return true;
     }
 }

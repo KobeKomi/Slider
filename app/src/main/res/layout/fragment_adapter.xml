@@ -3,15 +3,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/teal_500"
-    tools:context="com.komi.sliderdemo.AdapterFragment">
+    tools:context=".CustomSlidableFragment">
 
 
     <TextView
-        android:id="@+id/adapter_fragment_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/custom_slidable_tv"
+        android:layout_width="300dip"
+        android:layout_height="200dip"
+        android:background="@color/light_blue_500"
         android:layout_gravity="center"
-        android:text="@string/stay_tuned"
+        android:gravity="center"
+        android:text="@string/custom_slidable_tip"
         android:textSize="23sp" />
 
 </FrameLayout>

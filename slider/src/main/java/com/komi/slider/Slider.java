@@ -103,7 +103,7 @@ public class Slider extends FrameLayout {
         this.mConfig = config;
         mConfig.getPosition().setEdgeOnly(mConfig.isEdgeOnly());
         mDragHelper.setEdgeTrackingEnabled(mConfig.getPosition().getEdgeFlags());
-        mListener=mConfig.getSliderListener();
+        mListener = mConfig.getSliderListener();
         resetDrawScrimType();
     }
 
@@ -112,7 +112,7 @@ public class Slider extends FrameLayout {
     private void resetDrawScrimType() {
         if (mConfig.getPosition() == SliderPosition.ALL && !mConfig.getPosition().isEdgeOnly()) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.JELLY_BEAN_MR2) {
-                if(mConfig.getScrimStartAlpha()!=0||mConfig.getScrimEndAlpha()!=0) {
+                if (mConfig.getScrimStartAlpha() != 0 || mConfig.getScrimEndAlpha() != 0) {
                     setLayerType(View.LAYER_TYPE_SOFTWARE, null);
                 }
             }
@@ -166,8 +166,6 @@ public class Slider extends FrameLayout {
         final float minVel = MIN_FLING_VELOCITY * density;
         mDragHelper = ViewDragHelper.create(this, mConfig.getSensitivity(), new ViewDragCallback());
         mDragHelper.setMinVelocity(minVel);
-
-
         ViewGroupCompat.setMotionEventSplittingEnabled(this, false);
         setConfig(mConfig);
     }
@@ -187,8 +185,12 @@ public class Slider extends FrameLayout {
         } catch (Exception e) {
             interceptForDrag = false;
         }
+        boolean customSlidable=true;
+        if(mListener!=null) {
+            customSlidable = mListener.customSlidable(ev);
+        }
 
-        return interceptForDrag && mConfig.isSlidable();
+        return interceptForDrag && mConfig.isSlidable()&&customSlidable;
     }
 
     @Override
@@ -275,7 +277,7 @@ public class Slider extends FrameLayout {
                     case MotionEvent.ACTION_DOWN:
                         if (!fastSlidingTag) {
                             mSlidableChild = mConfig.getSlidableMode().getSlidableChild(v);
-                            if (mSlidableChild != null&&mSlidableChild==v) {
+                            if (mSlidableChild != null && mSlidableChild == v) {
                                 slidableChildLeft = mSlidableChild.getLeft();
                                 slidableChildTop = mSlidableChild.getTop();
                                 mSlidableChild.bringToFront();
@@ -293,7 +295,7 @@ public class Slider extends FrameLayout {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
         if (mSlidableChild == null) {
-            mSlidableChild = mConfig.getSlidableMode().getSlidableChild(getChildAt(getChildCount()-1));
+            mSlidableChild = mConfig.getSlidableMode().getSlidableChild(getChildAt(getChildCount() - 1));
         }
         if (mSlidableChild != null) {
             slidableChildLeft = mSlidableChild.getLeft();
@@ -361,8 +363,8 @@ public class Slider extends FrameLayout {
 
             mScrollPercent = mConfig.getPosition().onViewPositionChanged(changedView.getWidth(), changedView.getHeight(), slideLeft, slideTop);
 
-            if(mListener != null) mListener.onSlideChange(mScrollPercent);
-            if(configListener!=null)configListener.onSlideChange(mScrollPercent);
+            if (mListener != null) mListener.onSlideChange(mScrollPercent);
+            if (configListener != null) configListener.onSlideChange(mScrollPercent);
             invalidate();
         }
 

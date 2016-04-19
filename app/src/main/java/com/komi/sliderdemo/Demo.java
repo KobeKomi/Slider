@@ -26,7 +26,7 @@ public enum Demo {
     },
 
 
-    ADAPTER_FRAGMENT(AdapterFragment.class.getName(), R.string.adapter_fragment) {
+    CUSTOM_SLIDABLE_FRAGMENT(CustomSlidableFragment.class.getName(), R.string.custom_slidable_fragment) {
         @Override
         public Type getType() {
             return Type.FRAGMENT;

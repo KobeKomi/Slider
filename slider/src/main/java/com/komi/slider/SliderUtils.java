@@ -154,7 +154,7 @@ public class SliderUtils {
             }
 
             @Override
-            public void refreshConfig() {
+            public void updateConfig() {
                 slider.setConfig(getConfig());
             }
         };
